@@ -6,18 +6,17 @@
         </div>
         <div class="main-footer">
             <div class="container">
-                <div class="col-md-9">
+                <div class="is-two-thirds">
                     <div class="footer-logo">
+                        <ul>
                         <router-link :to="'/'">
+                            <img src="../assets/images/Med_logo-w.png" style="height:50px">
                         </router-link>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="footer-contain">
-                        <ul class="footer-link">
-                            <li><router-link :to="'/about-us'">About us</router-link></li>
                         </ul>
-                    </div>
+                        <ul class="footer-link">
+                            <li style="float:right"><router-link :to="'/about-us'">About us</router-link></li>
+                        </ul>
+                </div>
                 </div>
             </div>
         </div>
@@ -49,3 +48,38 @@
         }
     }
 </script>
+<style>
+footer .giraffe {
+  background-image: url('../assets/images/ful_giraffe.svg');
+  background-repeat: no-repeat;
+  height: 123px;
+}
+
+footer .main-footer .container {
+  padding: 10px 0px;
+}
+
+footer .main-footer {
+  background: #dddddd;
+}
+
+footer .footer-contain {
+  padding: 18px 5px;
+}
+
+footer .footer-mountain {
+  background-image: url('../assets/images/footer-mountain.svg');
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: right bottom;
+}
+
+footer .footer-link li {
+  font-size: 16px;
+  list-style: none;
+}
+
+footer .footer-link li a {
+  color: #000000;
+}
+</style>

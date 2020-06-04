@@ -19,7 +19,7 @@
       <ul class="nav navbar-nav">
         <li class="dropdown" v-if="isTeacher">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User Management<span class="caret"></span></a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-content">
             <li><router-link to="/user">View all User</router-link></li>
             <li><router-link to="/user/create">Create User</router-link></li>
           </ul>
@@ -28,7 +28,7 @@
       <ul class="nav navbar-nav navbar-right" v-if="isLoggedIn">
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ getName }}<span class="caret"></span></a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-content">
             <li><router-link to="/profile">Profile</router-link></li>
             <li><router-link to="/logout">Logout</router-link></li>
           </ul>
@@ -70,3 +70,26 @@
     }
   }
 </script>
+<style>
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #dddddd;
+  min-width: 80px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+.navbar-right {
+  margin-right: -300%;
+}
+</style>
