@@ -1,9 +1,10 @@
 <template>
+<div>
   <div id="login-page">
     <div class="container">
       <div class="login-form col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1">
-        <img src="../assets/images/logo-full.svg" class="login-logo" height="100px">
-        <form v-on:submit.prevent="login">
+        <img src="../assets/images/logo-full.svg" class="login-logo" height="80px">
+        <form v-on:submit.prevent="register">
           <div class="form-group">
             <input type="text" class="form-control" id="username" required v-model="form.username">
             <label for="username">Username</label>
@@ -17,17 +18,37 @@
               v-model="form.password"
             >
             <label for="username">Password</label>
-            <span class="login-error" v-if="login_error">
-              <span class="glyphicon glyphicon-alert"></span> The username or password is incorrect.
+            </div>
+            <div class="form-group">
+            <input
+              type="password"
+              class="form-control"
+              id="password_confirm"
+              required
+              v-model="form.password_confirm"
+            >
+             <label for="username">Confirm Password</label>
+             <span class="register-error" v-if="register_error">
+              <span class="glyphicon glyphicon-alert"></span> The confirm password and password is incorrect.
             </span>
+            </div>
+            <div class="form-group">
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              required
+              v-model="form.email"
+            >
+            <label for="username">Email</label>
           </div>
           <div class="text-center" v-if="loading">
             <spinner></spinner>
-            <span class="loading-msg">Logging in...</span>
+            <span class="loading-msg">pendding...</span>
           </div>
           <div class="text-center">
-            <button type="submit" class="btn btn-default">Login</button>
-            <button type="button" class="btn btn-default"><router-link :to="'/register'">Register</router-link></button>
+            <button type="submit" class="btn btn-default">Register</button>
+            <button type="button" class="btn btn-default"><router-link :to="'/login'">Back to Login</router-link></button>
           </div>
         </form>
       </div>
@@ -68,6 +89,7 @@
         <img src="../assets/images/login/cloud4_ly2.png" class="img-responsive">
       </div>
     </div>
+    </div>
   </div>
 </template>
 
@@ -81,9 +103,11 @@ export default {
     return {
       form: {
         username: "",
-        password: ""
+        password: "",
+        password_confirm: "",
+        email: ""
       },
-      login_error: false,
+      register_error: false,
       loading: false,
     };
   },
@@ -91,18 +115,14 @@ export default {
     spinner
   },
   methods: {
-    login() {
+    register() {
       this.loading = true
-      if (
-        (this.form.username === "shiba" ||
-          this.form.username === "nhung4092") &&
-        this.form.password === "123456"
-      ) {
+      if(this.form.password !== this.form.password_confirm ){
         this.loading = false
-        this.$router.push("/homepage");
+        this.register_error = true
       } else {
         this.loading = false
-        this.login_error = true
+        this.$router.push("/login");
       }
     },
   }
