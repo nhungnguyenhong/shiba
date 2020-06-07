@@ -6,6 +6,7 @@ import Login from '../pages/Login';
 import Logout from '../pages/Logout';
 import Homepage from '../pages/Homepage';
 import Register from '../pages/Register';
+import Classroom from '../pages/Classroom';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 Vue.use (VueAxios, axios);
@@ -37,6 +38,12 @@ export default new Router ({
       path: '/register',
       name: Register,
       component: Register,
+      exact: true,
+    },
+    {
+      path: '/classroom',
+      name: Classroom,
+      component: Classroom,
       exact: true,
     },
   ],

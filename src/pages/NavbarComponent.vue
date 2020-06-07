@@ -24,6 +24,13 @@
             <li><router-link to="/user/create">Create User</router-link></li>
           </ul>
         </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Recommand<span class="caret"></span></a>
+          <ul class="dropdown-content">
+            <li><router-link to="/user"></router-link></li>
+            <li><router-link to="/user/create"></router-link></li>
+          </ul>
+        </li>
       </ul>
       <ul class="nav navbar-nav navbar-right" v-if="isLoggedIn">
         <li class="dropdown">
@@ -42,15 +49,35 @@
 
 <script>
   import { mapGetters } from 'vuex'
+  import VueAxios from 'vue-axios';
+  import axios from 'axios';
+import { constants } from 'http2';
 
   export default {
+    created() {
+    this.getName = this.$route.params.userName;
+    const vm = this;
+    axios
+      .get(
+        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/get-by-username?userName=" +
+          this.getName
+      )
+      .then(function(respone) {
+        vm.getUser = respone.data.data;
+        if (vm.getUser.roleId === "1") {
+          vm.isTeacher = true;
+        } else {
+          vm.isTeacher = false;
+        }
+      })
+   },
     data(){
       return {
         transparent: false,
         hide: false,
-        isTeacher: true,
+        isTeacher: '',
         isLoggedIn: true,
-        getName: 'Nhung'
+        getName: this.username
       }
     },
     methods:{

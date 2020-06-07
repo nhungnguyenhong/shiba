@@ -6,10 +6,11 @@
         <div class="container user-profile">
           <div>
             <div class="col-md-2 col-xs-4">
-              <div
-                class="profile-picture profile-picture-medium"
-              >
-              <img src="../assets/images/about-us/dorn.jpg" class="img-responsive">
+              <div class="profile-picture profile-picture-medium" v-if="!getUser.avatar">
+                <img src="../assets/images/avatar.svg" class="img-responsive">
+              </div>
+              <div class="profile-picture profile-picture-medium">
+                <img v-bind:src="getUser.avatar" class="img-responsive">
               </div>
             </div>
             <div class="col-md-10 col-xs-8 profile-detail">
@@ -17,10 +18,10 @@
                 <div class="col-md-12 profile-info">
                   <div class="profile-name">
                     <router-link to="profile">
-                      <p>{{ getUser.name }}</p>
+                      <p>{{ getUser.userName }}</p>
                     </router-link>
                   </div>
-                  <span class="username">@{{ getUser.username }}</span>
+                  <span class="username">@{{ getUser.userName }}</span>
                 </div>
               </div>
               <div class="row hidden-xs">
@@ -39,17 +40,14 @@
       </div>
       <classroom-join v-if="show_join"></classroom-join>
       <div class="container">
-        <div class="classroom-list col-md-4" v-for="classroom in classrooms" v-bind:key="classroom">
+        <div class="classroom-list col-md-4" v-for="classroom in classrooms" v-bind:key="classroom.id">
           <div class="card">
-            <div
-              class="classroom-background"
-            >
-             <img src="../assets/images/math.png" class="img-responsive">
+            <div class="classroom-background">
+              <img src="../assets/images/classroom.svg" class="img-responsive">
             </div>
             <div class="classroom-list-head">
-              .
               <h3>
-                <router-link :to="'/classroom/'+classroom.id">{{ classroom.name }}</router-link>
+                <router-link :to="'/classroom/'+classroom.id">{{ classroom.name }}</router-link> 
               </h3>
             </div>
           </div>
@@ -67,24 +65,52 @@
 </template>
 
 <script>
-import swal from "sweetalert2";
+import VueAxios from "vue-axios";
+import axios from "axios";
+import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import { mapGetters } from "vuex";
 import navbar from "./NavbarComponent.vue";
 import footerComponent from "./footer.vue";
 
 export default {
+  name: "homepage",
+  created() {
+    this.getName = this.$route.params.userName;
+    const vm = this;
+    axios
+      .get(
+        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/get-by-username?userName=" +
+          this.getName
+      )
+      .then(function(respone) {
+        vm.getUser = respone.data.data;
+        if (vm.getUser.roleId === "1") {
+          vm.isTeacher = true;
+        } else {
+          vm.isTeacher = false;
+        }
+      })
+      .catch(function() {
+        Swal.fire("Oops...", "Somethings come wrongs!", "error");
+      })
+    axios
+      .get("http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/subject/search?page=0&size=10")
+      .then(function(respone) {
+        vm.classrooms = respone.data.data.content
+      })
+      .catch(function() {
+        Swal.fire("Oops...", "Somethings come wrongs!", "error");
+      });
+  },
   data() {
     return {
-      classrooms: "mat",
+      classrooms: '',
       status: false,
+      getName: "",
       show_join: false,
-      isTeacher: true,
-      getUser: {
-        name: "Nguyễn Hồng Nhung",
-        username: "nhung4092",
-        email: "hongnhungnguyen4092@gmail.com"
-      }
+      isTeacher: "",
+      getUser: {}
     };
   },
   components: {
@@ -94,7 +120,7 @@ export default {
   methods: {
     showJoin() {
       var self = this;
-      swal({
+      Swal.fire({
         title: "Enter code to join class",
         input: "text",
         inputPlaceholder: "Enter code",
@@ -114,19 +140,10 @@ export default {
       });
     },
     requestJoin(code) {
-      var token = this.$auth.getToken();
       var data = {
         code: code
       };
-      axios
-        .post("api/classroom/join", data, {
-          headers: {
-            Authorization: "Bearer " + token
-          }
-        })
-        .then(response => {
-          this.$router.push("classroom/" + response.data.classroom_id);
-        });
+      this.$router.push("classroom/" +code);
     }
   }
 };
