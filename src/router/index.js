@@ -5,10 +5,15 @@ import Router from 'vue-router';
 import Login from '../pages/Login';
 import Logout from '../pages/Logout';
 import Homepage from '../pages/Homepage';
+import Register from '../pages/Register';
+import Classroom from '../pages/Classroom';
+import VueAxios from 'vue-axios';
+import axios from 'axios';
+Vue.use (VueAxios, axios);
 
-Vue.use(Router);
+Vue.use (Router);
 
-export default new Router({
+export default new Router ({
   mode: 'history',
   routes: [
     {
@@ -28,6 +33,18 @@ export default new Router({
       name: Logout,
       component: Logout,
       exact: true,
-  },
+    },
+    {
+      path: '/register',
+      name: Register,
+      component: Register,
+      exact: true,
+    },
+    {
+      path: '/classroom',
+      name: Classroom,
+      component: Classroom,
+      exact: true,
+    },
   ],
 });
