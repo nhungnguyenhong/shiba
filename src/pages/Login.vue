@@ -106,7 +106,7 @@ export default {
         )
         .then(function(respone) {
           if (respone.data.status === "FAIL") {
-            Swal.fire("Oops...", respone.data.description, "error");
+            Swal.fire("Oops...", "The username or password is incorrect", "error");
           } else {
             vm.$session.start();
             Swal.fire("Success", "Wellcome to Shiba Learning!", "success");

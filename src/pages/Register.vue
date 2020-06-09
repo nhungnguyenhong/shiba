@@ -142,7 +142,7 @@ export default {
             }
           )
           .then(function() {
-            Swal.fire("Success", "Wellcome to Shiba Learning!", "success");
+            Swal.fire("Success", "Register success!Login to continue...", "success");
           })
           .catch(function() {
             Swal.fire("Oops...", "Somethings come wrongs!", "error");
