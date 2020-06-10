@@ -1,6 +1,6 @@
 <template>
 <div>
-    <navbar></navbar>
+  <navbar></navbar>
   <div class="classroom" style="min-height: 500px" v-if="classroom">
     <div
       class="class-header"
@@ -116,7 +116,6 @@
                     class="text-danger"
                     v-for="error in comment_errors.comment"
                     :key="error"
-                    v-if="comment_errors.comment && focus_id == post.id"
                   >{{ error }}</p>
                 </div>
               </form>
@@ -154,11 +153,14 @@ import moment from "moment";
 import swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import { mapGetters } from "vuex";
-import attachments from "../block/attachment.vue";
-import PostCard from "../block/PostCard.vue";
-import AssignmentCard from "../block/AssignmentCard.vue";
-import uploadCover from "../block/uploadCover.vue";
+import attachments from "./block/attachment.vue";
+import PostCard from "./block/PostCard.vue";
+import AssignmentCard from "./block/AssignmentCard.vue";
+import uploadCover from "./block/uploadCover.vue";
 import navbar from "./NavbarComponent.vue";
+import VueAxios from "vue-axios";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
   name: "classroom",
@@ -183,12 +185,11 @@ export default {
     };
   },
   created() {
-    var classroom_id = this.$route.params.id;
-    console.log(classroom_id);
+    var classroom_id = this.$route.query.id;
+    const vm = this;
     axios
       .get(
-        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/subject/get-by-id?id=" +
-          this.classroom_id
+        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/subject/get-by-id?id=" + classroom_id
       )
       .then(function(respone) {
           console.log(respone.data)
@@ -212,34 +213,16 @@ export default {
       this.coverEdit = !this.coverEdit;
     },
     teachers() {
-      var teachers = this.classroom.members.filter(user => {
-        return user.role.actions === "is_teacher";
-      });
-      return teachers;
+      // var teachers = this.classroom.members.filter(user => {
+      //   return user.role.actions === "is_teacher";
+      // });
+      // return teachers;
     },
     comment(post_id) {
       var data = {
         post_id: post_id,
         comment: this.comments[post_id]
       };
-
-      axios
-        .post("api/comments", data, {
-          headers: {
-            Authorization: "Bearer " + this.token
-          }
-        })
-        .then(response => {
-          this.comments[post_id] = "";
-          delete this.comments[post_id];
-
-          var index = this.posts.findIndex(x => x.id == post_id);
-          this.posts[index].comments.push(response.data);
-        })
-        .catch(error => {
-          this.comment_errors = error.response.data.errors;
-          this.focus_id = post_id;
-        });
     },
     checkUserPost(user_id) {
       return this.getUserId == user_id;

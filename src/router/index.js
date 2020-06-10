@@ -6,7 +6,9 @@ import Login from '../pages/Login';
 import Logout from '../pages/Logout';
 import Homepage from '../pages/Homepage';
 import Register from '../pages/Register';
-import Classroom from '../pages/Classroom';
+import classroom from '../pages/Classroom';
+import Profile from '../pages/Profile';
+import About from '../pages/About';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 Vue.use (VueAxios, axios);
@@ -42,8 +44,20 @@ export default new Router ({
     },
     {
       path: '/classroom',
-      name: Classroom,
-      component: Classroom,
+      name: classroom,
+      component: classroom,
+      exact: true,
+    },
+    {
+      path: '/profile',
+      name: Profile,
+      component: Profile,
+      exact: true,
+    },
+    {
+      path: '/about',
+      name: About,
+      component: About,
       exact: true,
     },
   ],

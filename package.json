@@ -31,6 +31,7 @@
     "vee-validate": "^2.2.15",
     "vue": "^2.6.10",
     "vue-axios": "^2.1.5",
+    "vue-clip": "^1.0.0",
     "vue-moment": "^4.0.0",
     "vue-multi-select": "^4.1.1",
     "vue-multiselect": "^2.1.6",
@@ -43,7 +44,7 @@
     "vuejs-datepicker": "^1.6.2",
     "vuejs-dialog": "^1.4.1",
     "vuejs-paginate": "^2.1.0",
-    "vuex": "^3.1.1",
+    "vuex": "^3.4.0",
     "yarn": "^1.19.0"
   },
   "devDependencies": {

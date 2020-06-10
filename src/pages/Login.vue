@@ -109,6 +109,8 @@ export default {
             Swal.fire("Oops...", "The username or password is incorrect", "error");
           } else {
             vm.$session.start();
+            vm.$session.set('checkLogin', true);
+            vm.$session.set('user', vm.form.userName);
             Swal.fire("Success", "Wellcome to Shiba Learning!", "success");
             vm.$router.push({
               name: "homepage",
@@ -116,6 +118,11 @@ export default {
             });
           }
         });
+    }
+  },
+  created() {
+    if (this.$session.get('checkLogin') === true) {
+      this.$router.push('/homepage');
     }
   }
 };
