@@ -25,17 +25,17 @@
           </ul>
         </li>
         <li class="dropdown" v-else>
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Recommand<span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Grade<span class="caret"></span></a>
           <ul class="dropdown-content">
-            <li><router-link to="/user"></router-link></li>
-            <li><router-link to="/user/create"></router-link></li>
+            <li><router-link to="/grade">All Grade</router-link></li>
+            <li><router-link to="/myGrade">My grade</router-link></li>
           </ul>
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right" v-if="isLoggedIn">
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hello {{ username }}<span class="caret"></span></a>
-          <ul class="dropdown-content">
+          <ul class="dropdown-content" style="margin-right:20px">
             <li><router-link to="/profile">Profile</router-link></li>
             <li><router-link to="/logout">Logout</router-link></li>
           </ul>
@@ -111,7 +111,7 @@
   display: none;
   position: absolute;
   background-color: #dddddd;
-  min-width: 80px;
+  min-width: 100px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   padding: 12px 16px;
   z-index: 1;

@@ -3,7 +3,7 @@
 <navbar></navbar>
   <div class="container about-us">
     <div class="card">
-      <h1>About us</h1>
+      <h1>Something about us</h1>
       <div class="row">
         <div class="col-md-4 about-us-item">
           <img src="../assets/images/about-us/Nhunn.jpg" class="about-us-thumbnail img-responsive">

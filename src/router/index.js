@@ -8,6 +8,8 @@ import Homepage from '../pages/Homepage';
 import Register from '../pages/Register';
 import classroom from '../pages/Classroom';
 import Profile from '../pages/Profile';
+import Grade from '../pages/Grade';
+import Subject from '../pages/Subject';
 import About from '../pages/About';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
@@ -60,5 +62,17 @@ export default new Router ({
       component: About,
       exact: true,
     },
+    {
+      path: '/grade',
+      name: Grade,
+      component: Grade,
+      exact: true,
+    },
+    {
+      path: '/subject',
+      name: Subject,
+      component: Subject,
+      exact: true,
+    }
   ],
 });
