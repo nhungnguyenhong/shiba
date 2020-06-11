@@ -40,14 +40,18 @@
       </div>
       <classroom-join v-if="show_join"></classroom-join>
       <div class="container">
-        <div class="classroom-list col-md-4" v-for="classroom in classrooms" v-bind:key="classroom.id">
+        <div
+          class="classroom-list col-md-4"
+          v-for="classroom in classrooms"
+          v-bind:key="classroom.id"
+        >
           <div class="card">
             <div class="classroom-background">
               <img src="../assets/images/classroom.svg" class="img-responsive">
             </div>
             <div class="classroom-list-head">
               <h3>
-                <router-link :to="'/classroom/'+classroom.id">{{ classroom.name }}</router-link> 
+                <router-link :to="{path: '/classroom',query: { id: classroom.id }}">{{ classroom.name }}</router-link>
               </h3>
             </div>
           </div>
@@ -76,7 +80,7 @@ import footerComponent from "./footer.vue";
 export default {
   name: "homepage",
   created() {
-    this.getName = this.$route.params.userName;
+    this.getName = this.$session.get('user');
     const vm = this;
     axios
       .get(
@@ -93,11 +97,13 @@ export default {
       })
       .catch(function() {
         Swal.fire("Oops...", "Somethings come wrongs!", "error");
-      })
+      });
     axios
-      .get("http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/subject/search?page=0&size=10")
+      .get(
+        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/subject/search?page=0&size=10"
+      )
       .then(function(respone) {
-        vm.classrooms = respone.data.data.content
+        vm.classrooms = respone.data.data.content;
       })
       .catch(function() {
         Swal.fire("Oops...", "Somethings come wrongs!", "error");
@@ -105,7 +111,7 @@ export default {
   },
   data() {
     return {
-      classrooms: '',
+      classrooms: "",
       status: false,
       getName: "",
       show_join: false,
@@ -143,7 +149,7 @@ export default {
       var data = {
         code: code
       };
-      this.$router.push("classroom/" +code);
+      this.$router.push("classroom/" + code);
     }
   }
 };

@@ -14,7 +14,7 @@
                         </router-link>
                         </ul>
                         <ul class="footer-link">
-                            <li style="float:right"><router-link :to="'/about-us'">About us</router-link></li>
+                            <li style="float:right"><router-link :to="'/about'">About us</router-link></li>
                         </ul>
                 </div>
                 </div>

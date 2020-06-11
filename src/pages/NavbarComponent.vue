@@ -9,7 +9,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <router-link to="/" class="navbar-brand">
+      <router-link to="/homepage" class="navbar-brand">
         <img src="../assets/images/Med_logo.png"/>
       </router-link>
     </div>
@@ -24,7 +24,7 @@
             <li><router-link to="/user/create">Create User</router-link></li>
           </ul>
         </li>
-        <li class="dropdown">
+        <li class="dropdown" v-else>
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Recommand<span class="caret"></span></a>
           <ul class="dropdown-content">
             <li><router-link to="/user"></router-link></li>
@@ -34,7 +34,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right" v-if="isLoggedIn">
         <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ getName }}<span class="caret"></span></a>
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hello {{ username }}<span class="caret"></span></a>
           <ul class="dropdown-content">
             <li><router-link to="/profile">Profile</router-link></li>
             <li><router-link to="/logout">Logout</router-link></li>
@@ -55,16 +55,20 @@
 
   export default {
     created() {
-    this.getName = this.$route.params.userName;
+    this.checkLogin = this.$session.get('checkLogin');
+    if(!this.checkLogin){
+      this.$router.push('/login');
+    }
+    this.username = this.$session.get('user');
     const vm = this;
     axios
       .get(
         "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/get-by-username?userName=" +
-          this.getName
+          vm.username
       )
       .then(function(respone) {
         vm.getUser = respone.data.data;
-        if (vm.getUser.roleId === "1") {
+        if (vm.getUser.role.roleName === 'teacher') {
           vm.isTeacher = true;
         } else {
           vm.isTeacher = false;
@@ -77,7 +81,8 @@
         hide: false,
         isTeacher: '',
         isLoggedIn: true,
-        getName: this.username
+        username: '',
+        checkLogin: false
       }
     },
     methods:{
@@ -117,6 +122,6 @@
   display: block;
 }
 .navbar-right {
-  margin-right: -300%;
+  margin-right: -230%;
 }
 </style>

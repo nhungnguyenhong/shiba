@@ -12,7 +12,7 @@
         </template>
 
         <template slot="clip-uploader-body" slot-scope="props">
-            <div class="cover-uploading" v-for="file in props.files" :key="file" v-if="file.status != 'success'">
+            <div class="cover-uploading" v-for="file in props.files" :key="file">
                 <spinner></spinner><span class="loading-msg">Uploading...</span>
             </div>
         </template>
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-    import spinner from '../pages/elements/spinner.vue'
+    import spinner from '../elements/spinner.vue'
 
     export default {
         props: ['classroomId'],

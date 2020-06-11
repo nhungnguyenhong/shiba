@@ -1,11 +1,11 @@
 <template>
 <div>
-    <navbar></navbar>
+  <navbar></navbar>
   <div class="classroom" style="min-height: 500px" v-if="classroom">
     <div
       class="class-header"
-      v-bind:style="{'background-image': `url(${classroom.cover})`} "
     >
+    
       <div class="cover-edit" v-if="coverEdit">
         <div class="cover-upload">
           <upload-cover :classroom-id="classroom.id" v-on:uploaded="coverUploaded"></upload-cover>
@@ -25,12 +25,12 @@
           <div class="class-teacher">
             <strong>Teachers</strong>
             <ul>
-              <li v-for="teacher in teachers()" :key="teacher">
+              <li >
                 <div
                   class="profile-picture profile-picture-small"
-                  :style="{backgroundImage : `url(${teacher.avatar_url})`} "
+                  :style="{backgroundImage : `url(${classroom.teacher.avatar})`} "
                 ></div>
-                <kbd>{{ teacher.name }}</kbd>
+                <kbd>{{ classroom.teacher.name }}</kbd>
                 <div class="clearfix"></div>
               </li>
             </ul>
@@ -93,14 +93,15 @@
           <post-card
             :post="post"
             :classroom-id="classroom.id"
-            :show-option="checkUserPost(post.user.id)"
+            :show-option="checkUserPost(post.course.id)"
             v-on:removePost="removePost"
           ></post-card>
           <attachments :files="post.attachments"></attachments>
 
           <div class="class-post-comments">
             <div class="comment-meta">
-              <strong>{{ post.comments.length }} Comments</strong>
+              <!-- <strong>{{ post.comments.length }} Comments</strong> -->
+              <strong>1 Comments</strong>
             </div>
             <div class="comment-box">
               <form v-on:submit.prevent="comment(post.id)">
@@ -116,7 +117,6 @@
                     class="text-danger"
                     v-for="error in comment_errors.comment"
                     :key="error"
-                    v-if="comment_errors.comment && focus_id == post.id"
                   >{{ error }}</p>
                 </div>
               </form>
@@ -146,6 +146,7 @@
     <div class="bounce2"></div>
     <div class="bounce3"></div>
   </div>
+  <footerComponent></footerComponent>
 </div>
 </template>
 
@@ -154,11 +155,15 @@ import moment from "moment";
 import swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import { mapGetters } from "vuex";
-import attachments from "../block/attachment.vue";
-import PostCard from "../block/PostCard.vue";
-import AssignmentCard from "../block/AssignmentCard.vue";
-import uploadCover from "../block/uploadCover.vue";
+import attachments from "./block/attachment.vue";
+import PostCard from "./block/PostCard.vue";
+import AssignmentCard from "./block/AssignmentCard.vue";
+import uploadCover from "./block/uploadCover.vue";
 import navbar from "./NavbarComponent.vue";
+import VueAxios from "vue-axios";
+import axios from "axios";
+import Swal from "sweetalert2";
+import footerComponent from "./footer.vue";
 
 export default {
   name: "classroom",
@@ -166,8 +171,10 @@ export default {
     return {
       classroom: "",
       posts: [],
+      lessons: "",
       comments: {},
       token: "",
+      isTeacher : true,
       comment_errors: [],
       focus_id: "",
       swal_config: {
@@ -183,15 +190,28 @@ export default {
     };
   },
   created() {
-    var classroom_id = this.$route.params.id;
-    console.log(classroom_id);
+    var classroom_id = this.$route.query.id;
+    const vm = this;
     axios
       .get(
-        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/subject/get-by-id?id=" +
-          this.classroom_id
+        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/course/get-by-id?id=" + classroom_id
       )
       .then(function(respone) {
           console.log(respone.data)
+          vm.classroom = respone.data.data;
+         console.log(vm.classroom)
+      })
+      .catch(function() {
+        Swal.fire("Oops...", "Somethings come wrongs!", "error");
+      });
+    axios
+      .get(
+        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/lesson/search?page=0&size=10&courseId=" + classroom_id
+      )
+      .then(function(respone) {
+          console.log(respone.data)
+          vm.posts = respone.data.data.content;
+         console.log(vm.posts)
       })
       .catch(function() {
         Swal.fire("Oops...", "Somethings come wrongs!", "error");
@@ -202,47 +222,26 @@ export default {
     navbar,
     PostCard,
     AssignmentCard,
-    uploadCover
+    uploadCover,
+    footerComponent
   },
-  computed: {
-    ...mapGetters(["getUserId", "isTeacher"])
-  },
+  // computed: {
+  //   ...mapGetters(["getUserId", "isTeacher"])
+  // },
   methods: {
     toggleCoverEdit() {
       this.coverEdit = !this.coverEdit;
     },
-    teachers() {
-      var teachers = this.classroom.members.filter(user => {
-        return user.role.actions === "is_teacher";
-      });
-      return teachers;
-    },
+    
     comment(post_id) {
       var data = {
         post_id: post_id,
         comment: this.comments[post_id]
       };
-
-      axios
-        .post("api/comments", data, {
-          headers: {
-            Authorization: "Bearer " + this.token
-          }
-        })
-        .then(response => {
-          this.comments[post_id] = "";
-          delete this.comments[post_id];
-
-          var index = this.posts.findIndex(x => x.id == post_id);
-          this.posts[index].comments.push(response.data);
-        })
-        .catch(error => {
-          this.comment_errors = error.response.data.errors;
-          this.focus_id = post_id;
-        });
     },
     checkUserPost(user_id) {
-      return this.getUserId == user_id;
+      //return this.getUserId == user_id;
+      return 1==1;
     },
     removeAssignment(post_id) {
       var self = this;
@@ -304,7 +303,9 @@ export default {
 };
 </script>
 <style>
+
 .class-header {
-    background-image: linear-gradient(rgba(0,0,0,.3),rgba(0,0,0,.3))
+    background-image: linear-gradient(rgba(0,0,0,.3),rgba(0,0,0,.3));
+    background-image: url('../assets/images/bg.jpeg');
 }
 </style>
