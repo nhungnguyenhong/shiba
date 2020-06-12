@@ -142,14 +142,16 @@ export default {
           });
         }
       }).then(function(code) {
+        if(code.dismiss !== 'cancel'){
         self.requestJoin(code);
+        }
       });
     },
     requestJoin(code) {
       var data = {
         code: code
       };
-      this.$router.push("classroom/" + code);
+      this.$router.push("classroom?id=" + code.value);
     }
   }
 };
