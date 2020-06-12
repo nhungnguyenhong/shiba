@@ -91,7 +91,7 @@
       <section class="container">
       <div class="columns features">
           <div class="card is-shady wid-100">
-      <div class="class-posts card" v-for="post in posts" :key="post">
+      <div class="class-posts card" v-for="post in posts" :key="post.id">
         
             <div class="card-image container-post">
               <figure class="image is-4by3">
@@ -102,7 +102,7 @@
               <div class="content">
                 <h4>{{post.title}}</h4>
                 <p>{{post.description}}</p>
-                <span class="button is-link modal-button" v-bind:data-target="'modal-card'+post.id">Chi tiết</span>
+                <span class="button is-link modal-button" v-bind:data-target="'modal-card'+post.id">Detail</span>
               </div>
             </div>
             <div v-bind:id="'modal-card'+post.id" class="modal modal-fx-3dSlit">
@@ -311,7 +311,6 @@ export default {
     }
   },
   mounted() {
-    
       let cdn1 = document.createElement('script')
       cdn1.setAttribute('src', 'https://unpkg.com/bulma-modal-fx/dist/js/modal-fx.min.js')
       document.head.appendChild(cdn1)

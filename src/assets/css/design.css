@@ -184,7 +184,6 @@ a:hover {
   max-height: 150px;
   max-width: 100%;
   background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.25)), to(rgba(0, 0, 0, 0.25))), url("http://kpop.youzab.com/wp-content/uploads/2015/04/Jessica1.jpg");
-  background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url("http://kpop.youzab.com/wp-content/uploads/2015/04/Jessica1.jpg");
   background-size: cover;
 }
 
