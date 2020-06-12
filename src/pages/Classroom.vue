@@ -30,7 +30,7 @@
                   class="profile-picture profile-picture-small"
                   :style="{backgroundImage : `url(${classroom.teacher.avatar})`} "
                 ></div>
-                <kbd>{{ classroom.teacher.name }}</kbd>
+                <kbd>{{ classroom.teacher.userName }}</kbd>
                 <div class="clearfix"></div>
               </li>
             </ul>
@@ -88,57 +88,65 @@
       <div class="no-post">No post yet</div>
     </div>
     <div class="container" v-else>
+      <section class="container">
+      <div class="columns features">
+          <div class="card is-shady wid-100">
       <div class="class-posts card" v-for="post in posts" :key="post">
-        <div class="class-post-item" v-if="post.type === 'post'">
-          <post-card
-            :post="post"
-            :classroom-id="classroom.id"
-            :show-option="checkUserPost(post.course.id)"
-            v-on:removePost="removePost"
-          ></post-card>
-          <attachments :files="post.attachments"></attachments>
-
-          <div class="class-post-comments">
-            <div class="comment-meta">
-              <!-- <strong>{{ post.comments.length }} Comments</strong> -->
-              <strong>1 Comments</strong>
+        
+            <div class="card-image container-post">
+              <figure class="image is-4by3">
+                <img v-bind:src="post.image" alt="Placeholder image">
+              </figure>
             </div>
-            <div class="comment-box">
-              <form v-on:submit.prevent="comment(post.id)">
-                <div class="form-group">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="comment"
-                    placeholder="Comment..."
-                    v-model="comments[post.id]"
-                  >
-                  <p
-                    class="text-danger"
-                    v-for="error in comment_errors.comment"
-                    :key="error"
-                  >{{ error }}</p>
-                </div>
-              </form>
-            </div>
-            <div class="comment-list">
-              <div class="comment-list-item" v-for="comment in post.comments" :key="comment">
-                <b>{{ comment.user.name }} :</b>
-                {{ comment.comment }}
+            <div class="card-content container-post-content">
+              <div class="content">
+                <h4>{{post.title}}</h4>
+                <p>{{post.description}}</p>
+                <span class="button is-link modal-button" v-bind:data-target="'modal-card'+post.id">Chi tiết</span>
               </div>
+            </div>
+            <div v-bind:id="'modal-card'+post.id" class="modal modal-fx-3dSlit">
+              <div class="modal-background"></div>
+              <div class="modal-content is-tiny">
+        <!-- content -->
+        <div class="card">
+          <div class="card-image">
+            <figure class="image is-4by3">
+              <img v-bind:src="post.image"  alt="Placeholder image">
+            </figure>
+          </div>
+          <div class="card-content">
+            <div class="media">
+              <div class="media-left">
+                <figure class="image is-48x48">
+                  <img v-bind:src="classroom.teacher.avatar" alt="linda barret avatar">
+                </figure>
+              </div>
+              <div class="media-content">
+                <p class="title is-4">{{classroom.teacher.userName}}</p>
+                <p class="subtitle is-6">@{{classroom.teacher.userName}}</p>
+              </div>
+            </div>
+            <div class="content">
+             {{post.description}}
+              <a>@{{classroom.teacher.userName}}</a>.
+              <a href="#">#{{classroom.subject.name}}</a>
+              
+              <br>
+              <time datetime="2020-02-03">12:45 AM - 20 June 2018</time>
             </div>
           </div>
         </div>
-        <div class="class-post-item" v-if="post.type == 'assignment' && post.assignment">
-          <assignment-card
-            :post="post"
-            :classroom-id="classroom.id"
-            :show-option="checkUserPost(post.user.id)"
-            v-on:removePost="removeAssignment"
-          ></assignment-card>
-          <attachments :files="post.attachments"></attachments>
-        </div>
+        <!-- end content -->
       </div>
+      <button class="modal-close is-large" aria-label="close"></button>
+  </div>
+          </div>
+        
+      </div>
+      </div>
+      
+    </section>
     </div>
   </div>
   <div class="spinner" v-else>
@@ -147,7 +155,9 @@
     <div class="bounce3"></div>
   </div>
   <footerComponent></footerComponent>
+  
 </div>
+
 </template>
 
 <script>
@@ -299,11 +309,30 @@ export default {
     coverUploaded(url) {
       this.classroom.cover_url = url;
     }
-  }
+  },
+  mounted() {
+    
+      let cdn1 = document.createElement('script')
+      cdn1.setAttribute('src', 'https://unpkg.com/bulma-modal-fx/dist/js/modal-fx.min.js')
+      document.head.appendChild(cdn1)
+    }
 };
 </script>
 <style>
-
+.wid-100 {
+  width: 100%;
+}
+.container-post {
+    
+    width: 270px;
+}
+.container-post-content {
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 70%;
+}
 .class-header {
     background-image: linear-gradient(rgba(0,0,0,.3),rgba(0,0,0,.3));
     background-image: url('../assets/images/bg.jpeg');
