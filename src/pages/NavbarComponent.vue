@@ -51,6 +51,7 @@
   import { mapGetters } from 'vuex'
   import VueAxios from 'vue-axios';
   import axios from 'axios';
+// import { constants } from 'http2';
 
   export default {
     created() {
@@ -121,6 +122,6 @@
   display: block;
 }
 .navbar-right {
-  margin-right: -300%;
+  margin-right: -230%;
 }
 </style>

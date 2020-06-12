@@ -22,4 +22,5 @@
   @import './assets/css/app.css';
   @import './assets/css/design.css';
   @import './assets/css/loading.css';
+  @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
 </style>

@@ -55,8 +55,10 @@
       <div class="mountain">
         <img src="../assets/images/login/m1_ly1.png" class="img-responsive">
       </div>
-      <div class="cloud cloud-1">
-        <img src="../assets/images/login/cloud1_ly2.png" class="img-responsive">
+       <div class="cloud cloud-1">
+        <!-- <img src="../assets/images/login/cloud1_ly2.png" class="img-responsive"> -->
+
+      
       </div>
       <div class="cloud cloud-2">
         <img src="../assets/images/login/cloud2_ly2.png" class="img-responsive">
