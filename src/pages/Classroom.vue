@@ -207,9 +207,7 @@ export default {
         "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/course/get-by-id?id=" + classroom_id
       )
       .then(function(respone) {
-          console.log(respone.data)
           vm.classroom = respone.data.data;
-         console.log(vm.classroom)
       })
       .catch(function() {
         Swal.fire("Oops...", "Somethings come wrongs!", "error");
@@ -219,9 +217,7 @@ export default {
         "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/lesson/search?page=0&size=10&courseId=" + classroom_id
       )
       .then(function(respone) {
-          console.log(respone.data)
           vm.posts = respone.data.data.content;
-         console.log(vm.posts)
       })
       .catch(function() {
         Swal.fire("Oops...", "Somethings come wrongs!", "error");
@@ -267,8 +263,6 @@ export default {
               x => x.assignment.id == post_id && x.type == "assignment"
             );
             self.posts.splice(index, 1);
-
-            console.log("remove success");
           });
       });
     },
@@ -287,7 +281,6 @@ export default {
             );
             self.posts.splice(index, 1);
 
-            console.log("remove success");
           });
       });
     },

@@ -20,8 +20,8 @@
         <li class="dropdown" v-if="isTeacher">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User Management<span class="caret"></span></a>
           <ul class="dropdown-content">
-            <li><router-link to="/user">View all User</router-link></li>
-            <li><router-link to="/user/create">Create User</router-link></li>
+            <li><router-link to="/student">View all User</router-link></li>
+            <li><router-link to="/createUser">Create User</router-link></li>
           </ul>
         </li>
         <li class="dropdown" v-else>

@@ -10,6 +10,9 @@ import classroom from '../pages/Classroom';
 import Profile from '../pages/Profile';
 import Grade from '../pages/Grade';
 import Subject from '../pages/Subject';
+import Student from '../pages/Student';
+import createUser from '../pages/createUser';
+import editUser from '../pages/editUser';
 import About from '../pages/About';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
@@ -72,6 +75,24 @@ export default new Router ({
       path: '/subject',
       name: Subject,
       component: Subject,
+      exact: true,
+    },
+    {
+      path: '/student',
+      name: Student,
+      component: Student,
+      exact: true,
+    },
+    {
+      path: '/createUser',
+      name: createUser,
+      component: createUser,
+      exact: true,
+    },
+    {
+      path: '/editUser',
+      name: editUser,
+      component: editUser,
       exact: true,
     }
   ],

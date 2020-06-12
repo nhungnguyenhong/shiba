@@ -76,6 +76,7 @@ import "sweetalert2/dist/sweetalert2.min.css";
 import { mapGetters } from "vuex";
 import navbar from "./NavbarComponent.vue";
 import footerComponent from "./footer.vue";
+import { constants } from 'http2';
 
 export default {
   name: "homepage",
@@ -84,8 +85,7 @@ export default {
     const vm = this;
     axios
       .get(
-        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/get-by-username?userName=" +
-          this.getName
+        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/get-by-username?userName=" +this.getName
       )
       .then(function(respone) {
         vm.getUser = respone.data.data;
@@ -94,13 +94,9 @@ export default {
         } else {
           vm.isTeacher = false;
         }
-      })
-      .catch(function() {
-        Swal.fire("Oops...", "Somethings come wrongs!", "error");
-      });
-    axios
+          axios
       .get(
-        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/subject/search?page=0&size=10"
+        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/search?page=0&size=10&&courseId=4&studentId="+ respone.data.data.id
       )
       .then(function(respone) {
         vm.classrooms = respone.data.data.content;
@@ -108,6 +104,11 @@ export default {
       .catch(function() {
         Swal.fire("Oops...", "Somethings come wrongs!", "error");
       });
+      })
+      .catch(function() {
+        Swal.fire("Oops...", "Somethings come wrongs!", "error");
+      });
+  
   },
   data() {
     return {
@@ -151,7 +152,22 @@ export default {
       var data = {
         code: code
       };
-      this.$router.push("classroom?id=" + code.value);
+      const vm = this;
+      axios
+      .get(
+        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/subject/get-by-id?id="+ code.value
+      )
+      .then(function(respone) {
+        if( respone.data.status === 'SUCCESS'){
+         vm.$router.push("classroom?id=" + code.value);
+        } else {
+          Swal.fire("Oops...", "Somethings come wrongs!", "error");
+        }
+      })
+      .catch(function() {
+        Swal.fire("Oops...", "Somethings come wrongs!", "error");
+      });
+     
     }
   }
 };
