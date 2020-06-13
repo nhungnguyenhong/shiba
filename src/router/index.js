@@ -14,6 +14,7 @@ import Student from '../pages/Student';
 import createUser from '../pages/createUser';
 import editUser from '../pages/editUser';
 import About from '../pages/About';
+import lesson from '../pages/lesson';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 Vue.use (VueAxios, axios);
@@ -93,6 +94,12 @@ export default new Router ({
       path: '/editUser',
       name: editUser,
       component: editUser,
+      exact: true,
+    },
+    {
+      path: '/lesson',
+      name: lesson,
+      component: lesson,
       exact: true,
     }
   ],
