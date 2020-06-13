@@ -9,7 +9,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <router-link to="/" class="navbar-brand">
+      <router-link to="/homepage" class="navbar-brand">
         <img src="../assets/images/Med_logo.png"/>
       </router-link>
     </div>
@@ -20,15 +20,22 @@
         <li class="dropdown" v-if="isTeacher">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User Management<span class="caret"></span></a>
           <ul class="dropdown-content">
-            <li><router-link to="/user">View all User</router-link></li>
-            <li><router-link to="/user/create">Create User</router-link></li>
+            <li><router-link to="/student">View all User</router-link></li>
+            <li><router-link to="/createUser">Create User</router-link></li>
+          </ul>
+        </li>
+        <li class="dropdown" v-else>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Grade<span class="caret"></span></a>
+          <ul class="dropdown-content">
+            <li><router-link to="/grade">All Grade</router-link></li>
+            <li><router-link to="/myGrade">My grade</router-link></li>
           </ul>
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right" v-if="isLoggedIn">
         <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ getName }}<span class="caret"></span></a>
-          <ul class="dropdown-content">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hello {{ username }}<span class="caret"></span></a>
+          <ul class="dropdown-content" style="margin-right:20px">
             <li><router-link to="/profile">Profile</router-link></li>
             <li><router-link to="/logout">Logout</router-link></li>
           </ul>
@@ -42,15 +49,40 @@
 
 <script>
   import { mapGetters } from 'vuex'
+  import VueAxios from 'vue-axios';
+  import axios from 'axios';
+// import { constants } from 'http2';
 
   export default {
+    created() {
+    this.checkLogin = this.$session.get('checkLogin');
+    if(!this.checkLogin){
+      this.$router.push('/login');
+    }
+    this.username = this.$session.get('user');
+    const vm = this;
+    axios
+      .get(
+        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/get-by-username?userName=" +
+          vm.username
+      )
+      .then(function(respone) {
+        vm.getUser = respone.data.data;
+        if (vm.getUser.role.roleName === 'teacher') {
+          vm.isTeacher = true;
+        } else {
+          vm.isTeacher = false;
+        }
+      })
+   },
     data(){
       return {
         transparent: false,
         hide: false,
-        isTeacher: true,
+        isTeacher: '',
         isLoggedIn: true,
-        getName: 'Nhung'
+        username: '',
+        checkLogin: false
       }
     },
     methods:{
@@ -80,7 +112,7 @@
   display: none;
   position: absolute;
   background-color: #dddddd;
-  min-width: 80px;
+  min-width: 100px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   padding: 12px 16px;
   z-index: 1;
@@ -90,6 +122,6 @@
   display: block;
 }
 .navbar-right {
-  margin-right: -300%;
+  margin-right: -230%;
 }
 </style>
