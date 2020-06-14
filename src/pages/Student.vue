@@ -32,22 +32,22 @@
           <tr v-for="(user, key) in users" :key="key">
             <th scope="row">{{ 5*(pageNumber) +key + 1}}</th>
             <td>
-              {{ user.userName }}
-              <span v-if="you == user.userName">(You)</span>
+              {{ user.user.userName }}
+              <span v-if="you == user.user.userName">(You)</span>
             </td>
-            <td>{{ user.email }}</td>
+            <td>{{ user.user.email }}</td>
             <td>
               <router-link
                 class="btn btn-default"
                 style="margin: 4px 15px"
-                :to="{path: '/editUser',query: { name: user.userName }}"
+                :to="{path: '/editUser',query: { name: user.user.userName }}"
               >
                 <i class="fa fa-pencil" aria-hidden="true"></i>
               </router-link>
               <button
                 class="btn btn-danger"
                 style="margin: 4px 15px;"
-                @click="removeStudentInClass(user.id)"
+                @click="removeStudentInClass(user.user.id)"
               >
                 <i class="fa fa-trash"></i>
               </button>
@@ -74,7 +74,7 @@
             type="text"
             class="form-control"
             v-on:keyup="Search()"
-            v-model="emailStudent"
+            v-model="form.emailStudent"
             placeholder="Email student"
           >
           <div class="text-center mt-20">
@@ -105,21 +105,24 @@ Vue.use(VModal);
 export default {
   data() {
     return {
+      form: {
+        emailStudent: "",
+        courseID: 1
+      },
       users: [],
       you: "",
       textSearch: "",
       pageNumber: 0,
-      perPage: 8,
-      total: 0,
-      emailStudent: "",
+      perPage: 3,
+      courseID: 1,
+      total: 2,
       swal_config: {
-        
-  text: "Are you sure? You won't be able to revert this!",
-  type: "warning",
-  showCancelButton: true,
-  confirmButtonColor: "#3085d6",
-  confirmButtonText: "Yes, Delete it!",
-  closeOnConfirm: true
+        text: "Are you sure? You won't be able to revert this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Yes, Delete it!",
+        closeOnConfirm: true
       }
     };
   },
@@ -140,19 +143,19 @@ export default {
       const vm = this;
       axios
         .get(
-          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/search?page=" +
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/search?page=" +
             vm.pageNumber +
-            "&size=10&sortBy=createTime&userName=" +
+            "&size=5&studentId=" +
             vm.textSearch +
-            "&email"
+            "&email&courseId=" +
+            vm.courseID
         )
         .then(function(respone) {
           vm.users = [];
-          vm.total = respone.data.data.totalPages;
+          vm.total = 2;
+          // vm.total = respone.data.data.content.length;
           for (let i = 0; i < respone.data.data.content.length; i++) {
-            if (respone.data.data.content[i].role.id == 2) {
-              vm.users.push(respone.data.data.content[i]);
-            }
+            vm.users.push(respone.data.data.content[i]);
           }
         });
     },
@@ -168,30 +171,37 @@ export default {
     },
     addStudent() {
       console.log(this.emailStudent);
+      const vm = this;
+      axios
+        .post(
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/add-student-to-course",
+          vm.form
+        )
+        .then(function() {
+          Swal.fire("Success", "Add to class success!", "success");
+        })
+        .catch(function() {
+          Swal.fire("Oops...", "Somethings come wrongs!", "error");
+        });
     },
     removeStudentInClass(user_id) {
       const vm = this;
-      
-      swal.fire(this.swal_config)
-        .then((isConfirm) => {
-          if (isConfirm) {
-             axios
-                .post(
-                  "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/delete-by-id",
-                  { id: user_id }
-                )
-          .then(function(respone) {
-            swal.fire({
-            }).catch(function() {
-          Swal.fire("Oops...", "Somethings come wrongs!", "error");
-        });
-            vm.Search();
-          });
-          } else {
-            swal("Your imaginary file is safe!");
-          }
+      swal.fire(this.swal_config).then(isConfirm => {
+        if (isConfirm) {
+          axios
+            .post(
+              "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/inactive-by-id",
+              {"id": user_id},
+              {headers: {
+                "Content-Type": "application/json"
+              }}
+            )
+            .then(function(respone) {
+              console.log(respone);
+              vm.Search();
+            });
+        }
       });
-     
     }
   }
 };
@@ -201,7 +211,7 @@ export default {
 
 .has-search .form-control {
   padding-left: 2.375rem;
-      margin-top: 26px;
+  margin-top: 26px;
 }
 
 .has-search .form-control-feedback {
@@ -212,7 +222,7 @@ export default {
   height: 2.375rem;
   line-height: 7.475rem;
   text-align: center;
-      margin-top: 4.8%;
+  margin-top: 4.8%;
   pointer-events: none;
   color: #aaa;
   padding-right: 20px;
