@@ -60,6 +60,7 @@
           </div>
         </div>
   </div>
+  <footer-component></footer-component>
   </div>
 </template>
 

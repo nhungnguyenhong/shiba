@@ -342,6 +342,7 @@ export default {
         });
     },
     changePage(pageNum) {
+      
       if (pageNum === undefined) {
         this.pageNumber = 0;
       }
