@@ -17,8 +17,8 @@
         </div>
       </div>
       <div class="container" v-else>
-        <div class="col-md-8">
-          <h1>{{ classroom.name }}</h1>
+        <div class="col-md-8 text-align-center" >
+          <h1 class="class-title">{{ toUpperCase( classroom.name )}}</h1>
           <div class="class-description">{{ classroom.description }}</div>
         </div>
         <div class="col-md-4">
@@ -134,6 +134,11 @@
               
               <br>
               <time datetime="2020-02-03">12:45 AM - 20 June 2018</time>
+              <div class="buttons margin-button">
+                
+                  <button class="button is-success button-let-go"><router-link :to="{path: '/lesson',query: { id: post.id }}">Let's go</router-link></button>
+  
+              </div>
             </div>
           </div>
         </div>
@@ -174,7 +179,6 @@ import VueAxios from "vue-axios";
 import axios from "axios";
 import Swal from "sweetalert2";
 import footerComponent from "./footer.vue";
-
 export default {
   name: "classroom",
   data() {
@@ -238,7 +242,9 @@ export default {
     toggleCoverEdit() {
       this.coverEdit = !this.coverEdit;
     },
-    
+    toUpperCase(input){
+      return input.toUpperCase();
+    },
     comment(post_id) {
       var data = {
         post_id: post_id,
@@ -250,54 +256,12 @@ export default {
       return 1==1;
     },
     removeAssignment(post_id) {
-      var self = this;
-      swal(this.swal_config).then(() => {
-        axios
-          .delete(`api/classroom/${self.classroom.id}/assignment/${post_id}`, {
-            headers: {
-              Authorization: "Bearer " + self.token
-            }
-          })
-          .then(response => {
-            var index = self.posts.findIndex(
-              x => x.assignment.id == post_id && x.type == "assignment"
-            );
-            self.posts.splice(index, 1);
-          });
-      });
+
     },
     removePost(post_id) {
-      var self = this;
-      swal(this.swal_config).then(() => {
-        axios
-          .delete(`api/post/${post_id}`, {
-            headers: {
-              Authorization: "Bearer " + self.token
-            }
-          })
-          .then(response => {
-            var index = self.posts.findIndex(
-              x => x.id == post_id && x.type == "post"
-            );
-            self.posts.splice(index, 1);
 
-          });
-      });
     },
     deleteClass() {
-      var self = this;
-      swal(this.swal_config).then(() => {
-        axios
-          .delete(`api/classroom/${self.classroom.id}`, {
-            headers: {
-              Authorization: "Bearer " + self.token
-            }
-          })
-          .then(response => {
-            console.log("remove class success");
-            self.$router.push("/");
-          });
-      });
     },
     coverUploaded(url) {
       this.classroom.cover_url = url;
@@ -327,6 +291,33 @@ export default {
 }
 .class-header {
     background-image: linear-gradient(rgba(0,0,0,.3),rgba(0,0,0,.3));
-    background-image: url('../assets/images/bg.jpeg');
+    /* background-image: url('../assets/images/bg.jpeg'); */
+}
+.text-align-center{
+  text-align: center;
+}
+.class-titile{
+  font-weight: bold;
+}
+.class-description {
+    font-size: 34px;
+    font-style: italic;
+}
+.footer{
+  position: relative!important;
+}
+.margin-button{
+  margin: 22px 94px 0 94px;
+}
+.button-let-go{
+  width: 120px;
+    height: 50px;
+}
+.button-let-go>a{
+  color: inherit;
+    font-size: 18px;
+}
+.button-let-go>a:hover{
+  text-decoration: none;
 }
 </style>

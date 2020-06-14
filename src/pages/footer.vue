@@ -1,5 +1,5 @@
 <template>
-    <footer v-if="!hide">
+    <footer class="footer" v-if="!hide">
         <div class="container giraffe">
             <div class="footer-mountain">
             </div>
@@ -54,7 +54,13 @@ footer .giraffe {
   background-repeat: no-repeat;
   height: 123px;
 }
-
+.footer{
+    clear: both;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 0;
+}
 footer .main-footer .container {
   padding: 10px 0px;
 }

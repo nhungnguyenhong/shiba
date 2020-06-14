@@ -32,6 +32,7 @@
     "vue": "^2.6.10",
     "vue-axios": "^2.1.5",
     "vue-clip": "^1.0.0",
+    "vue-js-modal": "^2.0.0-rc.3",
     "vue-moment": "^4.0.0",
     "vue-multi-select": "^4.1.1",
     "vue-multiselect": "^2.1.6",
