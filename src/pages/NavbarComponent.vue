@@ -24,7 +24,7 @@
             <li><router-link to="/createUser">Create User</router-link></li>
           </ul>
         </li>
-        <li class="dropdown" v-else>
+        <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Grade<span class="caret"></span></a>
           <ul class="dropdown-content">
             <li><router-link to="/grade">All Grade</router-link></li>

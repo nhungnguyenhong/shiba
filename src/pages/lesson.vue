@@ -60,6 +60,10 @@
           </div>
         </div>
   </div>
+<<<<<<< HEAD
+=======
+  <footer-component></footer-component>
+>>>>>>> 24a4a72c3d9b31297c37c32d07915c4e2b06d61b
   </div>
 </template>
 

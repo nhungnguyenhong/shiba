@@ -9,7 +9,7 @@
         >
           <upload-avatar v-on:uploaded="uploadComplete" :callback="'/api/avatar/upload'"></upload-avatar>
         </div>
-        <div class="form-group">
+        <div class="form-group col-md-12">
           <label for="name">Name</label>
           <input type="text" class="form-control" id="name" placeholder="Name" v-model="form.name">
         </div>
@@ -42,13 +42,13 @@
             </p>
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group col-md-12">
           <label for="role">Role</label>
           <select class="form-control" id="role" v-model="form.role.role_id">
             <option v-for="role in roles" :key="role.id" v-bind:value="role_id">{{ role.name }}</option>
           </select>
         </div>
-        <div class="form-group">
+        <div class="form-group col-md-12">
           <label for="password">Password</label>
           <input
             type="password"
@@ -62,7 +62,7 @@
             <span v-if="form_errors.password">{{ error }}</span>
           </p>
         </div>
-        <div class="form-group">
+        <div class="form-group col-md-12">
           <label for="password_confirmation">Confirm password</label>
           <input
             type="password"
