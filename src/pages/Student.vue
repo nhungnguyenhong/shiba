@@ -9,7 +9,7 @@
               <th>#</th>
               <th>Name</th>
               <th>Email</th>
-              <th >Action</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tr v-for="(user, key) in users" :key="user.id">
