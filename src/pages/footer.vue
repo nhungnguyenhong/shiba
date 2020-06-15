@@ -60,31 +60,27 @@ footer .giraffe {
     bottom: 0;
     width: 100%;
     padding: 0;
+    bottom: -70px;
 }
 footer .main-footer .container {
   padding: 10px 0px;
 }
-
 footer .main-footer {
   background: #dddddd;
 }
-
 footer .footer-contain {
   padding: 18px 5px;
 }
-
 footer .footer-mountain {
   background-image: url('../assets/images/footer-mountain.svg');
   height: 100%;
   background-repeat: no-repeat;
   background-position: right bottom;
 }
-
 footer .footer-link li {
   font-size: 16px;
   list-style: none;
 }
-
 footer .footer-link li a {
   color: #000000;
 }

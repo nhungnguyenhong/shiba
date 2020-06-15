@@ -13,27 +13,27 @@
             </div>
           </div>
         </div>
-        <div class="container" v-else>
-          <div class="col-md-8 text-align-center">
-            <h1 class="class-title">{{ toUpperCase( classroom.name )}}</h1>
-            <div class="class-description">{{ classroom.description }}</div>
-          </div>
-          <div class="col-md-4">
-            <div class="class-teacher">
-              <strong>Teachers</strong>
-              <ul>
-                <li>
-                  <div
-                    class="profile-picture profile-picture-small"
-                    :style="{backgroundImage : `url(${classroom.teacher.avatar})`} "
-                  ></div>
-                  <kbd>{{ classroom.teacher.userName }}</kbd>
-                  <div class="clearfix"></div>
-                </li>
-              </ul>
-            </div>
+      <div class="container" v-else>
+        <div class="col-md-8 text-align-center" >
+          <h1 class="class-title">{{ toUpperCase( classroom.name )}}</h1>
+          <div class="class-description">{{ classroom.description }}</div>
+        </div>
+        <div class="col-md-4">
+          <div class="class-teacher">
+            <strong>Teachers</strong>
+            <ul>
+              <li>
+                <div
+                  class="profile-picture profile-picture-small"
+                  :style="{backgroundImage : `url(${classroom.teacher.avatar})`} "
+                ></div>
+                <kbd>{{ classroom.teacher.userName }}</kbd>
+                <div class="clearfix"></div>
+              </li>
+            </ul>
           </div>
         </div>
+      </div>
         <div class="container cover-bottom" v-if="!coverEdit">
           <div class="class-action">
             <div class="btn-group" role="group" aria-label="...">
@@ -78,21 +78,10 @@
               </div>
             </div>
           </div>
+
           <!-- End class-action -->
         </div>
       </div>
-      <div class="box-search">
-          <div class="form-group has-search">
-            <span class="fa fa-search form-control-feedback"></span>
-            <input
-              type="text"
-              class="form-control"
-              v-on:keyup="getData()"
-              v-model="textSearch"
-              placeholder="Search"
-            >
-          </div>
-        </div>
       <div class="container" v-if="!posts.length">
         <div class="no-post">No post yet</div>
       </div>
@@ -145,11 +134,6 @@
 
                           <br>
                           <time datetime="2020-02-03">12:45 AM - 20 June 2018</time>
-                          <div class="buttons margin-button">
-                            <button class="button is-success button-let-go">
-                              <router-link :to="{path: '/lesson',query: { id: post.id }}">Let's go</router-link>
-                            </button>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -170,6 +154,19 @@
                 ></Pagination>
               </div>
             </div>
+            <div class="content">
+              {{post.description}}
+              <a>@{{classroom.teacher.userName}}</a>.
+              <a href="#">#{{classroom.subject.name}}</a>
+
+              <br>
+              <time datetime="2020-02-03">12:45 AM - 20 June 2018</time>
+              <div class="buttons margin-button">
+                
+                  <button class="button is-success button-let-go"><router-link :to="{path: '/lesson',query: { id: post.id }}">Let's go</router-link></button>
+  
+              </div>
+            </div>
           </div>
         </section>
       </div>
@@ -185,6 +182,7 @@
 
 <script>
 import Vue from "vue";
+
 import moment from "moment";
 import swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
@@ -199,7 +197,9 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import footerComponent from "./footer.vue";
 import Pagination from "vuejs-paginate";
+
 Vue.use(Pagination);
+
 export default {
   name: "classroom",
   data() {
@@ -224,12 +224,11 @@ export default {
       coverEdit: false,
       pageNumber: 0,
       perPage: 8,
-      total: 5,
-      textSearch:""
+      total: 0
     };
   },
   created() {
-    this.getData()
+    this.getData();
   },
   components: {
     attachments,
@@ -247,7 +246,7 @@ export default {
     toggleCoverEdit() {
       this.coverEdit = !this.coverEdit;
     },
-    toUpperCase(input) {
+    toUpperCase(input){
       return input.toUpperCase();
     },
     comment(post_id) {
@@ -256,53 +255,100 @@ export default {
         comment: this.comments[post_id]
       };
     },
-    getData() {
-      var classroom_id = this.$route.query.id;
-    const vm = this;
-    axios
-      .get(
-        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/course/get-by-id?id=" +
-          classroom_id
-      )
-      .then(function(respone) {
-        vm.classroom = respone.data.data;
-      })
-      .catch(function() {
-        Swal.fire("Oops...", "Somethings come wrongs!", "error");
-      });
-    axios
-      .get(
-       "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/lesson/search?page=" +
-            vm.pageNumber +
-            "&size=5&courseId=" +
-            classroom_id +
-            "&title=" +
-            vm.textSearch
-      )
-      .then(function(respone) {
-        vm.posts = respone.data.data.content;
-      })
-      .catch(function() {
-        Swal.fire("Oops...", "Somethings come wrongs!", "error");
-      });
-    },
     checkUserPost(user_id) {
       //return this.getUserId == user_id;
       return 1 == 1;
     },
-    removeAssignment(post_id) {},
-    removePost(post_id) {},
-    deleteClass() {},
+    removeAssignment(post_id) {
+      var self = this;
+      swal(this.swal_config).then(() => {
+        axios
+          .delete(`api/classroom/${self.classroom.id}/assignment/${post_id}`, {
+            headers: {
+              Authorization: "Bearer " + self.token
+            }
+          })
+          .then(response => {
+            var index = self.posts.findIndex(
+              x => x.assignment.id == post_id && x.type == "assignment"
+            );
+            self.posts.splice(index, 1);
+          });
+      });
+    },
+    removePost(post_id) {
+      var self = this;
+      swal(this.swal_config).then(() => {
+        axios
+          .delete(`api/post/${post_id}`, {
+            headers: {
+              Authorization: "Bearer " + self.token
+            }
+          })
+          .then(response => {
+            var index = self.posts.findIndex(
+              x => x.id == post_id && x.type == "post"
+            );
+            self.posts.splice(index, 1);
+          });
+      });
+    },
+    deleteClass() {
+      var self = this;
+      swal(this.swal_config).then(() => {
+        axios
+          .delete(`api/classroom/${self.classroom.id}`, {
+            headers: {
+              Authorization: "Bearer " + self.token
+            }
+          })
+          .then(response => {
+            console.log("remove class success");
+            self.$router.push("/");
+          });
+      });
+    },
     coverUploaded(url) {
       this.classroom.cover_url = url;
     },
-     changePage(pageNum) {
+    getData() {
+      var classroom_id = this.$route.query.id;
+      const vm = this;
+
+      axios
+        .get(
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/course/get-by-id?id=" +
+            classroom_id
+        )
+        .then(function(respone) {
+          vm.classroom = respone.data.data;
+          vm.total = respone.data.data.totalPages;
+        })
+        .catch(function() {
+          Swal.fire("Oops...", "Somethings come wrongs!", "error");
+        });
+      axios
+        .get(
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/lesson/search?page=" +
+            vm.pageNumber +
+            "&size=5&courseId=" +
+            classroom_id
+        )
+        .then(function(respone) {
+          vm.posts = respone.data.data.content;
+        })
+        .catch(function() {
+          Swal.fire("Oops...", "Somethings come wrongs!", "error");
+        });
+    },
+    changePage(pageNum) {
+      
       if (pageNum === undefined) {
         this.pageNumber = 0;
       }
       this.pageNumber = pageNum - 1;
       this.getData();
-    },
+    }
   },
   mounted() {
     let cdn1 = document.createElement("script");
@@ -329,55 +375,34 @@ export default {
   width: 70%;
 }
 .class-header {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
-  /* background-image: url('../assets/images/bg.jpeg'); */
+    background-image: linear-gradient(rgba(0,0,0,.3),rgba(0,0,0,.3));
+    /* background-image: url('../assets/images/bg.jpeg'); */
 }
-.text-align-center {
+.text-align-center{
   text-align: center;
 }
-.class-titile {
+.class-titile{
   font-weight: bold;
 }
 .class-description {
-  font-size: 34px;
-  font-style: italic;
+    font-size: 34px;
+    font-style: italic;
 }
-.footer {
-  position: relative !important;
+.footer{
+  position: relative!important;
 }
-.margin-button {
+.margin-button{
   margin: 22px 94px 0 94px;
 }
-.button-let-go {
+.button-let-go{
   width: 120px;
-  height: 50px;
+    height: 50px;
 }
-.button-let-go > a {
+.button-let-go>a{
   color: inherit;
-  font-size: 18px;
+    font-size: 18px;
 }
-.button-let-go > a:hover {
+.button-let-go>a:hover{
   text-decoration: none;
-}
-.has-search .form-control {
-  padding-left: 2.375rem;
-      margin-top: 26px;
-}
-.has-search .form-control-feedback {
-  position: absolute;
-  z-index: 2;
-  display: block;
-  width: 64rem;
-  height: 2.375rem;
-  line-height: 7.475rem;
-  text-align: center;
-      margin-top: 4.8%;
-  pointer-events: none;
-  color: #aaa;
-  padding-right: 20px;
-}
-.box-search {
-  width: 50%;
-  margin: 0px auto;
 }
 </style>

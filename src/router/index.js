@@ -9,6 +9,7 @@ import Register from '../pages/Register';
 import classroom from '../pages/Classroom';
 import Profile from '../pages/Profile';
 import Grade from '../pages/Grade';
+import Intro from '../pages/Intro';
 import Subject from '../pages/Subject';
 import Student from '../pages/Student';
 import createUser from '../pages/createUser';
@@ -24,6 +25,12 @@ Vue.use (Router);
 export default new Router ({
   mode: 'history',
   routes: [
+    {
+      path: '/',
+      name: 'intro',
+      component: Intro,
+      exact: true,
+    },
     {
       path: '/login',
       name: 'login',

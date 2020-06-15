@@ -43,7 +43,7 @@
         <div
           class="classroom-list col-md-4"
           v-for="classroom in classrooms"
-          v-bind:key="classroom.id"
+          v-bind:key="classroom.course.id"
         >
           <div class="card">
             <div class="classroom-background">
@@ -51,7 +51,7 @@
             </div>
             <div class="classroom-list-head">
               <h3>
-                <router-link :to="{path: '/classroom',query: { id: classroom.id }}">{{ classroom.name }}</router-link>
+                <router-link :to="{path: '/classroom',query: { id: classroom.course.id }}">{{ classroom.course.name }}</router-link>
               </h3>
             </div>
           </div>
@@ -62,9 +62,9 @@
       <div class="bounce1"></div>
       <div class="bounce2"></div>
       <div class="bounce3"></div>
-
+   </div>
       <footerComponent></footerComponent>
-    </div>
+ 
   </div>
 </template>
 
@@ -96,23 +96,24 @@ export default {
         }
           axios
       .get(
-        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/search?page=0&size=10&&courseId=4&studentId="+ respone.data.data.id
+        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/search?page=0&size=10&studentId="+ respone.data.data.id
       )
       .then(function(respone) {
         vm.classrooms = respone.data.data.content;
+        console.log(vm.classrooms);
       })
       .catch(function() {
-        Swal.fire("Oops...", "Somethings come wrongs!", "error");
+        Swal.fire("Oops...", "Somethings come wrongs 1!", "error");
       });
       })
       .catch(function() {
-        Swal.fire("Oops...", "Somethings come wrongs!", "error");
+        Swal.fire("Oops...", "Somethings come wrongs 2!", "error");
       });
   
   },
   data() {
     return {
-      classrooms: "",
+      classrooms: [],
       status: false,
       getName: "",
       show_join: false,
