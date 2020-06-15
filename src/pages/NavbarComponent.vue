@@ -122,6 +122,6 @@
   display: block;
 }
 .navbar-right {
-  margin-right: -230%;
+  margin-right: -122%;
 }
 </style>
