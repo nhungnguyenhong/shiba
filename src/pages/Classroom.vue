@@ -7,33 +7,10 @@
           <div class="cover-upload">
             <upload-cover :classroom-id="classroom.id" v-on:uploaded="coverUploaded"></upload-cover>
           </div>
-<<<<<<< HEAD
-        </div>
-      </div>
-      <div class="container" v-else>
-        <div class="col-md-8 text-align-center" >
-          <h1 class="class-title">{{ toUpperCase( classroom.name )}}</h1>
-          <div class="class-description">{{ classroom.description }}</div>
-        </div>
-        <div class="col-md-4">
-          <div class="class-teacher">
-            <strong>Teachers</strong>
-            <ul>
-              <li >
-                <div
-                  class="profile-picture profile-picture-small"
-                  :style="{backgroundImage : `url(${classroom.teacher.avatar})`} "
-                ></div>
-                <kbd>{{ classroom.teacher.userName }}</kbd>
-                <div class="clearfix"></div>
-              </li>
-            </ul>
-=======
           <div class="cover-edit-bottom">
             <div class="container">
               <button type="button" class="btn btn-default" @click="toggleCoverEdit">Done</button>
             </div>
->>>>>>> 24a4a72c3d9b31297c37c32d07915c4e2b06d61b
           </div>
         </div>
         <div class="container" v-else>
@@ -100,22 +77,6 @@
                 </ul>
               </div>
             </div>
-<<<<<<< HEAD
-            <div class="content">
-             {{post.description}}
-              <a>@{{classroom.teacher.userName}}</a>.
-              <a href="#">#{{classroom.subject.name}}</a>
-              
-              <br>
-              <time datetime="2020-02-03">12:45 AM - 20 June 2018</time>
-              <div class="buttons margin-button">
-                
-                  <button class="button is-success button-let-go"><router-link :to="{path: '/lesson',query: { id: post.id }}">Let's go</router-link></button>
-  
-              </div>
-            </div>
-=======
->>>>>>> 24a4a72c3d9b31297c37c32d07915c4e2b06d61b
           </div>
           <!-- End class-action -->
         </div>
@@ -287,11 +248,7 @@ export default {
     toggleCoverEdit() {
       this.coverEdit = !this.coverEdit;
     },
-<<<<<<< HEAD
-    toUpperCase(input){
-=======
     toUpperCase(input) {
->>>>>>> 24a4a72c3d9b31297c37c32d07915c4e2b06d61b
       return input.toUpperCase();
     },
     comment(post_id) {
@@ -373,37 +330,6 @@ export default {
   width: 70%;
 }
 .class-header {
-<<<<<<< HEAD
-    background-image: linear-gradient(rgba(0,0,0,.3),rgba(0,0,0,.3));
-    /* background-image: url('../assets/images/bg.jpeg'); */
-}
-.text-align-center{
-  text-align: center;
-}
-.class-titile{
-  font-weight: bold;
-}
-.class-description {
-    font-size: 34px;
-    font-style: italic;
-}
-.footer{
-  position: relative!important;
-}
-.margin-button{
-  margin: 22px 94px 0 94px;
-}
-.button-let-go{
-  width: 120px;
-    height: 50px;
-}
-.button-let-go>a{
-  color: inherit;
-    font-size: 18px;
-}
-.button-let-go>a:hover{
-  text-decoration: none;
-=======
   background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
   /* background-image: url('../assets/images/bg.jpeg'); */
 }
@@ -455,6 +381,5 @@ export default {
 .box-search {
   width: 50%;
   margin: 0px auto;
->>>>>>> 24a4a72c3d9b31297c37c32d07915c4e2b06d61b
 }
 </style>

@@ -60,10 +60,7 @@ footer .giraffe {
     bottom: 0;
     width: 100%;
     padding: 0;
-<<<<<<< HEAD
-=======
     bottom: -70px;
->>>>>>> 24a4a72c3d9b31297c37c32d07915c4e2b06d61b
 }
 footer .main-footer .container {
   padding: 10px 0px;
