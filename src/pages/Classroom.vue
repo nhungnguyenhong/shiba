@@ -59,6 +59,35 @@
                     </form>
                 </div>
             </modal>
+
+            <modal name="edit-lesson" :height="450">
+                <div>
+                    <!-- <form v-on:submit.prevent="submitFile" class="padding-30">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Lesson title(<span class="red">*</span>)</label>
+                            <input type="text" class="form-control" id="title" v-model="form.title" >   
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Lesson description(<span class="red">*</span>)</label>
+                            <input type="text" class="form-control" id="description" v-model="form.description">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Lesson document(<span class="red">*</span>)</label>
+                            <input type="text" class="form-control" id="document" v-model="form.document">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Lesson video (<span class="red">*</span>)</label>
+                            <input type="text" class="form-control" id="video" v-model="form.video">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlFile1">Lesson image</label>
+                            <input type="file" class="form-control-file" ref="file" id="file" v-on:change="handleFileUpload()">
+                        </div>
+                        <button class="btn btn-primary">Submit</button>
+                    </form> -->
+                </div>
+            </modal>
+
             <div class="container" v-if="!posts.length">
                 <div class="no-post">No post yet</div>
             </div>
@@ -66,7 +95,7 @@
                 <section class="container">
                     <div class="columns features">
                         <div class="card is-shady wid-100">
-                            <div class="class-posts card" v-for="post in posts" :key="post.id">
+                            <div class="class-posts card" v-for="(post, index) in posts" :key="post.id">
                                 <div class="card-image container-post">
                                     <figure class="image is-4by3">
                                         <img v-bind:src="post.image" alt="Placeholder image">
@@ -84,6 +113,9 @@
                                             <button type="button" class="btn btn-danger button-delete"
                                             @click="removeLesson(post.id)"
                                             >Remove</button>
+                                            <button type="button" class="btn btn-info"
+                                            @click="openEditLesson(index,post.id)"
+                                            >Info</button>
                                         </div>
                                     </div>
                                 </div> 
@@ -148,6 +180,8 @@ export default {
             isTeacher: true,
             file: '',
             comment_errors: [],
+            current_lesson_id: 0,
+            current_lesson_index: 0,
             focus_id: "",
             swal_config: {
                 title: "Are you sure?",
@@ -247,6 +281,7 @@ export default {
                 )
                 .then(function(respone) {
                     vm.posts = respone.data.data.content;
+                    console.log(vm.posts[0]);
                     vm.totalPages = respone.data.data.totalPages;
                 })
                 .catch(function() {
@@ -293,6 +328,12 @@ export default {
         hideModalAdd() {
             this.$modal.hide('add-lesson');
         },
+        openEditLesson(index,post_id){
+            this.current_lesson_id = post_id;
+            this.current_lesson_index = index;
+            this.$modal.show("edit-lesson");
+           
+        }
     },
     mounted() {
         let cdn1 = document.createElement("script");
