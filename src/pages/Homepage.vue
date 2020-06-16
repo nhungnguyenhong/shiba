@@ -100,7 +100,6 @@ export default {
       )
       .then(function(respone) {
         vm.classrooms = respone.data.data.content;
-        console.log(vm.classrooms);
       })
       .catch(function() {
         Swal.fire("Oops...", "Somethings come wrongs 1!", "error");
