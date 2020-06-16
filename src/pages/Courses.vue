@@ -1,6 +1,7 @@
 <template>
   <div>
     <navbar></navbar>
+<<<<<<< HEAD
     <div class="classroom" style="min-height: 500px">
       <div class="box-search">
         <div class="form-group has-search">
@@ -132,6 +133,52 @@
         </section>
       </div>
     </div>
+=======
+    <div class="box-search">
+          <div class="form-group has-search">
+            <span class="fa fa-search form-control-feedback"></span>
+            <input
+              type="text"
+              class="form-control"
+              v-on:keyup="Search()"
+              v-model="textSearch"
+              placeholder="Search course by name"
+            />
+          </div>
+        </div>
+    <div class="classroom" style="min-height: 500px" v-if="courses">
+      <div class="container">
+        <div class="classroom-list col-md-4" v-for="course in courses" v-bind:key="course.id">
+          <div class="card">
+            <div class="classroom-background">
+              <img :src="course.image" class="img-responsive">
+            </div>
+            <div class="classroom-list-head">
+              <h3>
+                <router-link :to="{path: '/classroom',query: { id: course.id }}">{{ course.name }}</router-link>
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="spinner" v-else>
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+    </div>
+    <div class="text-center">
+          <Pagination
+            :page-count="totalPages"
+            :page-range="3"
+            :margin-pages="2"
+            :prev-text="'Prev'"
+            :next-text="'Next'"
+            :click-handler="changePage"
+            :container-class="'pagination'"
+          ></Pagination>
+        </div>
+>>>>>>> 1520b8824a3463244fac574500754d9a0fd620e1
     <footerComponent></footerComponent>
   </div>
 </template>
@@ -168,6 +215,7 @@ export default {
   data() {
     return {
       courses: [],
+<<<<<<< HEAD
       form: {
         name: "",
         description: "",
@@ -188,6 +236,11 @@ export default {
       totalPages: 0,
       textSearch: "",
       pageNumber: 0
+=======
+      totalPages: 0,
+      textSearch: "",
+      pageNumber: 0,
+>>>>>>> 1520b8824a3463244fac574500754d9a0fd620e1
     };
   },
   components: {
@@ -196,6 +249,7 @@ export default {
     Pagination
   },
   methods: {
+<<<<<<< HEAD
     Search() {
       const vm = this;
       axios
@@ -204,18 +258,37 @@ export default {
             vm.pageNumber +
             "&size=6&name=" +
             vm.textSearch
+=======
+      Search() {
+      const vm = this;
+    //   console.log("vm.pageNumber: "+vm.pageNumber);
+      axios
+        .get(
+         "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/course/search?page="
+            +vm.pageNumber 
+            +"&size=6&name="
+            +vm.textSearch
+>>>>>>> 1520b8824a3463244fac574500754d9a0fd620e1
         )
         .then(function(response) {
           vm.courses = response.data.data.content;
           vm.totalPages = response.data.data.totalPages;
+<<<<<<< HEAD
         });
     },
     changePage(pageNum) {
+=======
+          // console.log("respone.data.data: "+respone.data.data.totalElements);
+        });
+    },
+      changePage(pageNum) {
+>>>>>>> 1520b8824a3463244fac574500754d9a0fd620e1
       if (pageNum === undefined) {
         this.pageNumber = 0;
       }
       this.pageNumber = pageNum - 1;
       this.Search();
+<<<<<<< HEAD
     },
     showModalAdd() {
       axios
@@ -291,11 +364,14 @@ export default {
               });
           }
       });
+=======
+>>>>>>> 1520b8824a3463244fac574500754d9a0fd620e1
     }
   }
 };
 </script>
 <style>
+<<<<<<< HEAD
 .wid-100 {
   width: 100%;
 }
@@ -395,5 +471,9 @@ export default {
   width: 100px;
   height: 50px;
   font-size: 18px;
+=======
+.class-header {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+>>>>>>> 1520b8824a3463244fac574500754d9a0fd620e1
 }
 </style>

@@ -136,16 +136,27 @@ export default {
     showModalAdd() {
       this.$modal.show("add-student");
     },
+<<<<<<< HEAD
     removeUser(user) {
       const vm = this;
       const userId = userId.id;
+=======
+    removeUser(registration) {
+      const vm = this;
+      const registrationId = registration.id;
+>>>>>>> 1520b8824a3463244fac574500754d9a0fd620e1
       swal.fire(this.swal_config).then(r => {
         if (typeof r.value != undefined)
           if (r.value === true) {
             axios
               .post(
+<<<<<<< HEAD
                 "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/delete-by-id",
                 { id: userId }
+=======
+                "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/delete-by-id",
+                { id: registrationId }
+>>>>>>> 1520b8824a3463244fac574500754d9a0fd620e1
               )
               .then(function(respone) {
                 vm.Search();
