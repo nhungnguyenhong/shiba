@@ -56,7 +56,7 @@ footer .giraffe {
 }
 .footer{
     clear: both;
-    position: absolute;
+    /* position: absolute; */
     bottom: 0;
     width: 100%;
     padding: 0;

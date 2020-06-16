@@ -160,7 +160,7 @@
               </div>
               <div class="text-center">
                 <Pagination
-                  :page-count="3"
+                  :page-count="totalPages"
                   :page-range="3"
                   :margin-pages="2"
                   :prev-text="'Prev'"
@@ -226,6 +226,7 @@ export default {
       pageNumber: 0,
       perPage: 8,
       total: 5,
+      totalPages: 0,
       textSearch:""
     };
   },
@@ -282,6 +283,7 @@ export default {
       )
       .then(function(respone) {
         vm.posts = respone.data.data.content;
+        vm.totalPages = respone.data.data.totalPages;
       })
       .catch(function() {
         Swal.fire("Oops...", "Somethings come wrongs!", "error");

@@ -12,7 +12,7 @@
               v-on:keyup="Search()"
               v-model="textSearch"
               placeholder="Search"
-            >
+            />
           </div>
         </div>
         <div class="text-right">
@@ -26,6 +26,8 @@
               <th>#</th>
               <th>Name</th>
               <th>Email</th>
+              <th>Course</th>
+              <th>Active</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -36,6 +38,8 @@
               <span v-if="you == user.user.userName">(You)</span>
             </td>
             <td>{{ user.user.email }}</td>
+            <td>{{ user.course.name }}</td>
+            <td>{{ user.active }}</td>
             <td>
               <router-link
                 class="btn btn-default"
@@ -47,7 +51,7 @@
               <button
                 class="btn btn-danger"
                 style="margin: 4px 15px;"
-                @click="removeStudentInClass(user.user.id)"
+                @click="removeStudentInClass(user)"
               >
                 <i class="fa fa-trash"></i>
               </button>
@@ -56,7 +60,7 @@
         </table>
         <div class="text-center">
           <Pagination
-            :page-count="total"
+            :page-count="totalPages"
             :page-range="3"
             :margin-pages="2"
             :prev-text="'Prev'"
@@ -76,7 +80,7 @@
             v-on:keyup="Search()"
             v-model="form.emailStudent"
             placeholder="Email student"
-          >
+          />
           <div class="text-center mt-20">
             <button type="button" class="btn btn-success" @click="addStudent()">
               <i class="fa fa-plus"></i> Add Student
@@ -116,6 +120,8 @@ export default {
       perPage: 3,
       courseID: 1,
       total: 2,
+      totalPages: 2,
+      getUser: {},
       swal_config: {
         text: "Are you sure? You won't be able to revert this!",
         type: "warning",
@@ -129,8 +135,19 @@ export default {
 
   created() {
     this.you = this.$session.get("user");
+    this.getName = this.$session.get("user");
     const vm = this;
-    this.Search();
+    axios
+      .get(
+        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/get-by-username?userName=" +
+          this.getName
+      )
+      .then(function(respone) {
+        vm.getUser = respone.data.data;
+        vm.Search();
+      });
+
+    // this.Search();
   },
   components: {
     navbar: navbar,
@@ -141,23 +158,24 @@ export default {
   methods: {
     Search() {
       const vm = this;
+
       axios
         .get(
-          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/search?page=" +
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/search-by-teacherId?page=" +
             vm.pageNumber +
-            "&size=5&studentId=" +
-            vm.textSearch +
-            "&email&courseId=" +
-            vm.courseID
+            "&size=5&teacherId=" +
+            vm.getUser.id +
+            "&studentName=" +
+            vm.textSearch
         )
         .then(function(respone) {
           vm.users = [];
-          vm.total = 2;
-          // vm.total = respone.data.data.content.length;
+          vm.totalPages = respone.data.data.totalPages;
+          // console.log("respone.data.data: "+respone.data.data.totalElements);
+          vm.total = respone.data.data.content.length;
           for (let i = 0; i < respone.data.data.content.length; i++) {
             vm.users.push(respone.data.data.content[i]);
           }
-          
         });
     },
     changePage(pageNum) {
@@ -173,6 +191,8 @@ export default {
     addStudent() {
       console.log(this.emailStudent);
       const vm = this;
+      vm.form.emailStudent = this.emailStudent;
+      console.log(vm.form);
       axios
         .post(
           "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/add-student-to-course",
@@ -185,23 +205,21 @@ export default {
           Swal.fire("Oops...", "Somethings come wrongs!", "error");
         });
     },
-    removeStudentInClass(user_id) {
+    removeStudentInClass(registration) {
       const vm = this;
-      swal.fire(this.swal_config).then(isConfirm => {
-        if (isConfirm) {
-          axios
-            .post(
-              "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/inactive-by-id",
-              {"id": user_id},
-              {headers: {
-                "Content-Type": "application/json"
-              }}
-            )
-            .then(function(respone) {
-              console.log(respone);
-              vm.Search();
-            });
-        }
+      const registrationId = registration.id;
+      swal.fire(this.swal_config).then(r => {
+        if (typeof r.value != undefined)
+          if (r.value === true) {
+            axios
+              .post(
+                "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/delete-by-id",
+                { id: registrationId }
+              )
+              .then(function(respone) {
+                vm.Search();
+              });
+          }
       });
     }
   }
