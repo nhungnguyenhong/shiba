@@ -38,11 +38,7 @@
               >
                 <i class="fa fa-pencil" aria-hidden="true"></i>
               </router-link>
-              <button
-                class="btn btn-danger"
-                style="margin: 4px 15px;"
-                @click="removeUser(user)"
-              >
+              <button class="btn btn-danger" style="margin: 4px 15px;" @click="removeUser(user)">
                 <i class="fa fa-trash"></i>
               </button>
             </td>
@@ -112,15 +108,17 @@ export default {
       const vm = this;
       axios
         .get(
-          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/search?page=" 
-          + vm.pageNumber 
-          + "&size=6&userName=" 
-          + vm.textSearch
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/search?page=" +
+            vm.pageNumber +
+            "&size=6&userName=" +
+            vm.textSearch
         )
         .then(function(response) {
           vm.users = [];
           vm.totalPages = response.data.data.totalPages;
-          console.log("response.data.data.content: "+response.data.data.content);
+          console.log(
+            "response.data.data.content: " + response.data.data.content
+          );
           for (let i = 0; i < response.data.data.content.length; i++) {
             vm.users.push(response.data.data.content[i]);
           }
@@ -136,16 +134,16 @@ export default {
     showModalAdd() {
       this.$modal.show("add-student");
     },
-    removeUser(registration) {
+    removeUser(user) {
       const vm = this;
-      const registrationId = registration.id;
+      const userId = userId.id;
       swal.fire(this.swal_config).then(r => {
         if (typeof r.value != undefined)
           if (r.value === true) {
             axios
               .post(
-                "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/delete-by-id",
-                { id: registrationId }
+                "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/delete-by-id",
+                { id: userId }
               )
               .then(function(respone) {
                 vm.Search();
