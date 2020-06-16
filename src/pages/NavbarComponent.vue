@@ -24,6 +24,14 @@
             <li><router-link to="/createUser">Create User</router-link></li>
           </ul>
         </li>
+        <li class="dropdown" v-if="userRole === 'admin'">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin Management<span class="caret"></span></a>
+          <ul class="dropdown-content">
+            <li><router-link to="/users">User Management</router-link></li>
+            <li><router-link to="/courses">Course Management</router-link></li>
+            <li><router-link to="/subjects">Subject Management</router-link></li>
+          </ul>
+        </li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Grade<span class="caret"></span></a>
           <ul class="dropdown-content">
@@ -73,6 +81,7 @@
         } else {
           vm.isTeacher = false;
         }
+        vm.userRole = respone.data.data.role.roleName;
       })
    },
     data(){
@@ -82,6 +91,7 @@
         isTeacher: '',
         isLoggedIn: true,
         username: '',
+        userRole: '',
         checkLogin: false
       }
     },

@@ -245,19 +245,7 @@ export default {
       const formData = new FormData();
       formData.append("userName", this.profile.userName); // lẩy ra userName của user hiện tại trên phiên hiện tại
       formData.append("newEmail", this.profile.email);
-<<<<<<< HEAD
-      // if(typeof this.profile.newAvatar === undefined){
-      //   console.log("newAvatar: "+this.profile.newAvatar);
-      // }else{
-      //   formData.append("newAvatar", this.profile.newAvatar);
-
-      // }
-      for (var value of formData.values()) {
-        console.log(value);
-      }
-=======
       formData.append("newAvatar", this.profile.newAvatar);
->>>>>>> 1f24c4a764bd083ab67339ef860819f63a3a3201
       axios
         .post(
           "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/update",
