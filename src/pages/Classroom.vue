@@ -42,7 +42,7 @@
       <button type="button" class="btn btn-success" @click="showModalAdd()">Add lesson</button>
        <modal name="add-lesson">
          <div>
-         <form>
+         <form v-on:submit.prevent="submitFile">
             <div class="form-group">
             <label for="exampleInputEmail1">Lesson title(<span>*</span>)</label>
             <input type="text" class="form-control" id="title" v-model="form.title">
@@ -57,7 +57,7 @@
             <input type="file" class="form-control-file" id="image" v-on:change="handleFileUpload()">
          </div>
           
-          <button v-on:click="submitFile()" class="btn btn-primary">Submit</button>
+          <button class="btn btn-primary">Submit</button>
           </form>
           </div>
       </modal>
@@ -167,7 +167,45 @@ export default {
     };
   },
   created() {
-     var classroom_id = this.$route.query.id;
+     this.getData();
+  },
+  components: {
+    attachments,
+    navbar,
+    PostCard,
+    AssignmentCard,
+    uploadCover,
+    footerComponent,
+    Pagination
+  },
+  methods: {
+    toggleCoverEdit() {
+      this.coverEdit = !this.coverEdit;
+    },
+    toUpperCase(input) {
+      return input.toUpperCase();
+    },
+    comment(post_id) {
+      var data = {
+        post_id: post_id,
+        comment: this.comments[post_id]
+      };
+    },
+    handleFileUpload(){
+      this.file = this.$refs.file.files[0];
+    },
+    submitFile(){
+      let formData = new FormData();
+      var classroomId = this.$route.query.id;
+      formData.append('courseId', classroomId);
+      formData.append('title', this.form.title);
+      formData.append('title', this.form.decription);
+      for (var value of formData.values()) {
+        console.log(value);
+      }
+    },
+    getData() {
+      var classroom_id = this.$route.query.id;
     const vm = this;
     axios
       .get(
@@ -195,76 +233,7 @@ export default {
       .catch(function() {
         Swal.fire("Oops...", "Somethings come wrongs!", "error");
       });
-  },
-  components: {
-    attachments,
-    navbar,
-    PostCard,
-    AssignmentCard,
-    uploadCover,
-    footerComponent,
-    Pagination
-  },
-  // computed: {
-  //   ...mapGetters(["getUserId", "isTeacher"])
-  // },
-  methods: {
-    toggleCoverEdit() {
-      this.coverEdit = !this.coverEdit;
     },
-    toUpperCase(input) {
-      return input.toUpperCase();
-    },
-    comment(post_id) {
-      var data = {
-        post_id: post_id,
-        comment: this.comments[post_id]
-      };
-    },
-    handleFileUpload(){
-      this.file = this.$refs.file.files[0];
-    },
-    submitFile(){
-      // let formData = new FormData();
-      // var classroomId = this.$route.query.id;
-      // formData.append('courseId', classroomId);
-      // formData.append('title', this.form.title);
-      // formData.append('title', this.form.decription);
-      // for (var value of formData.values()) {
-      //   console.log(value);
-      // }
-      console.log("123");
-    },
-    // getData() {
-    //   var classroom_id = this.$route.query.id;
-    // const vm = this;
-    // axios
-    //   .get(
-    //     "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/course/get-by-id?id=" +
-    //       classroom_id
-    //   )
-    //   .then(function(respone) {
-    //     vm.classroom = respone.data.data;
-    //   })
-    //   .catch(function() {
-    //     Swal.fire("Oops...", "Somethings come wrongs!", "error");
-    //   });
-    // axios
-    //   .get(
-    //    "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/lesson/search?page=" +
-    //         vm.pageNumber +
-    //         "&size=5&courseId=" +
-    //         classroom_id +
-    //         "&title=" +
-    //         vm.textSearch
-    //   )
-    //   .then(function(respone) {
-    //     vm.posts = respone.data.data.content;
-    //   })
-    //   .catch(function() {
-    //     Swal.fire("Oops...", "Somethings come wrongs!", "error");
-    //   });
-    // },
     checkUserPost(user_id) {
       //return this.getUserId == user_id;
       return 1 == 1;
