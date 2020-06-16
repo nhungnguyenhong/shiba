@@ -13,6 +13,9 @@ import Intro from '../pages/Intro';
 import Subject from '../pages/Subject';
 import Course from '../pages/course';
 import Student from '../pages/Student';
+import Courses from '../pages/Courses';
+import Users from '../pages/Users';
+import Subjects from '../pages/Subjects';
 import createUser from '../pages/createUser';
 import editUser from '../pages/editUser';
 import About from '../pages/About';
@@ -114,6 +117,24 @@ export default new Router ({
       path: '/lesson',
       name: lesson,
       component: lesson,
+      exact: true,
+    },
+    {
+      path: '/courses',
+      name: Courses,
+      component: Courses,
+      exact: true,
+    },
+    {
+      path: '/users',
+      name: Users,
+      component: Users,
+      exact: true,
+    },
+    {
+      path: '/subjects',
+      name: Subjects,
+      component: Subjects,
       exact: true,
     }
   ],
