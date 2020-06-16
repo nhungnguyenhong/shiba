@@ -242,7 +242,12 @@ export default {
       const formData = new FormData();
       formData.append("userName", this.profile.userName); // lẩy ra userName của user hiện tại trên phiên hiện tại
       formData.append("newEmail", this.profile.email);
-      formData.append("newAvatar", this.profile.newAvatar);
+      // if(typeof this.profile.newAvatar === undefined){
+      //   console.log("newAvatar: "+this.profile.newAvatar);
+      // }else{
+      //   formData.append("newAvatar", this.profile.newAvatar);
+
+      // }
       for (var value of formData.values()) {
         console.log(value);
       }
