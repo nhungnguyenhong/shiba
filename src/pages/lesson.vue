@@ -18,11 +18,7 @@
               </p>
               <br />
               <p>
-                Showcase was built from the ground up with Bulma to be fast and
-                responsive out of the box with all source files well documented
-                for easy to customization. The Showcase template gives you a
-                personal space to share what you are all about as a creative
-                designer, developer, photographer, and more!
+                {{lesson.document}}
               </p>
               <br />
               <div class="is-divider"></div>

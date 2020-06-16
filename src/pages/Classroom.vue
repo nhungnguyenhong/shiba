@@ -6,191 +6,108 @@
         <div class="classroom" style="min-height: 500px" v-if="classroom">
     
             <div class="class-header">
-    
-    
-    
-                <div class="container">
-    
-                    <div class="col-md-8 text-align-center">
-    
+                <div class="container"> 
+                    <div class="col-md-8 text-align-center">   
                         <h1 class="class-title">{{ toUpperCase( classroom.name )}}</h1>
-    
                         <div class="class-description">{{ classroom.description }}</div>
-    
                     </div>
-    
                     <div class="col-md-4">
-    
                         <div class="class-teacher">
-    
                             <strong>Teachers</strong>
-    
                             <ul>
-    
                                 <li>
-    
                                     <div class="profile-picture profile-picture-small" :style="{backgroundImage : `url(${classroom.teacher.avatar})`} "></div>
-    
                                     <kbd>{{ classroom.teacher.userName }}</kbd>
-    
                                     <div class="clearfix"></div>
-    
                                 </li>
-    
                             </ul>
-    
                         </div>
-    
                     </div>
-    
                 </div>
-    
-    
-    
             </div>
-    
             <div class="box-search">
-    
                 <div class="form-group has-search">
-    
                     <span class="fa fa-search form-control-feedback"></span>
-    
                     <input type="text" class="form-control" v-on:keyup="getData()" v-model="textSearch" placeholder="Search">
-    
                 </div>
-    
+                <button type="button" class="btn btn-success add-lesson" @click="showModalAdd()">Add lesson</button>
             </div>
-    
-            <button type="button" class="btn btn-success" @click="showModalAdd()">Add lesson</button>
-    
-            <modal name="add-lesson">
-    
+            <modal name="add-lesson" :height="450">
                 <div>
-    
-                    <form v-on:submit.prevent="submitFile">
-    
+                    <form v-on:submit.prevent="submitFile" class="padding-30">
                         <div class="form-group">
-    
-                            <label for="exampleInputEmail1">Lesson title(<span>*</span>)</label>
-    
-                            <input type="text" class="form-control" id="title" v-model="form.title">
-    
-    
-    
+                            <label for="exampleInputEmail1">Lesson title(<span class="red">*</span>)</label>
+                            <input type="text" class="form-control" id="title" v-model="form.title">   
                         </div>
-    
                         <div class="form-group">
-    
-                            <label for="exampleInputPassword1">Lesson description</label>
-    
-                            <input type="text" class="form-control" id="description" v-model="form.decription">
-    
+                            <label for="exampleInputPassword1">Lesson description(<span class="red">*</span>)</label>
+                            <input type="text" class="form-control" id="description" v-model="form.description">
                         </div>
-    
                         <div class="form-group">
-    
+                            <label for="exampleInputPassword1">Lesson document(<span class="red">*</span>)</label>
+                            <input type="text" class="form-control" id="document" v-model="form.document">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Lesson video (<span class="red">*</span>)</label>
+                            <input type="text" class="form-control" id="video" v-model="form.video">
+                        </div>
+                        <div class="form-group">
                             <label for="exampleFormControlFile1">Lesson image</label>
-    
                             <input type="file" class="form-control-file" ref="file" id="file" v-on:change="handleFileUpload()">
-    
                         </div>
-    
-    
-    
                         <button class="btn btn-primary">Submit</button>
-    
                     </form>
-    
                 </div>
-    
             </modal>
-    
             <div class="container" v-if="!posts.length">
-    
                 <div class="no-post">No post yet</div>
-    
             </div>
-    
             <div class="container" v-else>
-    
                 <section class="container">
-    
                     <div class="columns features">
-    
                         <div class="card is-shady wid-100">
-    
                             <div class="class-posts card" v-for="post in posts" :key="post.id">
-    
                                 <div class="card-image container-post">
-    
                                     <figure class="image is-4by3">
-    
                                         <img v-bind:src="post.image" alt="Placeholder image">
-    
                                     </figure>
-    
                                 </div>
-    
                                 <div class="card-content container-post-content">
-    
                                     <div class="content">
-    
                                         <h4>{{post.title}}</h4>
-    
                                         <p>{{post.description}}</p>
-    
                                         <div class="buttons margin-button">
-    
                                             <button class="button is-success button-let-go">
-    
-                                  <router-link :to="{path: '/lesson',query: { id: post.id }}">Let's go</router-link>
-    
-                                </button>
-    
+                                              <router-link :to="{path: '/lesson',query: { id: post.id }}">Let's go</router-link>
+                                            
+                                            </button>
+                                            <button type="button" class="btn btn-danger button-delete"
+                                            @click="removeLesson(post.id)"
+                                            >Remove</button>
                                         </div>
-    
                                     </div>
-    
-                                </div>
-    
-    
-    
+                                </div> 
                             </div>
-    
                             <div class="text-center">
-    
-                                <Pagination :page-count="3" 
+                                <Pagination :page-count="totalPages" 
                                 :page-range="3" 
                                 :margin-pages="2" 
                                 :prev-text="'Prev'" 
                                 :next-text="'Next'" 
                                 :click-handler="changePage" 
                                 :container-class="'pagination'"></Pagination>
-    
                             </div>
-    
                         </div>
-    
                     </div>
-    
                 </section>
-    
             </div>
-    
         </div>
-    
         <div class="spinner" v-else>
-    
             <div class="bounce1"></div>
-    
             <div class="bounce2"></div>
-    
             <div class="bounce3"></div>
-    
         </div>
-    
         <footerComponent></footerComponent>
-    
     </div>
 </template>
 
@@ -219,7 +136,7 @@ export default {
         return {
             form: {
                 title: "",
-                decription: "",
+                description: "",
                 document: "",
                 video: "",
             },
@@ -244,6 +161,7 @@ export default {
             coverEdit: false,
             pageNumber: 0,
             perPage: 8,
+            totalPages: 0,
             total: 5,
             textSearch: ""
         };
@@ -278,10 +196,13 @@ export default {
         },
         submitFile() {
             let formData = new FormData();
+            let vm = this;
             var classroomId = this.$route.query.id;
             formData.append('courseId', classroomId);
             formData.append('title', this.form.title);
-            formData.append('decription', this.form.decription);
+            formData.append('description', this.form.description);
+            formData.append('video', this.form.video);
+            formData.append('document', this.form.document);
             formData.append('image', this.file);
             for (var value of formData.values()) {
                 console.log(value);
@@ -294,6 +215,7 @@ export default {
                     }
                 ).then(function() {
                     console.log('SUCCESS!!');
+                    vm.hideModalAdd();
                 })
                 .catch(function() {
                     console.log('FAILURE!!');
@@ -325,6 +247,7 @@ export default {
                 )
                 .then(function(respone) {
                     vm.posts = respone.data.data.content;
+                    vm.totalPages = respone.data.data.totalPages;
                 })
                 .catch(function() {
                     Swal.fire("Oops...", "Somethings come wrongs!", "error");
@@ -333,6 +256,23 @@ export default {
         checkUserPost(user_id) {
             //return this.getUserId == user_id;
             return 1 == 1;
+        },
+        removeLesson(post_id){
+          const vm = this;
+          
+          swal.fire(this.swal_config).then(r => {
+          if (typeof r.value != undefined)
+            if (r.value === true) {
+            axios
+              .post(
+                "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/lesson/delete-by-id",
+                { id: post_id }
+              )
+              .then(function(respone) {
+                vm.getData();
+              });
+            }
+          });
         },
         removeAssignment(post_id) {},
         removePost(post_id) {},
@@ -349,6 +289,9 @@ export default {
         },
         showModalAdd() {
             this.$modal.show("add-lesson");
+        },
+        hideModalAdd() {
+            this.$modal.hide('add-lesson');
         },
     },
     mounted() {
@@ -402,6 +345,7 @@ export default {
 
 .margin-button {
     margin: 22px 94px 0 94px;
+    position: relative;
 }
 
 .button-let-go {
@@ -440,5 +384,25 @@ export default {
 .box-search {
     width: 50%;
     margin: 0px auto;
+    position: relative;
+}
+.add-lesson{
+    position: absolute;
+    top: 0;
+    right: -160px;
+}
+.padding-30{
+  padding: 30px;
+}
+.red{
+  color: red;
+}
+.button-delete{
+    position: absolute;
+    top: 0;
+    left: 137px;
+    width: 100px;
+    height: 50px;
+    font-size: 18px;
 }
 </style>
