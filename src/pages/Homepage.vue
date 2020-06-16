@@ -47,7 +47,7 @@
         >
           <div class="card">
             <div class="classroom-background">
-              <img src="../assets/images/classroom.svg" class="img-responsive">
+              <img :src="classroom.course.image" class="img-responsive">
             </div>
             <div class="classroom-list-head">
               <h3>

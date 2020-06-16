@@ -1,4 +1,4 @@
-  <template>
+<template>
   <div>
     <navbar></navbar>
   <div class="section-light about-me" id="about-me">
@@ -101,7 +101,6 @@ export default {
   },
   methods: {
     
-
   }
   
 };
@@ -113,7 +112,6 @@ export default {
 }
 .right-image{
    height: 470px;
-
 }
 .right-image> iframe{
   height: 100%;

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <section class="hero is-medium">
+    <section class="hero is-medium height-100vh">
       <div class="hero-body">
-        <div class="container">
-          <h1 class="title is-1">Shiba Learning</h1>
+        <div class="container main-header">
+          <h1 class="title is-1">SHIBA LEARNING</h1>
           <h2 class="subtitle">
             E-learning website for primary school student
             <br>Wishing many happiness and successful of your
@@ -16,17 +16,17 @@
         </div>
       </div>
     </section>
-    <section id="parallax-1" class="hero is-large">
+    <section id="parallax-1" class="hero is-large height-105vh">
       <div class="hero-body">
-        <div class="container">
+        <div class="container ">
           <div class="columns">
-            <div class="column is-6 is-offset-6">
-              <h1 class="title is-1">Happiness</h1>
+            <div class="column is-6 is-offset-6 main-header">
+              <h1 class="title is-1">Convenient</h1>
               <hr class="content-divider">
               <h2
                 class="subtitle"
-              >Happiness is a state, not a trait; in other words, it isn’t a long-lasting, permanent feature or personality trait, but a more fleeting, changeable state</h2>
-              <a href="#" class="button is-white is-inverted">
+              >Study any topic, anytime. Explore thousands of courses starting at $0 each</h2>
+              <a href="/login" class="button is-white is-inverted">
                 Next&ensp;
                 <i class="fad fa-chevron-right"></i>
               </a>
@@ -35,17 +35,18 @@
         </div>
       </div>
     </section>
-    <section id="parallax-2" class="hero is-large">
+    <section id="parallax-2" class="hero is-large height-107vh">
       <div class="hero-body">
         <div class="container">
           <div class="columns">
-            <div class="column is-6">
-              <h1 class="title is-1">Successful</h1>
+            <div class="column is-6 main-header">
+              <h1 class="title is-1">Find the Best Courses</h1>
               <hr class="content-divider">
               <h2
                 class="subtitle"
-              >Be Yourself and freedom</h2>
-              <a href="#" class="button is-white is-inverted">
+              >All the top courses – from our school and the best our teachers.
+</h2>
+              <a href="/login" class="button is-white is-inverted">
                 Next&ensp;
                 <i class="fad fa-chevron-right"></i>
               </a>
@@ -54,17 +55,14 @@
         </div>
       </div>
     </section>
-    <section id="parallax-3" class="hero is-large">
-      <div class="hero-body">
+    <section id="parallax-3" class="hero is-large height-100vh">
+      <div class="hero-body padding-0">
         <div class="container">
           <div class="columns">
-            <div class="column is-6 is-offset-6">
-              <h1 class="title is-1">Play</h1>
+            <div class="column is-6 is-offset-6 main-header">
+              <h1 class="title is-1">Sign up right now</h1>
               <hr class="content-divider">
-              <h2
-                class="subtitle"
-              >Playtime has never been more scarce, or important, in today’s frantic scramble to academically prepare our children.</h2>
-              <a href="#" class="button is-white is-inverted">
+              <a href="/register" class="button is-white is-inverted">
                 Next&ensp;
                 <i class="fad fa-chevron-right"></i>
               </a>
@@ -73,44 +71,14 @@
         </div>
       </div>
     </section>
-    <section class="hero va">
-      <div class="container">
-        <div class="columns">
-          <div class="column is-6">
-            <h1 class="title is-1">Adipisicing Elit</h1>
-            <hr class="content-divider">
-            <h2
-              class="subtitle"
-            >Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quas ut nulla maiores, beatae voluptas sunt excepturi deserunt vero. Beatae est ratione quia neque molestias, cum asperiores quibusdam rem illum, debitis dolorem natus, eos fuga eveniet numquam ab officia reiciendis inventore. Tempore repudiandae exercitationem quisquam? Fugiat!</h2>
-          </div>
-          <div class="column is-6">
-            <div class="field">
-              <label class="label">Name</label>
-              <div class="control">
-                <input class="input is-medium" type="text" placeholder="Jon Snow">
-              </div>
-            </div>
-            <br>
-            <div class="field">
-              <label class="label">Email</label>
-              <div class="control">
-                <input class="input is-medium" type="email" placeholder="jon@winterfell.com">
-              </div>
-            </div>
-            <br>
-            <div class="field is-grouped">
-              <div class="control">
-                <button class="button is-white is-rounded is-outlined">Submit</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    
   </div>
 </template>
-
-
+<script>
+export default {
+  
+}
+</script>
 <style>
 .va {
   display: flex;
@@ -192,7 +160,7 @@ hr.content-divider {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  border-top: 10px solid hotpink;
+  /* border-top: 10px solid hotpink; */
 }
 
 #parallax-3 hr {
@@ -211,5 +179,43 @@ input {
 
 input::placeholder {
   color: white !important;
+}
+.height-100vh{
+  height: 100vh;
+}
+.height-105vh{
+  height: 150vh;
+}
+.height-107vh{
+  height: 150vh;
+}
+.main-header{
+  text-align: center;
+}
+.main-header>h1{
+  text-align: center;
+    font-size: 70px!important;
+    margin-top: 90px;
+}
+.main-header>h2{
+  text-align: center;
+    font-size: 30px;
+    font-style: italic;
+}
+.main-header>a{
+      height: 70px;
+    width: 140px;
+    background-color: #2ac741!important;
+    margin-top: 27px;
+    /* text-align: center; */
+    font-size: 17px;
+    border-radius: 23px;
+}
+.main-header>a:hover{
+  text-decoration: none;
+  background-color: #2ac741!important;
+}
+.padding-0{
+  padding-bottom: 0!important;
 }
 </style>
