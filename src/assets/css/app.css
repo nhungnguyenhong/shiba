@@ -7385,6 +7385,10 @@ button.close {
   filter: alpha(opacity=0);
   opacity: 0;
 }
+.box-search {
+  width: 50%;
+  margin: 0px auto;
+}
 
 .modal-backdrop.in {
   filter: alpha(opacity=50);

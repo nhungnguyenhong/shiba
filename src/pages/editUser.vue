@@ -131,18 +131,6 @@ export default {
       .then(function(respone) {
         vm.form = respone.data.data;
       });
-
-    axios
-      .get(`api/user/${this.user_id}`, {
-        headers: {
-          Authorization: "Bearer " + this.token
-        }
-      })
-      .then(response => {
-        this.form = response.data;
-        this.form.role_id = response.data.role.id;
-        this.avatar = response.data.avatar;
-      });
   },
   methods: {
     checkPassword() {

@@ -51,7 +51,9 @@
             </div>
             <div class="classroom-list-head">
               <h3>
-                <router-link :to="{path: '/classroom',query: { id: classroom.course.id }}">{{ classroom.course.name }}</router-link>
+                <router-link
+                  :to="{path: '/classroom',query: { id: classroom.course.id }}"
+                >{{ classroom.course.name }}</router-link>
               </h3>
             </div>
           </div>
@@ -62,9 +64,8 @@
       <div class="bounce1"></div>
       <div class="bounce2"></div>
       <div class="bounce3"></div>
-   </div>
-      <footerComponent></footerComponent>
- 
+    </div>
+    <footerComponent></footerComponent>
   </div>
 </template>
 
@@ -81,11 +82,12 @@ import footerComponent from "./footer.vue";
 export default {
   name: "homepage",
   created() {
-    this.getName = this.$session.get('user');
+    this.getName = this.$session.get("user");
     const vm = this;
     axios
       .get(
-        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/get-by-username?userName=" +this.getName
+        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/get-by-username?userName=" +
+          this.getName
       )
       .then(function(respone) {
         vm.getUser = respone.data.data;
@@ -94,21 +96,21 @@ export default {
         } else {
           vm.isTeacher = false;
         }
-          axios
-      .get(
-        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/search?page=0&size=10&studentId="+ respone.data.data.id
-      )
-      .then(function(respone) {
-        vm.classrooms = respone.data.data.content;
-      })
-      .catch(function() {
-        Swal.fire("Oops...", "Somethings come wrongs 1!", "error");
-      });
+        axios
+          .get(
+            "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/search?page=0&size=10&studentId=" +
+              respone.data.data.id
+          )
+          .then(function(respone) {
+            vm.classrooms = respone.data.data.content;
+          })
+          .catch(function() {
+            Swal.fire("Oops...", "Somethings come wrongs 1!", "error");
+          });
       })
       .catch(function() {
         Swal.fire("Oops...", "Somethings come wrongs 2!", "error");
       });
-  
   },
   data() {
     return {
@@ -143,8 +145,8 @@ export default {
           });
         }
       }).then(function(code) {
-        if(code.dismiss !== 'cancel'){
-        self.requestJoin(code);
+        if (code.dismiss !== "cancel") {
+          self.requestJoin(code);
         }
       });
     },
@@ -154,20 +156,20 @@ export default {
       };
       const vm = this;
       axios
-      .get(
-        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/subject/get-by-id?id="+ code.value
-      )
-      .then(function(respone) {
-        if( respone.data.status === 'SUCCESS'){
-         vm.$router.push("classroom?id=" + code.value);
-        } else {
+        .get(
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/subject/get-by-id?id=" +
+            code.value
+        )
+        .then(function(respone) {
+          if (respone.data.status === "SUCCESS") {
+            vm.$router.push("classroom?id=" + code.value);
+          } else {
+            Swal.fire("Oops...", "Somethings come wrongs!", "error");
+          }
+        })
+        .catch(function() {
           Swal.fire("Oops...", "Somethings come wrongs!", "error");
-        }
-      })
-      .catch(function() {
-        Swal.fire("Oops...", "Somethings come wrongs!", "error");
-      });
-     
+        });
     }
   }
 };
