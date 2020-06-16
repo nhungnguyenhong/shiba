@@ -1,14 +1,9 @@
 <template>
-<div>
-   
-  <navbar></navbar>
-   <div class="classroom" style="min-height: 500px" v-if="courses">
-       <div class="container">
-        <div
-          class="classroom-list col-md-4"
-          v-for="course in courses"
-          v-bind:key="course.id"
-        >
+  <div>
+    <navbar></navbar>
+    <div class="classroom" style="min-height: 500px" v-if="courses">
+      <div class="container">
+        <div class="classroom-list col-md-4" v-for="course in courses" v-bind:key="course.id">
           <div class="card">
             <div class="classroom-background">
               <img :src="course.image" class="img-responsive">
@@ -21,14 +16,14 @@
           </div>
         </div>
       </div>
-   </div>
-  <div class="spinner" v-else>
-    <div class="bounce1"></div>
-    <div class="bounce2"></div>
-    <div class="bounce3"></div>
+    </div>
+    <div class="spinner" v-else>
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+    </div>
+    <footerComponent></footerComponent>
   </div>
-  <footerComponent></footerComponent>
-</div>
 </template>
 
 <script>
@@ -52,7 +47,7 @@ export default {
       )
       .then(function(respone) {
         vm.courses = respone.data.data.content;
-        console.log(vm.courses)
+        console.log(vm.courses);
       })
       .catch(function() {
         Swal.fire("Oops...", "Somethings come wrongs!", "error");
@@ -60,21 +55,19 @@ export default {
   },
   data() {
     return {
-     courses: {},
-     idSubject: '',
+      courses: {},
+      idSubject: ""
     };
   },
   components: {
     navbar: navbar,
     footerComponent
   },
-  methods: {
-
-  }
+  methods: {}
 };
 </script>
 <style>
 .class-header {
-    background-image: linear-gradient(rgba(0,0,0,.3),rgba(0,0,0,.3))
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
 }
 </style>
