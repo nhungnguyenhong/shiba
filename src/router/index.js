@@ -11,6 +11,7 @@ import Profile from '../pages/Profile';
 import Grade from '../pages/Grade';
 import Intro from '../pages/Intro';
 import Subject from '../pages/Subject';
+import Course from '../pages/course';
 import Student from '../pages/Student';
 import createUser from '../pages/createUser';
 import editUser from '../pages/editUser';
@@ -83,6 +84,12 @@ export default new Router ({
       path: '/subject',
       name: Subject,
       component: Subject,
+      exact: true,
+    },
+    {
+      path: '/course',
+      name: Course,
+      component: Course,
       exact: true,
     },
     {

@@ -47,7 +47,7 @@
         >
           <div class="card">
             <div class="classroom-background">
-              <img src="../assets/images/classroom.svg" class="img-responsive">
+              <img :src="classroom.course.image" class="img-responsive">
             </div>
             <div class="classroom-list-head">
               <h3>
@@ -100,7 +100,6 @@ export default {
       )
       .then(function(respone) {
         vm.classrooms = respone.data.data.content;
-        console.log(vm.classrooms);
       })
       .catch(function() {
         Swal.fire("Oops...", "Somethings come wrongs 1!", "error");

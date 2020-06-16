@@ -1,20 +1,21 @@
 <template>
 <div>
+   
   <navbar></navbar>
-   <div class="classroom" style="min-height: 500px" v-if="subjects">
+   <div class="classroom" style="min-height: 500px" v-if="courses">
        <div class="container">
         <div
           class="classroom-list col-md-4"
-          v-for="subject in subjects"
-          v-bind:key="subject.id"
+          v-for="course in courses"
+          v-bind:key="course.id"
         >
           <div class="card">
             <div class="classroom-background">
-              <img :src="subject.image" class="img-responsive">
+              <img :src="course.image" class="img-responsive">
             </div>
             <div class="classroom-list-head">
               <h3>
-                <router-link :to="{path: '/course',query: { id: subject.id }}">{{ subject.name }}</router-link>
+                <router-link :to="{path: '/classroom',query: { id: course.id }}">{{ course.name }}</router-link>
               </h3>
             </div>
           </div>
@@ -40,18 +41,18 @@ import VueAxios from "vue-axios";
 import axios from "axios";
 
 export default {
-  name: "subject",
+  name: "course",
   created() {
-    this.idGrade = this.$route.query.id;
+    this.idSubject = this.$route.query.id;
     const vm = this;
     axios
       .get(
-        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/subject/search?page=0&size=10&grade=" +
-          vm.idGrade
+        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/course/search?page=0&size=7&subjectId=" +
+          vm.idSubject
       )
       .then(function(respone) {
-        vm.subjects = respone.data.data.content;
-        console.log(vm.subjects)
+        vm.courses = respone.data.data.content;
+        console.log(vm.courses)
       })
       .catch(function() {
         Swal.fire("Oops...", "Somethings come wrongs!", "error");
@@ -59,8 +60,8 @@ export default {
   },
   data() {
     return {
-     subjects: {},
-     idGrade: '',
+     courses: {},
+     idSubject: '',
     };
   },
   components: {

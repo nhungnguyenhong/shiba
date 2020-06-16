@@ -1,4 +1,4 @@
-  <template>
+<template>
   <div>
     <navbar></navbar>
   <div class="section-light about-me" id="about-me">
@@ -32,7 +32,7 @@
                     <strong>Teacher</strong>
                   </p>
                   <p class="subheading">
-                    {{lesson.course.teacher.userName}}
+                    {{teacher.userName}}
                   </p>
                 </div>
                 <div class="column wid-033">
@@ -40,7 +40,7 @@
                     <strong>Email Me</strong>
                   </p>
                   <p class="subheading">
-                    {{lesson.course.teacher.email}}
+                    {{teacher.email}}
                   </p>
                 </div>
                 <div class="column wid-033">
@@ -48,7 +48,7 @@
                     <strong>Subject</strong>
                   </p>
                   <p class="subheading">
-                   {{lesson.course.subject.name}}
+                   {{subject.name}}
                   </p>
                 </div>
               </div>
@@ -76,6 +76,8 @@ export default {
   data() {
     return {
       lesson: "",
+      teacher: {},
+      subject: {}
     };
   },
   created() {
@@ -87,6 +89,8 @@ export default {
       )
       .then(function(respone) {
           vm.lesson = respone.data.data;
+          vm.teacher = vm.lesson.course.teacher;
+          vm.subject = vm.lesson.course.subject;
           console.log(vm.lesson);
       })
       .catch(function() {
@@ -101,7 +105,6 @@ export default {
   },
   methods: {
     
-
   }
   
 };
@@ -113,7 +116,6 @@ export default {
 }
 .right-image{
    height: 470px;
-
 }
 .right-image> iframe{
   height: 100%;
