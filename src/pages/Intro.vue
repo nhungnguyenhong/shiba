@@ -18,7 +18,7 @@
     </section>
     <section id="parallax-1" class="hero is-large height-105vh">
       <div class="hero-body">
-        <div class="container ">
+        <div class="container">
           <div class="columns">
             <div class="column is-6 is-offset-6 main-header">
               <h1 class="title is-1">Convenient</h1>
@@ -42,10 +42,7 @@
             <div class="column is-6 main-header">
               <h1 class="title is-1">Find the Best Courses</h1>
               <hr class="content-divider">
-              <h2
-                class="subtitle"
-              >All the top courses – from our school and the best our teachers.
-</h2>
+              <h2 class="subtitle">All the top courses – from our school and the best our teachers.</h2>
               <a href="/login" class="button is-white is-inverted">
                 Next&ensp;
                 <i class="fad fa-chevron-right"></i>
@@ -71,13 +68,10 @@
         </div>
       </div>
     </section>
-    
   </div>
 </template>
 <script>
-export default {
-  
-}
+export default {};
 </script>
 <style>
 .va {
@@ -180,42 +174,42 @@ input {
 input::placeholder {
   color: white !important;
 }
-.height-100vh{
+.height-100vh {
   height: 100vh;
 }
-.height-105vh{
+.height-105vh {
   height: 150vh;
 }
-.height-107vh{
+.height-107vh {
   height: 150vh;
 }
-.main-header{
+.main-header {
   text-align: center;
 }
-.main-header>h1{
+.main-header > h1 {
   text-align: center;
-    font-size: 70px!important;
-    margin-top: 90px;
+  font-size: 70px !important;
+  margin-top: 90px;
 }
-.main-header>h2{
+.main-header > h2 {
   text-align: center;
-    font-size: 30px;
-    font-style: italic;
+  font-size: 30px;
+  font-style: italic;
 }
-.main-header>a{
-      height: 70px;
-    width: 140px;
-    background-color: #2ac741!important;
-    margin-top: 27px;
-    /* text-align: center; */
-    font-size: 17px;
-    border-radius: 23px;
+.main-header > a {
+  height: 70px;
+  width: 140px;
+  background-color: #2ac741 !important;
+  margin-top: 27px;
+  /* text-align: center; */
+  font-size: 17px;
+  border-radius: 23px;
 }
-.main-header>a:hover{
+.main-header > a:hover {
   text-decoration: none;
-  background-color: #2ac741!important;
+  background-color: #2ac741 !important;
 }
-.padding-0{
-  padding-bottom: 0!important;
+.padding-0 {
+  padding-bottom: 0 !important;
 }
 </style>

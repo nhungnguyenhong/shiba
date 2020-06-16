@@ -182,23 +182,11 @@ export default {
     };
   },
   created() {
-    this.username = this.$session.get("user");
-    const vm = this;
-    axios
-      .get(
-        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/get-by-username?userName=" +
-          this.username
-      )
-      .then(function(respone) {
-        vm.profile = respone.data.data;
-      });
+    this.getData();
   },
   components: {
     navbar,
     footerComponent
-  },
-  computed: {
-    ...mapGetters(["getUser"])
   },
   methods: {
     handleFileUpload() {
@@ -217,19 +205,33 @@ export default {
       this.changePass = !this.changePass;
       this.editable = false;
     },
+    getData() {
+      this.username = this.$session.get("user");
+      const vm = this;
+      axios
+        .get(
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/get-by-username?userName=" +
+            this.username
+        )
+        .then(function(respone) {
+          vm.profile = respone.data.data;
+        });
+    },
     changePassword() {
       var data = {
         userName: this.profile.userName,
         password: this.security.password,
         newPassword: this.security.new_password
-      }
+      };
       axios
         .post(
-          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/change-password",data,{
-              headers: {
-                "Content-Type": "application/json"
-              }
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/change-password",
+          data,
+          {
+            headers: {
+              "Content-Type": "application/json"
             }
+          }
         )
         .then(response => {
           swal.fire("Success", response.data.description, "success");
@@ -239,9 +241,11 @@ export default {
         });
     },
     changeProfile() {
+      const vm = this;
       const formData = new FormData();
       formData.append("userName", this.profile.userName); // lẩy ra userName của user hiện tại trên phiên hiện tại
       formData.append("newEmail", this.profile.email);
+<<<<<<< HEAD
       // if(typeof this.profile.newAvatar === undefined){
       //   console.log("newAvatar: "+this.profile.newAvatar);
       // }else{
@@ -251,6 +255,9 @@ export default {
       for (var value of formData.values()) {
         console.log(value);
       }
+=======
+      formData.append("newAvatar", this.profile.newAvatar);
+>>>>>>> 1f24c4a764bd083ab67339ef860819f63a3a3201
       axios
         .post(
           "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/update",
@@ -261,11 +268,12 @@ export default {
             }
           }
         )
-        .then(function() {
-          swal.fire("Success", response.data.description, "success");
+        .then(function(respone) {
+          swal.fire("Success", "Update Success", "success");
+          vm.$router.push('/homepage');
         })
         .catch(function() {
-          console.log("FAILURE!!");
+          swal.fire("Oops...", "Update fail", "error");
         });
     }
   }

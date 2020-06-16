@@ -39,6 +39,28 @@
             >
           </div>
         </div>
+      <button type="button" class="btn btn-success" @click="showModalAdd()">Add lesson</button>
+       <modal name="add-lesson">
+         <div>
+         <form v-on:submit.prevent="submitFile">
+            <div class="form-group">
+            <label for="exampleInputEmail1">Lesson title(<span>*</span>)</label>
+            <input type="text" class="form-control" id="title" v-model="form.title">
+            
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Lesson description</label>
+            <input type="text" class="form-control" id="description" v-model="form.description">
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlFile1">Lesson image</label>
+            <input type="file" class="form-control-file" id="image" v-on:change="handleFileUpload()">
+         </div>
+          
+          <button class="btn btn-primary">Submit</button>
+          </form>
+          </div>
+      </modal>
       <div class="container" v-if="!posts.length">
         <div class="no-post">No post yet</div>
       </div>
@@ -106,17 +128,26 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import footerComponent from "./footer.vue";
 import Pagination from "vuejs-paginate";
+import VModal from "vue-js-modal";
 Vue.use(Pagination);
+Vue.use(VModal);
 export default {
   name: "classroom",
   data() {
     return {
+      form: {
+        title: "",
+        decription: "",
+        document: "",
+        video: "",
+      },
       classroom: "",
       posts: [],
       lessons: "",
       comments: {},
       token: "",
       isTeacher: true,
+      file: '',
       comment_errors: [],
       focus_id: "",
       swal_config: {
@@ -137,7 +168,7 @@ export default {
     };
   },
   created() {
-    this.getData()
+     this.getData();
   },
   components: {
     attachments,
@@ -148,9 +179,6 @@ export default {
     footerComponent,
     Pagination
   },
-  // computed: {
-  //   ...mapGetters(["getUserId", "isTeacher"])
-  // },
   methods: {
     toggleCoverEdit() {
       this.coverEdit = !this.coverEdit;
@@ -163,6 +191,19 @@ export default {
         post_id: post_id,
         comment: this.comments[post_id]
       };
+    },
+    handleFileUpload(){
+      this.file = this.$refs.file.files[0];
+    },
+    submitFile(){
+      let formData = new FormData();
+      var classroomId = this.$route.query.id;
+      formData.append('courseId', classroomId);
+      formData.append('title', this.form.title);
+      formData.append('title', this.form.decription);
+      for (var value of formData.values()) {
+        console.log(value);
+      }
     },
     getData() {
       var classroom_id = this.$route.query.id;
@@ -211,6 +252,9 @@ export default {
       }
       this.pageNumber = pageNum - 1;
       this.getData();
+    },
+    showModalAdd() {
+      this.$modal.show("add-lesson");
     },
   },
   mounted() {
