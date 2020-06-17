@@ -95,6 +95,46 @@
           </form>
         </div>
       </modal>
+
+      <modal name="edit-lesson" :height="450">
+        <div>
+          <form v-on:submit.prevent="submitEdit" class="padding-30">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Lesson title</label>
+              <input type="text" class="form-control" id="title" v-model="form_edit.title" />
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Lesson description</label>
+              <input
+                type="text"
+                class="form-control"
+                id="description"
+                v-model="form_edit.description"
+              />
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Lesson document</label>
+              <input type="text" class="form-control" id="document" v-model="form_edit.document" />
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Lesson video</label>
+              <input type="text" class="form-control" id="video" v-model="form_edit.video" />
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlFile1">Lesson image</label>
+              <input
+                type="file"
+                class="form-control-file"
+                ref="file"
+                id="file"
+                v-on:change="handleFileUpload()"
+              />
+            </div>
+            <button class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </modal>
+
       <div class="container" v-if="!posts.length">
         <div class="no-post">No post yet</div>
       </div>
@@ -102,7 +142,7 @@
         <section class="container">
           <div class="columns features">
             <div class="card is-shady wid-100">
-              <div class="class-posts card" v-for="post in posts" :key="post.id">
+              <div class="class-posts card" v-for="(post, index) in posts" :key="post.id">
                 <div class="card-image container-post">
                   <figure class="image is-4by3">
                     <img v-bind:src="post.image" alt="Placeholder image" />
@@ -117,10 +157,17 @@
                         <router-link :to="{path: '/lesson',query: { id: post.id }}">Let's go</router-link>
                       </button>
                       <button
+                        v-if="getRole() === 'admin' || getRole() === 'teacher'"
                         type="button"
                         class="btn btn-danger button-delete"
                         @click="removeLesson(post.id)"
                       >Remove</button>
+                      <button
+                        v-if="getRole() === 'admin' || getRole() === 'teacher'"
+                        type="button"
+                        class="btn btn-info button-edit"
+                        @click="openEditLesson(index,post.id)"
+                      >Edit</button>
                     </div>
                   </div>
                 </div>
@@ -179,6 +226,12 @@ export default {
         document: "",
         video: ""
       },
+      form_edit: {
+        title: "",
+        description: "",
+        document: "",
+        video: ""
+      },
       thisCourseId: this.$route.query.id,
       isJoined: true,
       classroom: "",
@@ -189,6 +242,8 @@ export default {
       isTeacher: true,
       file: "",
       comment_errors: [],
+      current_lesson_id: 0,
+      current_lesson_index: 0,
       focus_id: "",
       swal_config: {
         title: "Are you sure?",
@@ -254,7 +309,9 @@ export default {
       formData.append("description", this.form.description);
       formData.append("video", this.form.video);
       formData.append("document", this.form.document);
-      formData.append("image", this.file);
+      if (!!this.file) {
+        formData.append("image", this.file);
+      }
       for (var value of formData.values()) {
         console.log(value);
       }
@@ -271,6 +328,38 @@ export default {
         .then(function() {
           console.log("SUCCESS!!");
           vm.hideModalAdd();
+        })
+        .catch(function() {
+          console.log("FAILURE!!");
+        });
+    },
+    submitEdit() {
+      let formData = new FormData();
+      let vm = this;
+      formData.append("id", parseInt(this.current_lesson_id));
+      formData.append("newTitle", this.form_edit.title);
+      formData.append("newDescription", this.form_edit.description);
+      formData.append("newDocument", this.form_edit.video);
+      formData.append("newVideo", this.form_edit.document);
+      if (!!this.file) {
+        formData.append("newImage", this.file);
+      }
+      for (var value of formData.values()) {
+        console.log(value);
+      }
+      axios
+        .post(
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/lesson/update",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          }
+        )
+        .then(function() {
+          console.log("SUCCESS!!");
+          vm.hideModalEdit();
         })
         .catch(function() {
           console.log("FAILURE!!");
@@ -301,6 +390,7 @@ export default {
         )
         .then(function(respone) {
           vm.posts = respone.data.data.content;
+          console.log(vm.posts[0]);
           vm.totalPages = respone.data.data.totalPages;
         })
         .catch(function() {
@@ -331,30 +421,11 @@ export default {
         .then(function(response) {
           if (response.data.data.totalElements > 0) {
             vm.isJoined = true;
-            console.log(true);
           } else {
             vm.isJoined = false;
-            console.log(false);
           }
           console.log(vm.isJoined);
         });
-    },
-    removeLesson(post_id) {
-      const vm = this;
-
-      swal.fire(this.swal_config).then(r => {
-        if (typeof r.value != undefined)
-          if (r.value === true) {
-            axios
-              .post(
-                "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/lesson/delete-by-id",
-                { id: post_id }
-              )
-              .then(function(respone) {
-                vm.getData();
-              });
-          }
-      });
     },
     joinCourse() {
       const vm = this;
@@ -371,6 +442,23 @@ export default {
               .then(function(respone) {
                 vm.getData();
                 vm.checkJoin();
+              });
+          }
+      });
+    },
+    removeLesson(post_id) {
+      const vm = this;
+
+      swal.fire(this.swal_config).then(r => {
+        if (typeof r.value != undefined)
+          if (r.value === true) {
+            axios
+              .post(
+                "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/lesson/delete-by-id",
+                { id: post_id }
+              )
+              .then(function(respone) {
+                vm.getData();
               });
           }
       });
@@ -393,6 +481,15 @@ export default {
     },
     hideModalAdd() {
       this.$modal.hide("add-lesson");
+    },
+    hideModalEdit() {
+      this.$modal.hide("edit-lesson");
+    },
+    openEditLesson(index, post_id) {
+      this.current_lesson_id = post_id;
+      this.current_lesson_index = index;
+      this.$modal.show("edit-lesson");
+      this.form_edit = this.posts[index];
     }
   },
   mounted() {
@@ -502,6 +599,14 @@ export default {
   position: absolute;
   top: 0;
   left: 137px;
+  width: 100px;
+  height: 50px;
+  font-size: 18px;
+}
+.button-edit {
+  position: absolute;
+  top: 0;
+  left: 265px;
   width: 100px;
   height: 50px;
   font-size: 18px;
