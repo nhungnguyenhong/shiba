@@ -14,7 +14,64 @@
               placeholder="Search"
             />
           </div>
+          <button
+            type="button"
+            class="btn btn-success create-user"
+            @click="showModalAdd()"
+          >Create user</button>
         </div>
+        <modal name="create-user" :height="550">
+          <div>
+            <form v-on:submit.prevent="submitCreate" class="padding-30">
+              <div class="form-group">
+                <label for="exampleInputEmail1">
+                  User name(
+                  <span class="red">*</span>)
+                </label>
+                <input type="text" class="form-control" id="userName" v-model="form.userName" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">
+                  Email(
+                  <span class="red">*</span>)
+                </label>
+                <input type="text" class="form-control" id="email" v-model="form.email" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">
+                  Password(
+                  <span class="red">*</span>)
+                </label>
+                <input type="password" class="form-control" id="password" v-model="form.password" />
+              </div>
+
+              <div class="form-group">
+                <label for="exampleInputPassword1">
+                  Role (
+                  <span class="red">*</span>)
+                </label>
+                <select class="form-control" id="role" v-model="form.roleId">
+                  <option
+                    v-for="role in form.roles"
+                    :key="role.id"
+                    v-bind:value="role.id"
+                  >{{ role.roleName }}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlFile1">Avatar</label>
+                <input
+                  type="file"
+                  class="form-control-file"
+                  ref="file"
+                  id="fileImage"
+                  v-on:change="handleFileImageUpload()"
+                />
+              </div>
+              <button class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+        </modal>
 
         <table class="table member-list">
           <thead>
@@ -64,7 +121,7 @@
 
 <script>
 import Vue from "vue";
-
+import moment from "moment";
 import VueAxios from "vue-axios";
 import axios from "axios";
 import navbar from "./NavbarComponent.vue";
@@ -75,10 +132,18 @@ import swal from "sweetalert2";
 
 Vue.use(Pagination);
 Vue.use(VModal);
+
 export default {
   data() {
     return {
       users: [],
+      form: {
+        userName: "",
+        email: "",
+        password: "",
+        roleId: "",
+        roles: []
+      },
       textSearch: "",
       pageNumber: 0,
       perPage: 3,
@@ -104,6 +169,20 @@ export default {
   },
   computed: {},
   methods: {
+    showModalAdd() {
+      axios
+        .get(
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/role/get-all"
+        )
+        .then(response => {
+          this.form.roles = response.data;
+          console.log("this.form.roles: " + this.form.roles);
+          this.$modal.show("create-user");
+        });
+    },
+    hideModalAdd() {
+      this.$modal.hide("create-user");
+    },
     Search() {
       const vm = this;
       axios
@@ -116,13 +195,42 @@ export default {
         .then(function(response) {
           vm.users = [];
           vm.totalPages = response.data.data.totalPages;
-          console.log(
-            "response.data.data.content: " + response.data.data.content
-          );
           for (let i = 0; i < response.data.data.content.length; i++) {
             vm.users.push(response.data.data.content[i]);
           }
         });
+    },
+    submitCreate() {
+      let formData = new FormData();
+      let vm = this;
+      formData.append("userName", this.form.userName);
+      formData.append("email", this.form.email);
+      formData.append("password", this.form.password);
+      formData.append("roleId", this.form.roleId);
+      if (typeof this.fileImage !== "undefined") {
+        formData.append("avatar", this.fileImage);
+      }
+      axios
+        .post(
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/create",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          }
+        )
+        .then(function() {
+          console.log("SUCCESS!!");
+          vm.hideModalAdd();
+          vm.Search();
+        })
+        .catch(function() {
+          console.log("FAILURE!!");
+        });
+    },
+    handleFileImageUpload() {
+      this.fileImage = this.$refs.file.files[0];
     },
     changePage(pageNum) {
       if (pageNum === undefined) {
@@ -131,12 +239,9 @@ export default {
       this.pageNumber = pageNum - 1;
       this.Search();
     },
-    showModalAdd() {
-      this.$modal.show("add-student");
-    },
     removeUser(user) {
       const vm = this;
-      const userId = userId.id;
+      const userId = user.id;
       swal.fire(this.swal_config).then(r => {
         if (typeof r.value != undefined)
           if (r.value === true) {

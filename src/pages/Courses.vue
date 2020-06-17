@@ -146,8 +146,11 @@ import footerComponent from "./footer.vue";
 import VueAxios from "vue-axios";
 import axios from "axios";
 import Pagination from "vuejs-paginate";
+import VModal from "vue-js-modal";
 
 Vue.use(Pagination);
+Vue.use(VModal);
+
 export default {
   name: "Courses",
   created() {
@@ -159,7 +162,6 @@ export default {
       .then(function(response) {
         vm.courses = response.data.data.content;
         vm.totalPages = response.data.data.totalPages;
-        // console.log(vm.courses);
       })
       .catch(function() {
         Swal.fire("Oops...", "Somethings come wrongs!", "error");

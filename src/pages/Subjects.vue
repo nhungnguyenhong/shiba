@@ -1,50 +1,114 @@
 <template>
   <div>
     <navbar></navbar>
-    <div class="box-search">
-          <div class="form-group has-search">
-            <span class="fa fa-search form-control-feedback"></span>
-            <input
-              type="text"
-              class="form-control"
-              v-on:keyup="Search()"
-              v-model="textSearch"
-              placeholder="Search subject by name"
-            />
-          </div>
+    <div class="classroom" style="min-height: 500px">
+      <div class="box-search">
+        <div class="form-group has-search">
+          <span class="fa fa-search form-control-feedback"></span>
+          <input
+            type="text"
+            class="form-control"
+            v-on:keyup="Search()"
+            v-model="textSearch"
+            placeholder="Search by subject name"
+          />
         </div>
-    <div class="classroom" style="min-height: 500px" v-if="subjects">
-      <div class="container">
-        <div class="classroom-list col-md-4" v-for="subject in subjects" v-bind:key="subject.id">
-          <div class="card">
-            <div class="classroom-background">
-              <img :src="subject.image" class="img-responsive">
+        <button
+          type="button"
+          class="btn btn-success add-course"
+          @click="showModalAdd()"
+        >Create subject</button>
+      </div>
+      <modal name="create-subject" :height="400">
+        <div>
+          <form v-on:submit.prevent="submitCreate" class="padding-30">
+            <div class="form-group">
+              <label for="exampleInputEmail1">
+                Subject name(
+                <span class="red">*</span>)
+              </label>
+              <input type="text" class="form-control" id="name" v-model="form.name" />
             </div>
-            <div class="classroom-list-head">
-              <h3>
-                <router-link :to="{path: '/course',query: { id: subject.id }}">{{ subject.name }}</router-link>
-              </h3>
+            <div class="form-group">
+              <label for="exampleInputPassword1">
+                Subject description(
+                <span class="red">*</span>)
+              </label>
+              <input type="text" class="form-control" id="description" v-model="form.description" />
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">
+                Grade (
+                <span class="red">*</span>)
+              </label>
+              <select class="form-control" id="grade" v-model="form.gradeId">
+                <option
+                  v-for="grade in form.grades"
+                  :key="grade.id"
+                  v-bind:value="grade.id"
+                >{{ grade.name }}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlFile1">Subject image</label>
+              <input
+                type="file"
+                class="form-control-file"
+                ref="file"
+                id="fileImage"
+                v-on:change="handleFileImageUpload()"
+              />
+            </div>
+            <button class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </modal>
+      <div class="container" v-if="!subjects">
+        <div class="no-post">No subject found</div>
+      </div>
+      <div class="container" v-else>
+        <section class="container">
+          <div class="columns features">
+            <div class="card is-shady wid-100">
+              <div class="class-posts card" v-for="subject in subjects" :key="subject.id">
+                <div class="card-image container-post">
+                  <figure class="image is-4by3">
+                    <img v-bind:src="subject.image" alt="Placeholder image" />
+                  </figure>
+                </div>
+                <div class="card-content container-post-content">
+                  <div class="content">
+                    <h4>{{subject.name}}</h4>
+                    <p></p>
+                    <div class="buttons margin-button">
+                      <button class="button is-success button-let-go">
+                        <router-link :to="{path: '/course',query: { id: subject.id }}">View courses</router-link>
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-danger button-delete"
+                        @click="deleteSubject(subject.id)"
+                      >Delete</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="text-center">
+                <Pagination
+                  :page-count="totalPages"
+                  :page-range="3"
+                  :margin-pages="2"
+                  :prev-text="'Prev'"
+                  :next-text="'Next'"
+                  :click-handler="changePage"
+                  :container-class="'pagination'"
+                ></Pagination>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
       </div>
     </div>
-    <div class="spinner" v-else>
-      <div class="bounce1"></div>
-      <div class="bounce2"></div>
-      <div class="bounce3"></div>
-    </div>
-    <div class="text-center">
-          <Pagination
-            :page-count="totalPages"
-            :page-range="3"
-            :margin-pages="2"
-            :prev-text="'Prev'"
-            :next-text="'Next'"
-            :click-handler="changePage"
-            :container-class="'pagination'"
-          ></Pagination>
-        </div>
     <footerComponent></footerComponent>
   </div>
 </template>
@@ -82,8 +146,23 @@ export default {
     return {
       subjects: [],
       totalPages: 0,
+      form: {
+        name: "",
+        description: "",
+        grade: "",
+        grades: []
+      },
+      swal_config: {
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      },
       textSearch: "",
-      pageNumber: 0,
+      pageNumber: 0
     };
   },
   components: {
@@ -92,15 +171,15 @@ export default {
     Pagination
   },
   methods: {
-      Search() {
+    Search() {
       const vm = this;
-    //   console.log("vm.pageNumber: "+vm.pageNumber);
+      //   console.log("vm.pageNumber: "+vm.pageNumber);
       axios
         .get(
-         "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/subject/search?page="
-            +vm.pageNumber 
-            +"&size=6&name="
-            +vm.textSearch
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/subject/search?page=" +
+            vm.pageNumber +
+            "&size=6&name=" +
+            vm.textSearch
         )
         .then(function(response) {
           vm.subjects = response.data.data.content;
@@ -109,12 +188,73 @@ export default {
           // console.log("respone.data.data: "+respone.data.data.totalElements);
         });
     },
-      changePage(pageNum) {
+    submitCreate() {
+      let formData = new FormData();
+      let vm = this;
+      formData.append("name", this.form.name);
+      formData.append("description", this.form.description);
+      formData.append("grade", this.form.gradeId);
+      if (typeof this.fileImage !== "undefined") {
+        formData.append("image", this.fileImage);
+      }
+      axios
+        .post(
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/subject/create",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          }
+        )
+        .then(function() {
+          console.log("SUCCESS!!");
+          vm.hideModalAdd();
+          vm.Search();
+        })
+        .catch(function() {
+          console.log("FAILURE!!");
+        });
+    },
+    changePage(pageNum) {
       if (pageNum === undefined) {
         this.pageNumber = 0;
       }
       this.pageNumber = pageNum - 1;
       this.Search();
+    },
+    showModalAdd() {
+      axios
+        .get(
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/grade/search?page=0&size=100"
+        )
+        .then(response => {
+          this.form.grades = response.data.data.content;
+          console.log;
+          this.$modal.show("create-subject");
+        });
+    },
+    hideModalAdd() {
+      this.$modal.hide("create-subject");
+    },
+    handleFileImageUpload() {
+      this.fileImage = this.$refs.file.files[0];
+    },
+    deleteSubject(subjectId) {
+      const vm = this;
+      swal.fire(this.swal_config).then(r => {
+        if (typeof r.value != undefined)
+          if (r.value === true) {
+            axios
+              .post(
+                "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/subject/delete-by-id",
+                { id: subjectId }
+              )
+              .then(function(respone) {
+                vm.Search();
+              });
+          }
+      });
     }
   }
 };
