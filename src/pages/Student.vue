@@ -257,7 +257,4 @@ export default {
 .mt-20 {
   margin-top: 20px;
 }
-.vm--modal {
-  height: 200px !important;
-}
 </style>

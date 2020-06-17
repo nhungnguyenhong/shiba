@@ -9,6 +9,7 @@ import './../node_modules/vue-multiselect/dist/vue-multiselect.min.css';
 
 Vue.config.productionTip = false;
 
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -16,3 +17,4 @@ new Vue({
   components: { App },
   template: '<App/>',
 });
+
