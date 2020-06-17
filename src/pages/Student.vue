@@ -27,7 +27,7 @@
               <th>Name</th>
               <th>Email</th>
               <th>Course</th>
-              <th>Active</th>
+              <th>Point</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -39,7 +39,7 @@
             </td>
             <td>{{ user.user.email }}</td>
             <td>{{ user.course.name }}</td>
-            <td>{{ user.active }}</td>
+            <td>{{ user.point }}</td>
             <td>
               <router-link
                 class="btn btn-default"
@@ -74,18 +74,34 @@
     <modal name="add-student">
       <div class="box-add">
         <div class="form-group">
+          <label for="exampleInputPassword1">
+            Email (
+            <span class="red">*</span>)
+          </label>
           <input
             type="text"
             class="form-control"
-            v-on:keyup="Search()"
-            v-model="form.emailStudent"
+            v-model="form.studentEmail"
             placeholder="Email student"
           />
-          <div class="text-center mt-20">
-            <button type="button" class="btn btn-success" @click="addStudent()">
-              <i class="fa fa-plus"></i> Add Student
-            </button>
-          </div>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">
+            Course (
+            <span class="red">*</span>)
+          </label>
+          <select class="form-control" id="course" v-model="form.courseId">
+            <option
+              v-for="course in form.courses"
+              :key="course.id"
+              v-bind:value="course.id"
+            >{{course.name}}</option>
+          </select>
+        </div>
+        <div class="text-center mt-20">
+          <button type="button" class="btn btn-success" @click="addStudent()">
+            <i class="fa fa-plus"></i> Add Student
+          </button>
         </div>
       </div>
     </modal>
@@ -110,8 +126,9 @@ export default {
   data() {
     return {
       form: {
-        emailStudent: "",
-        courseID: 1
+        studentEmail: "",
+        courseId: "",
+        courses: []
       },
       users: [],
       you: "",
@@ -171,7 +188,6 @@ export default {
         .then(function(respone) {
           vm.users = [];
           vm.totalPages = respone.data.data.totalPages;
-          // console.log("respone.data.data: "+respone.data.data.totalElements);
           vm.total = respone.data.data.content.length;
           for (let i = 0; i < respone.data.data.content.length; i++) {
             vm.users.push(respone.data.data.content[i]);
@@ -186,12 +202,24 @@ export default {
       this.Search();
     },
     showModalAdd() {
-      this.$modal.show("add-student");
+      axios
+        .get(
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/course/get-all-by-teacher" +
+            "?teacherId=" +
+            this.$session.get("currentUser").id
+        )
+        .then(response => {
+          this.form.courses = response.data.data;
+          this.$modal.show("add-student");
+        });
+    },
+    hideModalAdd() {
+      this.$modal.hide("add-student");
     },
     addStudent() {
-      console.log(this.emailStudent);
       const vm = this;
-      vm.form.emailStudent = this.emailStudent;
+      vm.form.studentEmail = this.form.studentEmail;
+      vm.form.courseId = this.form.courseId;
       console.log(vm.form);
       axios
         .post(
@@ -199,10 +227,12 @@ export default {
           vm.form
         )
         .then(function() {
-          Swal.fire("Success", "Add to class success!", "success");
+          vm.hideModalAdd();
+          vm.Search();
+          // Swal.fire("Success", "Add to class success!", "success");
         })
         .catch(function() {
-          Swal.fire("Oops...", "Somethings come wrongs!", "error");
+          // Swal.fire("Oops...", "Somethings come wrongs!", "error");
         });
     },
     removeStudentInClass(registration) {

@@ -14,6 +14,7 @@
           />
         </div>
         <button
+          v-if="getRole() === 'teacher' || getRole() === 'admin'"
           type="button"
           class="btn btn-success add-course"
           @click="showModalAdd()"
@@ -108,6 +109,7 @@
                         <router-link :to="{path: '/classroom',query: { id: course.id }}">View</router-link>
                       </button>
                       <button
+                        v-if="getRole() === 'admin' || deleteRole(course) === true"
                         type="button"
                         class="btn btn-danger button-delete"
                         @click="deleteCourse(course.id)"
@@ -235,6 +237,14 @@ export default {
               this.$modal.show("add-course");
             });
         });
+    },
+    getRole() {
+      this.currentUser = this.$session.get("currentUser");
+      return this.currentUser.role.roleName;
+    },
+    deleteRole(course) {
+      const currentUser = this.$session.get("currentUser");
+      return currentUser.id === course.teacher.id ? true : false;
     },
     hideModalAdd() {
       this.$modal.hide("add-course");
