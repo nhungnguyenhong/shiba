@@ -59,15 +59,15 @@
                 >
                   <p>{{ exam.id }}.{{ exam.test }}:</p>
                   <form>
-                    <label class="radio-inline">
+                    <label class="radio-inline room1">
                       <input type="radio" name="optradio" value="1" v-model="key[exam.id]">
                       {{ exam.a_1 }}
                     </label>
-                    <label class="radio-inline">
+                    <label class="radio-inline room">
                       <input type="radio" name="optradio" value="2" v-model="key[exam.id]">
                       {{ exam.a_2 }}
                     </label>
-                    <label class="radio-inline">
+                    <label class="radio-inline room">
                       <input type="radio" name="optradio" value="3" v-model="key[exam.id]">
                       {{ exam.a_3 }}
                     </label>
@@ -171,6 +171,13 @@ export default {
 };
 </script>
 <style>
+.room1 {
+  margin-right: 10%;
+}
+.room {
+  margin-left: 15%;
+  margin-right: 15%;
+}
 .title {
   font-size: 5rem;
   margin-bottom: 44px;
