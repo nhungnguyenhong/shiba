@@ -12,7 +12,7 @@
               &emsp;&emsp;
               <strong>{{lesson.description}}</strong>
             </p>
-            <br>
+            <br />
             <p>
               Showcase was built from the ground up with Bulma to be fast and
               responsive out of the box with all source files well documented
@@ -20,7 +20,7 @@
               personal space to share what you are all about as a creative
               designer, developer, photographer, and more!
             </p>
-            <br>
+            <br />
             <div class="is-divider"></div>
             <div class="columns about-links">
               <div class="column wid-033">
@@ -92,7 +92,10 @@
                   style="margin-left:40%; margin-bottom: 10px"
                   class="btn btn-success"
                 >Get Result</button>
-                <span style="margin-left:20px;color: red;font-size: 30px;" v-if="count !== 0">{{ count }}/5</span>
+                <span
+                  style="margin-left:20px;color: red;font-size: 30px;"
+                  v-if="count !== 0"
+                >{{ count }}/5</span>
               </div>
             </modal>
           </div>
@@ -168,9 +171,9 @@ export default {
     },
     check() {
       for (let i = 0; i < 5; i++) {
-        if (this.test[i].key === this.key[i+1]) {
+        if (this.test[i].key === this.key[i + 1]) {
           this.count++;
-        } 
+        }
       }
       this.form.studentId = this.$session.get("id");
       this.form.courseId = this.lesson.course.id;

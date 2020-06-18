@@ -13,17 +13,22 @@ import Intro from '../pages/Intro';
 import Subject from '../pages/Subject';
 import Course from '../pages/course';
 import Student from '../pages/Student';
+import Registrations from '../pages/Registrations';
+import Courses from '../pages/Courses';
+import Users from '../pages/Users';
+import Subjects from '../pages/Subjects';
+import FeedBacks from '../pages/FeedBacks';
 import createUser from '../pages/createUser';
 import editUser from '../pages/editUser';
 import About from '../pages/About';
 import lesson from '../pages/lesson';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
-Vue.use (VueAxios, axios);
+Vue.use(VueAxios, axios);
 
-Vue.use (Router);
+Vue.use(Router);
 
-export default new Router ({
+export default new Router({
   mode: 'history',
   routes: [
     {
@@ -114,6 +119,36 @@ export default new Router ({
       path: '/lesson',
       name: lesson,
       component: lesson,
+      exact: true,
+    },
+    {
+      path: '/courses',
+      name: Courses,
+      component: Courses,
+      exact: true,
+    },
+    {
+      path: '/users',
+      name: Users,
+      component: Users,
+      exact: true,
+    },
+    {
+      path: '/subjects',
+      name: Subjects,
+      component: Subjects,
+      exact: true,
+    },
+    {
+      path: '/registrations',
+      name: Registrations,
+      component: Registrations,
+      exact: true,
+    },
+    {
+      path: '/feedbacks',
+      name: FeedBacks,
+      component: FeedBacks,
       exact: true,
     }
   ],

@@ -113,6 +113,7 @@ export default {
             vm.$session.start();
             vm.$session.set('checkLogin', true);
             vm.$session.set('user', vm.form.userName);
+            vm.$session.set('currentUser', respone.data.data);
             vm.$session.set('id', respone.data.data.id);
             Swal.fire("Success", "Wellcome to Shiba Learning!", "success");
             vm.$router.push({
