@@ -79,6 +79,7 @@
                       <p class="text-danger" v-if="key[exam.id] != exam.key">
                         <i class="fa fa-times-circle"></i>
                       </p>
+
                       <p class="text-success" v-else>
                         <i class="fa fa-check-circle"></i>
                       </p>
@@ -133,6 +134,11 @@ export default {
       teacher: {},
       subject: {},
       test: {},
+      form: {
+        studentId: "",
+        courseId: "",
+        point: ""
+      },
       count: 0,
       key: []
     };
@@ -152,7 +158,7 @@ export default {
         vm.subject = vm.lesson.course.subject;
       })
       .catch(function() {
-        Swal.fire("Oops...", "Somethings come wrongs!", "error");
+        swal.fire("Oops...", "Somethings come wrongs!", "error");
       });
   },
   components: {
@@ -169,6 +175,22 @@ export default {
           this.count++;
         }
       }
+      this.form.studentId = this.$session.get("id");
+      this.form.courseId = this.lesson.course.id;
+      this.form.point = this.count;
+      const vm = this;
+      axios
+        .post(
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/update-point",
+          vm.form
+        )
+        .then(function(respone) {
+          swal.fire("Success", "Test complete!", "success");
+        })
+        .catch(function() {
+          swal.fire("Oops...", "Somethings come wrongs!", "error");
+        });
+      this.$modal.hide("test-student");
     }
   }
 };
@@ -187,12 +209,13 @@ export default {
 }
 .right-image {
   height: 470px;
+  float: right;
 }
 .right-image > iframe {
   height: 100%;
 }
 .wid-033 {
-  width: 33.3333333333%;
+  width: 37%;
 }
 .box-test {
   width: 90%;
