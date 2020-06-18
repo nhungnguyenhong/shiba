@@ -11,7 +11,7 @@
               class="form-control"
               v-on:keyup="Search()"
               v-model="textSearch"
-              placeholder="Search"
+              placeholder="Search by student name"
             />
           </div>
         </div>
@@ -32,7 +32,7 @@
             </tr>
           </thead>
           <tr v-for="(user, key) in users" :key="key">
-            <th scope="row">{{ 5*(pageNumber) +key + 1}}</th>
+            <th scope="row">{{ 10*(pageNumber) +key + 1}}</th>
             <td>
               {{ user.user.userName }}
               <span v-if="you == user.user.userName">(You)</span>
@@ -137,7 +137,7 @@ export default {
       perPage: 3,
       courseID: 1,
       total: 2,
-      totalPages: 2,
+      totalPages: 0,
       getUser: {},
       swal_config: {
         text: "Are you sure? You won't be able to revert this!",
@@ -154,17 +154,17 @@ export default {
     this.you = this.$session.get("user");
     this.getName = this.$session.get("user");
     const vm = this;
-    axios
-      .get(
-        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/get-by-username?userName=" +
-          this.getName
-      )
-      .then(function(respone) {
-        vm.getUser = respone.data.data;
-        vm.Search();
-      });
+    // axios
+    //   .get(
+    //     "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/get-by-username?userName=" +
+    //       this.getName
+    //   )
+    //   .then(function(respone) {
+    //     vm.getUser = respone.data.data;
+    //     vm.Search();
+    //   });
 
-    // this.Search();
+    this.Search();
   },
   components: {
     navbar: navbar,
@@ -178,20 +178,20 @@ export default {
 
       axios
         .get(
-          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/search-by-teacherId?page=" +
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/search-by-studentName?page=" +
             vm.pageNumber +
-            "&size=5&teacherId=" +
-            vm.getUser.id +
+            "&size=10" +
             "&studentName=" +
             vm.textSearch
         )
         .then(function(respone) {
-          vm.users = [];
+          vm.users = respone.data.data.content;
           vm.totalPages = respone.data.data.totalPages;
-          vm.total = respone.data.data.content.length;
-          for (let i = 0; i < respone.data.data.content.length; i++) {
-            vm.users.push(respone.data.data.content[i]);
-          }
+          // console.log("respone.data.data: "+respone.data.data.totalElements);
+          //   vm.total = respone.data.data.content.length;
+          //   for (let i = 0; i < respone.data.data.content.length; i++) {
+          //     vm.users.push(respone.data.data.content[i]);
+          //   }
         });
     },
     changePage(pageNum) {
@@ -204,9 +204,7 @@ export default {
     showModalAdd() {
       axios
         .get(
-          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/course/get-all-by-teacher" +
-            "?teacherId=" +
-            this.$session.get("currentUser").id
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/course/get-all"
         )
         .then(response => {
           this.form.courses = response.data.data;
