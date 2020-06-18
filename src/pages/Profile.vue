@@ -215,6 +215,7 @@ export default {
         )
         .then(function(respone) {
           vm.profile = respone.data.data;
+          console.log(vm.profile);
         });
     },
     changePassword() {
