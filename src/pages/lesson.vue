@@ -12,7 +12,7 @@
               &emsp;&emsp;
               <strong>{{lesson.description}}</strong>
             </p>
-            <br>
+            <br />
             <p>
               Showcase was built from the ground up with Bulma to be fast and
               responsive out of the box with all source files well documented
@@ -20,7 +20,7 @@
               personal space to share what you are all about as a creative
               designer, developer, photographer, and more!
             </p>
-            <br>
+            <br />
             <div class="is-divider"></div>
             <div class="columns about-links">
               <div class="column wid-033">
@@ -59,6 +59,7 @@
                 >
                   <p>{{ exam.id }}.{{ exam.test }}:</p>
                   <form>
+<<<<<<< HEAD
                     <label class="radio-inline room1" >
                       <input type="radio" name="optradio" value="1" v-model="key[exam.id]" >
                       {{ exam.a_1 }}
@@ -73,6 +74,22 @@
                     </label>
                     <label class="radio-inline">
                       <input type="radio" name="optradio"  value="4" v-model="key[exam.id]" >
+=======
+                    <label class="radio-inline room1">
+                      <input type="radio" name="optradio" value="1" v-model="key[exam.id]" />
+                      {{ exam.a_1 }}
+                    </label>
+                    <label class="radio-inline room">
+                      <input type="radio" name="optradio" value="2" v-model="key[exam.id]" />
+                      {{ exam.a_2 }}
+                    </label>
+                    <label class="radio-inline room">
+                      <input type="radio" name="optradio" value="3" v-model="key[exam.id]" />
+                      {{ exam.a_3 }}
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="optradio" value="4" v-model="key[exam.id]" />
+>>>>>>> d3cbf37265ef3ffff9d98bfab566dcb193f7bc4e
                       {{ exam.a_4 }}
                     </label>
                     <div class="radio-inline" v-if="key[exam.id]">
@@ -92,7 +109,10 @@
                   style="margin-left:40%; margin-bottom: 10px"
                   class="btn btn-success"
                 >Get Result</button>
-                <span style="margin-left:20px;color: red;font-size: 30px;" v-if="count !== 0">{{ count }}/5</span>
+                <span
+                  style="margin-left:20px;color: red;font-size: 30px;"
+                  v-if="count !== 0"
+                >{{ count }}/5</span>
               </div>
             </modal>
           </div>
@@ -168,9 +188,9 @@ export default {
     },
     check() {
       for (let i = 0; i < 5; i++) {
-        if (this.test[i].key === this.key[i+1]) {
+        if (this.test[i].key === this.key[i + 1]) {
           this.count++;
-        } 
+        }
       }
       this.form.studentId = this.$session.get("id");
       this.form.courseId = this.lesson.course.id;

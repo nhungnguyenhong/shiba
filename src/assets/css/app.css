@@ -7385,6 +7385,10 @@ button.close {
   filter: alpha(opacity=0);
   opacity: 0;
 }
+.box-search {
+  width: 50%;
+  margin: 0px auto;
+}
 
 .modal-backdrop.in {
   filter: alpha(opacity=50);
@@ -8322,6 +8326,123 @@ button.close {
   display: none !important;
 }
 
+.wid-100 {
+  width: 100%;
+}
+
+.container-post {
+  width: 270px;
+}
+
+.container-post-content {
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 70%;
+}
+
+.class-header {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+  /* background-image: url('../assets/images/bg.jpeg'); */
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.class-titile {
+  font-weight: bold;
+}
+
+.class-description {
+  font-size: 34px;
+  font-style: italic;
+}
+
+.footer {
+  position: relative !important;
+}
+
+.margin-button {
+  margin: 22px 94px 0 94px;
+  position: relative;
+}
+
+.button-let-go {
+  width: 120px;
+  height: 50px;
+}
+.button-success-1 {
+  position: absolute;
+  top: 25px;
+  left: 556px;
+  width: 80px;
+  height: 38px;
+  font-size: 16px;
+}
+
+.button-delete-1 {
+  position: absolute;
+  top: 25px;
+  left: 650px;
+  width: 80px;
+  height: 38px;
+  font-size: 16px;
+}
+
+.button-let-go > a {
+  color: inherit;
+  font-size: 18px;
+}
+
+.button-let-go > a:hover {
+  text-decoration: none;
+}
+
+.has-search .form-control {
+  padding-left: 2.375rem;
+  margin-top: 26px;
+}
+
+.has-search .form-control-feedback {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 64rem;
+  height: 2.375rem;
+  line-height: 7.475rem;
+  text-align: center;
+  margin-top: 4.8%;
+  pointer-events: none;
+  color: #aaa;
+  padding-right: 20px;
+}
+
+.box-search {
+  width: 50%;
+  margin: 0px auto;
+  position: relative;
+}
+.add-lesson {
+  position: absolute;
+  top: 0;
+  right: -160px;
+}
+.padding-30 {
+  padding: 30px;
+}
+.red {
+  color: red;
+}
+.button-delete {
+  position: absolute;
+  top: 0;
+  left: 137px;
+  width: 100px;
+  height: 50px;
+  font-size: 18px;
+}
 @media print {
   .visible-print-inline-block {
     display: inline-block !important;
