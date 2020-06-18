@@ -39,31 +39,14 @@
           @click="showModalAdd()"
         >Add Comment</button>
       </div>
-      <modal name="add-comment" :height="350">
+      <modal name="add-comment" :height="540">
         <div>
           <form v-on:submit.prevent="submitAddComment" class="padding-30">
-            <div class="form-group">
-              <label for="exampleInputEmail1">Rate</label>
-              <input
-                type="text"
-                class="form-control"
-                id="name"
-                v-model="formAdd.rate"
-                placeholder="0<= rate <=10"
-              />
-            </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">Comment</label>
-              <input
-                type="textarea"
-                class="form-control"
-                id="comment"
-                placeholder="Bla...bla...bla..."
-                v-model="formAdd.comment"
-              />
-            </div>
-
-            <button class="btn btn-primary">Submit</button>
+            <h2>Rating about this Course:</h2>
+            <star-rating v-bind:max-rating="10" v-model="formAdd.rate"></star-rating>
+            <h2>Comment:</h2>
+            <ckeditor class="editor" :editor="editor" v-model="formAdd.comment" :config="editorConfig"></ckeditor>
+            <button class="btn btn-primary" style="margin-left:40%; margin-top:10px">Submit</button>
           </form>
         </div>
       </modal>
@@ -78,7 +61,7 @@
                 id="name"
                 v-model="formEdit.editingFeedBack.rate"
                 placeholder="0<= rate <=10"
-              />
+              >
             </div>
             <div class="form-group">
               <label for="exampleInputPassword1">Comment</label>
@@ -88,7 +71,7 @@
                 id="comment"
                 placeholder="Bla...bla...bla..."
                 v-model="formEdit.editingFeedBack.comment"
-              />
+              >
             </div>
 
             <button class="btn btn-primary">Submit</button>
@@ -105,8 +88,8 @@
               <div class="class-posts card" v-for="feedBack in feedBacks" :key="feedBack.id">
                 <div class="review mt-4">
                   <div class="d-flex flex-row comment-user">
-                    <img v-if="!feedBack.user.avatar" src="../assets/images/avatar.svg" width="60" />
-                    <img class="rounded" v-bind:src="feedBack.user.avatar" width="60" />
+                    <img v-if="!feedBack.user.avatar" src="../assets/images/avatar.svg" width="60">
+                    <img class="rounded" v-bind:src="feedBack.user.avatar" width="60">
                     <div class="ml-2">
                       <div class="d-flex flex-row align-items-center">
                         <span class="name font-weight-bold">
@@ -132,15 +115,20 @@
                     type="button"
                     class="btn btn-danger button-delete-1"
                     @click="deleteFeedBack(feedBack.id)"
-                  >Delete</button>
+                  >
+                    <i class="fa fa-trash"></i>
+                  </button>
                   <button
                     v-if="checkDeleteRole(feedBack.user.id)"
                     type="button"
-                    class="button is-success button-success-1"
+                    class="button button-success-1"
                     @click="showModalEdit(feedBack)"
-                  >Edit</button>
+                  >
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                  </button>
                 </div>
               </div>
+
               <div class="text-center">
                 <Pagination
                   :page-count="totalPages"
@@ -183,6 +171,9 @@ import Swal from "sweetalert2";
 import footerComponent from "./footer.vue";
 import Pagination from "vuejs-paginate";
 import VModal from "vue-js-modal";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import StarRating from "vue-star-rating";
+
 Vue.use(Pagination);
 Vue.use(VModal);
 export default {
@@ -196,7 +187,6 @@ export default {
       classroom: "",
       feedBacks: [],
       comments: {},
-      token: "",
       file: "",
       formAdd: {
         rate: "",
@@ -223,8 +213,16 @@ export default {
       perPage: 8,
       totalPages: 0,
       total: 0,
-      textSearch: ""
+      textSearch: "",
+      editor: ClassicEditor,
+      editorData: "<p>Enter your Feedback about Shiba Learning here.</p>",
+      editorConfig: {
+        // The configuration of the rich-text editor.
+      }
     };
+  },
+  props: {
+    rating: 0
   },
   created() {
     this.getData();
@@ -237,7 +235,8 @@ export default {
     AssignmentCard,
     uploadCover,
     footerComponent,
-    Pagination
+    Pagination,
+    StarRating
   },
   methods: {
     toggleCoverEdit() {
@@ -266,22 +265,20 @@ export default {
       const feedBack = {
         studentId: this.currentUser.id,
         courseId: this.thisCourseId,
-        rate: parseFloat(this.formAdd.rate),
+        rate: this.formAdd.rate,
         comment: this.formAdd.comment
       };
+      console.log(feedBack);
       axios
         .post(
           "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/feedback/create",
           feedBack
         )
         .then(function() {
-          console.log("SUCCESS!!");
           vm.hideModalAdd();
           vm.getData();
         })
-        .catch(function() {
-          console.log("FAILURE!!");
-        });
+        .catch(function() {});
     },
     submitEditComment() {
       const vm = this;
@@ -314,7 +311,6 @@ export default {
         )
         .then(function(response) {
           vm.classroom = response.data.data;
-          console.log("vm.classroom: " + vm.classroom);
         })
         .catch(function() {
           Swal.fire("Oops...", "Somethings come wrongs!", "error");
@@ -356,7 +352,7 @@ export default {
       const vm = this;
       const currentUser = vm.$session.get("currentUser");
       const courseId = vm.thisCourseId;
-      console.log("courseId: " + courseId);
+
       axios
         .get(
           "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/search?page=0&size=10" +
@@ -371,7 +367,6 @@ export default {
           } else {
             vm.isJoined = false;
           }
-          console.log(vm.isJoined);
         });
     },
     deleteFeedBack(feedBackId) {
@@ -441,6 +436,9 @@ export default {
   cursor: pointer;
 }
 
+.ck {
+  height: 200px;
+}
 .comment-box {
   padding: 5px;
 }

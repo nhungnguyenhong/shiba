@@ -36,7 +36,7 @@
             v-on:keyup="getData()"
             v-model="textSearch"
             placeholder="Search"
-          />
+          >
         </div>
         <button
           v-if="getRole() === 'admin' || getRole() === 'teacher'"
@@ -50,9 +50,6 @@
           class="btn btn-success add-lesson"
           @click="joinCourse()"
         >Join</button>
-        <button class="button is-success button-let-go">
-          <router-link :to="{path: '/feedbacks',query: { courseId: thisCourseId }}">Comments</router-link>
-        </button>
       </div>
       <modal name="add-lesson" :height="450">
         <div>
@@ -62,28 +59,28 @@
                 Lesson title(
                 <span class="red">*</span>)
               </label>
-              <input type="text" class="form-control" id="title" v-model="form.title" />
+              <input type="text" class="form-control" id="title" v-model="form.title">
             </div>
             <div class="form-group">
               <label for="exampleInputPassword1">
                 Lesson description(
                 <span class="red">*</span>)
               </label>
-              <input type="text" class="form-control" id="description" v-model="form.description" />
+              <input type="text" class="form-control" id="description" v-model="form.description">
             </div>
             <div class="form-group">
               <label for="exampleInputPassword1">
                 Lesson document(
                 <span class="red">*</span>)
               </label>
-              <input type="text" class="form-control" id="document" v-model="form.document" />
+              <input type="text" class="form-control" id="document" v-model="form.document">
             </div>
             <div class="form-group">
               <label for="exampleInputPassword1">
                 Lesson video (
                 <span class="red">*</span>)
               </label>
-              <input type="text" class="form-control" id="video" v-model="form.video" />
+              <input type="text" class="form-control" id="video" v-model="form.video">
             </div>
             <div class="form-group">
               <label for="exampleFormControlFile1">Lesson image</label>
@@ -93,7 +90,7 @@
                 ref="file"
                 id="file"
                 v-on:change="handleFileUpload()"
-              />
+              >
             </div>
             <button class="btn btn-primary">Submit</button>
           </form>
@@ -105,7 +102,7 @@
           <form v-on:submit.prevent="submitEdit" class="padding-30">
             <div class="form-group">
               <label for="exampleInputEmail1">Lesson title</label>
-              <input type="text" class="form-control" id="title" v-model="form_edit.title" />
+              <input type="text" class="form-control" id="title" v-model="form_edit.title">
             </div>
             <div class="form-group">
               <label for="exampleInputPassword1">Lesson description</label>
@@ -114,15 +111,15 @@
                 class="form-control"
                 id="description"
                 v-model="form_edit.description"
-              />
+              >
             </div>
             <div class="form-group">
               <label for="exampleInputPassword1">Lesson document</label>
-              <input type="text" class="form-control" id="document" v-model="form_edit.document" />
+              <input type="text" class="form-control" id="document" v-model="form_edit.document">
             </div>
             <div class="form-group">
               <label for="exampleInputPassword1">Lesson video</label>
-              <input type="text" class="form-control" id="video" v-model="form_edit.video" />
+              <input type="text" class="form-control" id="video" v-model="form_edit.video">
             </div>
             <div class="form-group">
               <label for="exampleFormControlFile1">Lesson image</label>
@@ -132,7 +129,7 @@
                 ref="file"
                 id="file"
                 v-on:change="handleFileUpload()"
-              />
+              >
             </div>
             <button class="btn btn-primary">Submit</button>
           </form>
@@ -149,7 +146,7 @@
               <div class="class-posts card" v-for="(post, index) in posts" :key="post.id">
                 <div class="card-image container-post">
                   <figure class="image is-4by3">
-                    <img v-bind:src="post.image" alt="Placeholder image" />
+                    <img v-bind:src="post.image" alt="Placeholder image">
                   </figure>
                 </div>
                 <div class="card-content container-post-content">
@@ -175,6 +172,67 @@
                     </div>
                   </div>
                 </div>
+              </div>
+              <div class="test">
+                <button class="button is-success button-comment">
+                  <router-link :to="{path: '/feedbacks',query: { courseId: thisCourseId }}">Comments</router-link>
+                </button>
+
+                <button
+                  type="button"
+                  class="button is-success button-test"
+                  @click="showModalTest()"
+                >Quick Test Now!</button>
+                <modal name="test-student" :height="500">
+              <h2 style="text-align: center;">Quick Test</h2>
+              <div id="overflowTest">
+                <div
+                  class="container box"
+                  style="width: 80%!important;"
+                  v-for="exam in test"
+                  :key="exam.id"
+                >
+                  <p>{{ exam.id }}.{{ exam.test }}:</p>
+                  <form>
+                    <label class="radio-inline room1" >
+                      <input type="radio" name="optradio" value="1" v-model="key[exam.id]" >
+                      {{ exam.a_1 }}
+                    </label>
+                    <label class="radio-inline room">
+                      <input type="radio" name="optradio" value="2" v-model="key[exam.id]" >
+                      {{ exam.a_2 }}
+                    </label>
+                    <label class="radio-inline room">
+                      <input type="radio" name="optradio" value="3" v-model="key[exam.id]" >
+                      {{ exam.a_3 }}
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="optradio"  value="4" v-model="key[exam.id]" >
+                      {{ exam.a_4 }}
+                    </label>
+                    <div class="radio-inline" v-if="key[exam.id]">
+                      <p class="text-danger" v-if="key[exam.id] != exam.key">
+                        <i class="fa fa-times-circle"></i>
+                      </p>
+                      
+                      <p class="text-success" v-else>
+                        <i class="fa fa-check-circle"></i>
+                      </p>
+                    </div>
+                  </form>
+                </div>
+                <button
+                  type="button"
+                  @click="check()"
+                  style="margin-left:40%; margin-bottom: 10px"
+                  class="btn btn-success"
+                >Get Result</button>
+                <span
+                  style="margin-left:20px;color: red;font-size: 30px;"
+                  v-if="count !== 0"
+                >{{ count }}/5</span>
+              </div>
+            </modal>
               </div>
               <div class="text-center">
                 <Pagination
@@ -207,6 +265,7 @@ import moment from "moment";
 import swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import { mapGetters } from "vuex";
+import { Test } from "../const/test";
 import attachments from "./block/attachment.vue";
 import PostCard from "./block/PostCard.vue";
 import AssignmentCard from "./block/AssignmentCard.vue";
@@ -236,6 +295,14 @@ export default {
         document: "",
         video: ""
       },
+       test: {},
+      form: {
+        "studentId": "",
+        "courseId": "",
+        "point": ""
+      },
+      count: 0,
+      key: [],
       thisCourseId: this.$route.query.id,
       isJoined: true,
       classroom: "",
@@ -278,6 +345,7 @@ export default {
   created() {
     this.getData();
     this.checkJoin();
+    this.test = Test;
   },
   components: {
     attachments,
@@ -289,6 +357,32 @@ export default {
     Pagination
   },
   methods: {
+    showModalTest() {
+      this.$modal.show("test-student");
+    },
+    check() {
+      for (let i = 0; i < 5; i++) {
+        if (this.test[i].key === this.key[i + 1]) {
+          this.count++;
+        }
+      }
+      this.form.studentId = this.$session.get("id");
+      this.form.courseId = this.thisCourseId;
+      this.form.point = this.count;
+      const vm = this;
+      axios
+      .post(
+        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/update-point",
+          vm.form
+      )
+      .then(function(respone) {
+        swal.fire("Success", "Test complete!", "success");
+      })
+      .catch(function() {
+        swal.fire("Oops...", "Somethings come wrongs!", "error");
+      });
+      this.$modal.hide("test-student");
+    },
     toggleCoverEdit() {
       this.coverEdit = !this.coverEdit;
     },
@@ -315,9 +409,6 @@ export default {
       formData.append("document", this.form.document);
       if (!!this.file) {
         formData.append("image", this.file);
-      }
-      for (var value of formData.values()) {
-        console.log(value);
       }
       axios
         .post(
@@ -511,8 +602,26 @@ export default {
   width: 100%;
 }
 
+.room1 {
+  margin-right: 10%;
+}
+.room {
+  margin-left: 15%;
+  margin-right: 15%;
+}
 .container-post {
   width: 270px;
+}
+.button-comment {
+  width: 100px;
+  height: 50px;
+  margin-left: 5%;
+  font-size: 16px;
+}
+.button-test {
+  width: 150px;
+  height: 50px;
+  font-size: 16px;
 }
 
 .container-post-content {
@@ -553,6 +662,7 @@ export default {
 .button-let-go {
   width: 100px;
   height: 50px;
+  margin-left: 80%;
 }
 
 .button-let-go > a {
@@ -565,8 +675,10 @@ export default {
 }
 
 .has-search .form-control {
-  padding-left: 2.375rem;
+  padding-left: 2rem;
   margin-top: 26px;
+  width: 50%;
+  margin-left: 16%;
 }
 
 .has-search .form-control-feedback {
@@ -577,7 +689,7 @@ export default {
   height: 2.375rem;
   line-height: 7.475rem;
   text-align: center;
-  margin-top: 4.8%;
+  margin-top: 1%;
   pointer-events: none;
   color: #aaa;
   padding-right: 20px;
@@ -614,5 +726,23 @@ export default {
   width: 100px;
   height: 50px;
   font-size: 18px;
+}
+.box {
+  transition: 1.5s all cubic-bezier(0.39, 0.575, 0.565, 1);
+  margin-right: 1.8rem;
+  margin-left: 10%;
+  width: 90%;
+  border-top: 1px solid #eeeeee;
+}
+#overflowTest {
+  overflow: scroll;
+  height: 400px;
+  margin-top: 10px;
+}
+.vm--modal {
+  top: 100px;
+  left: 300px;
+  width: 600px;
+  height: 1000px;
 }
 </style>
