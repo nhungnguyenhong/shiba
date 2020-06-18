@@ -8,6 +8,7 @@
           <div class="col-md-8 text-align-center">
             <h1 class="class-title">{{ toUpperCase( classroom.name )}}</h1>
             <div class="class-description">{{ classroom.description }}</div>
+            <div class="class-description">average rate: {{ classroom.rate }}/10</div>
           </div>
           <div class="col-md-4">
             <div class="class-teacher">
@@ -49,6 +50,9 @@
           class="btn btn-success add-lesson"
           @click="joinCourse()"
         >Join</button>
+        <button class="button is-success button-let-go">
+          <router-link :to="{path: '/feedbacks',query: { courseId: thisCourseId }}">Comments</router-link>
+        </button>
       </div>
       <modal name="add-lesson" :height="450">
         <div>

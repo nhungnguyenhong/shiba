@@ -17,6 +17,7 @@ import Registrations from '../pages/Registrations';
 import Courses from '../pages/Courses';
 import Users from '../pages/Users';
 import Subjects from '../pages/Subjects';
+import FeedBacks from '../pages/FeedBacks';
 import createUser from '../pages/createUser';
 import editUser from '../pages/editUser';
 import About from '../pages/About';
@@ -142,6 +143,12 @@ export default new Router({
       path: '/registrations',
       name: Registrations,
       component: Registrations,
+      exact: true,
+    },
+    {
+      path: '/feedbacks',
+      name: FeedBacks,
+      component: FeedBacks,
       exact: true,
     }
   ],
