@@ -59,22 +59,6 @@
                 >
                   <p>{{ exam.id }}.{{ exam.test }}:</p>
                   <form>
-<<<<<<< HEAD
-                    <label class="radio-inline room1" >
-                      <input type="radio" name="optradio" value="1" v-model="key[exam.id]" >
-                      {{ exam.a_1 }}
-                    </label>
-                    <label class="radio-inline room">
-                      <input type="radio" name="optradio" value="2" v-model="key[exam.id]" >
-                      {{ exam.a_2 }}
-                    </label>
-                    <label class="radio-inline room">
-                      <input type="radio" name="optradio" value="3" v-model="key[exam.id]" >
-                      {{ exam.a_3 }}
-                    </label>
-                    <label class="radio-inline">
-                      <input type="radio" name="optradio"  value="4" v-model="key[exam.id]" >
-=======
                     <label class="radio-inline room1">
                       <input type="radio" name="optradio" value="1" v-model="key[exam.id]" />
                       {{ exam.a_1 }}
@@ -89,14 +73,13 @@
                     </label>
                     <label class="radio-inline">
                       <input type="radio" name="optradio" value="4" v-model="key[exam.id]" />
->>>>>>> d3cbf37265ef3ffff9d98bfab566dcb193f7bc4e
                       {{ exam.a_4 }}
                     </label>
                     <div class="radio-inline" v-if="key[exam.id]">
                       <p class="text-danger" v-if="key[exam.id] != exam.key">
                         <i class="fa fa-times-circle"></i>
                       </p>
-                      
+
                       <p class="text-success" v-else>
                         <i class="fa fa-check-circle"></i>
                       </p>
@@ -152,9 +135,9 @@ export default {
       subject: {},
       test: {},
       form: {
-        "studentId": "",
-        "courseId": "",
-        "point": ""
+        studentId: "",
+        courseId: "",
+        point: ""
       },
       count: 0,
       key: []
@@ -197,16 +180,16 @@ export default {
       this.form.point = this.count;
       const vm = this;
       axios
-      .post(
-        "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/update-point",
+        .post(
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/update-point",
           vm.form
-      )
-      .then(function(respone) {
-        swal.fire("Success", "Test complete!", "success");
-      })
-      .catch(function() {
-        swal.fire("Oops...", "Somethings come wrongs!", "error");
-      });
+        )
+        .then(function(respone) {
+          swal.fire("Success", "Test complete!", "success");
+        })
+        .catch(function() {
+          swal.fire("Oops...", "Somethings come wrongs!", "error");
+        });
       this.$modal.hide("test-student");
     }
   }
