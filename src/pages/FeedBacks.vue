@@ -8,7 +8,14 @@
           <div class="col-md-8 text-align-center">
             <h1 class="class-title">{{ toUpperCase( classroom.name )}}</h1>
             <div class="class-description">{{ classroom.description }}</div>
-            <div class="class-description">average rate: {{ classroom.rate }}/10</div>
+            <div class="class-description">
+              <star-rating
+                read-only="true"
+                v-bind:increment="0.1"
+                v-bind:max-rating="5"
+                v-model="classroom.rate"
+              ></star-rating>
+            </div>
           </div>
           <div class="col-md-4">
             <div class="class-teacher">
@@ -43,38 +50,31 @@
         <div>
           <form v-on:submit.prevent="submitAddComment" class="padding-30">
             <h2>Rating about this Course:</h2>
-            <star-rating v-bind:max-rating="10" v-model="formAdd.rate"></star-rating>
+            <star-rating v-bind:max-rating="5" v-model="formAdd.rate"></star-rating>
             <h2>Comment:</h2>
-            <ckeditor class="editor" :editor="editor" v-model="formAdd.comment" :config="editorConfig"></ckeditor>
+            <ckeditor
+              class="editor"
+              :editor="editor"
+              v-model="formAdd.comment"
+              :config="editorConfig"
+            ></ckeditor>
             <button class="btn btn-primary" style="margin-left:40%; margin-top:10px">Submit</button>
           </form>
         </div>
       </modal>
-      <modal name="edit-comment" :height="350">
+      <modal name="edit-comment" :height="540">
         <div>
           <form v-on:submit.prevent="submitEditComment" class="padding-30">
-            <div class="form-group">
-              <label for="exampleInputEmail1">Rate</label>
-              <input
-                type="text"
-                class="form-control"
-                id="name"
-                v-model="formEdit.editingFeedBack.rate"
-                placeholder="0<= rate <=10"
-              >
-            </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">Comment</label>
-              <input
-                type="textarea"
-                class="form-control"
-                id="comment"
-                placeholder="Bla...bla...bla..."
-                v-model="formEdit.editingFeedBack.comment"
-              >
-            </div>
-
-            <button class="btn btn-primary">Submit</button>
+            <h2>Rating about this Course:</h2>
+            <star-rating v-bind:max-rating="5" v-model="formEdit.editingFeedBack.rate"></star-rating>
+            <h2>Comment:</h2>
+            <ckeditor
+              class="editor"
+              :editor="editor"
+              v-model="formEdit.editingFeedBack.comment"
+              :config="editorConfig"
+            ></ckeditor>
+            <button class="btn btn-primary" style="margin-left:40%; margin-top:10px">Submit</button>
           </form>
         </div>
       </modal>
@@ -88,8 +88,8 @@
               <div class="class-posts card" v-for="feedBack in feedBacks" :key="feedBack.id">
                 <div class="review mt-4">
                   <div class="d-flex flex-row comment-user">
-                    <img v-if="!feedBack.user.avatar" src="../assets/images/avatar.svg" width="60">
-                    <img class="rounded" v-bind:src="feedBack.user.avatar" width="60">
+                    <img v-if="!feedBack.user.avatar" src="../assets/images/avatar.svg" width="60" />
+                    <img class="rounded" v-bind:src="feedBack.user.avatar" width="60" />
                     <div class="ml-2">
                       <div class="d-flex flex-row align-items-center">
                         <span class="name font-weight-bold">
@@ -108,7 +108,7 @@
                     </div>
                   </div>
                   <div class="mt-2">
-                    <p class="comment-text">{{feedBack.comment}}</p>
+                    <p>{{feedBack.comment}}</p>
                   </div>
                   <button
                     v-if="checkDeleteRole(feedBack.user.id)"
@@ -217,6 +217,8 @@ export default {
       editor: ClassicEditor,
       editorData: "<p>Enter your Feedback about Shiba Learning here.</p>",
       editorConfig: {
+        enterMode: ClassicEditor.ENTER_P
+        // shiftEnterMode = ClassicEditor.ENTER_P
         // The configuration of the rich-text editor.
       }
     };
@@ -266,7 +268,7 @@ export default {
         studentId: this.currentUser.id,
         courseId: this.thisCourseId,
         rate: this.formAdd.rate,
-        comment: this.formAdd.comment
+        comment: this.formAdd.comment.replace(/<\/?[^>]+(>|$)/g, "")
       };
       console.log(feedBack);
       axios
@@ -285,7 +287,10 @@ export default {
       const feedBackUpdate = {
         id: this.formEdit.editingFeedBack.id,
         newRate: parseFloat(this.formEdit.editingFeedBack.rate),
-        newComment: this.formEdit.editingFeedBack.comment
+        newComment: this.formEdit.editingFeedBack.comment.replace(
+          /<\/?[^>]+(>|$)/g,
+          ""
+        )
       };
       axios
         .post(
@@ -311,6 +316,7 @@ export default {
         )
         .then(function(response) {
           vm.classroom = response.data.data;
+          // vm.classroom.rate = 4.5;
         })
         .catch(function() {
           Swal.fire("Oops...", "Somethings come wrongs!", "error");

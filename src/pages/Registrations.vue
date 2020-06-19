@@ -5,7 +5,7 @@
       <div class="card mt-80">
         <div class="box-search">
           <div class="form-group has-search">
-            <span class="fa fa-search form-control-feedback"></span>
+            <!-- <span class="fa fa-search form-control-feedback"></span> -->
             <input
               type="text"
               class="form-control"
@@ -41,13 +41,13 @@
             <td>{{ user.course.name }}</td>
             <td>{{ user.point }}</td>
             <td>
-              <router-link
+              <button
                 class="btn btn-default"
-                style="margin: 4px 15px"
-                :to="{path: '/editUser',query: { name: user.user.userName }}"
+                style="margin: 4px 15px;"
+                @click="showModalEdit(user)"
               >
                 <i class="fa fa-pencil" aria-hidden="true"></i>
-              </router-link>
+              </button>
               <button
                 class="btn btn-danger"
                 style="margin: 4px 15px;"
@@ -105,6 +105,49 @@
         </div>
       </div>
     </modal>
+    <modal name="edit-registration" :height="350">
+      <div class="box-add">
+        <div class="form-group">
+          <label for="exampleInputPassword1">
+            Student(
+            <span class="red">*</span>)
+          </label>
+          <input
+            disabled="true"
+            type="text"
+            class="form-control"
+            v-model="formEdit.editingRegistration.student.userName"
+          />
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">
+            Course (
+            <span class="red">*</span>)
+          </label>
+          <input
+            disabled="true"
+            type="text"
+            class="form-control"
+            v-model="formEdit.editingRegistration.course.name"
+          />
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">
+            Point (
+            <span class="red">*</span>)
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            v-model="formEdit.editingRegistration.point"
+            placeholder="point/10"
+          />
+        </div>
+        <div class="text-center mt-20">
+          <button type="button" class="btn btn-success" @click="updatePoint()">Save</button>
+        </div>
+      </div>
+    </modal>
     <footer-component></footer-component>
   </div>
 </template>
@@ -130,6 +173,16 @@ export default {
         courseId: "",
         courses: []
       },
+      formEdit: {
+        editingRegistration: {
+          course: {},
+          student: {},
+          point: ""
+        },
+        courseId: "",
+        studentId: "",
+        point: ""
+      },
       users: [],
       you: "",
       textSearch: "",
@@ -154,16 +207,6 @@ export default {
     this.you = this.$session.get("user");
     this.getName = this.$session.get("user");
     const vm = this;
-    // axios
-    //   .get(
-    //     "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/user/get-by-username?userName=" +
-    //       this.getName
-    //   )
-    //   .then(function(respone) {
-    //     vm.getUser = respone.data.data;
-    //     vm.Search();
-    //   });
-
     this.Search();
   },
   components: {
@@ -187,11 +230,6 @@ export default {
         .then(function(respone) {
           vm.users = respone.data.data.content;
           vm.totalPages = respone.data.data.totalPages;
-          // console.log("respone.data.data: "+respone.data.data.totalElements);
-          //   vm.total = respone.data.data.content.length;
-          //   for (let i = 0; i < respone.data.data.content.length; i++) {
-          //     vm.users.push(respone.data.data.content[i]);
-          //   }
         });
     },
     changePage(pageNum) {
@@ -214,11 +252,37 @@ export default {
     hideModalAdd() {
       this.$modal.hide("add-student");
     },
+    hideModalEdit() {
+      this.$modal.hide("edit-registration");
+    },
+    showModalEdit(registration) {
+      this.formEdit.editingRegistration = {
+        course: registration.course,
+        student: registration.user,
+        point: registration.point
+      };
+      this.$modal.show("edit-registration");
+    },
+    updatePoint() {
+      const vm = this;
+      vm.formEdit.courseId = this.formEdit.editingRegistration.course.id;
+      vm.formEdit.studentId = this.formEdit.editingRegistration.student.id;
+      vm.formEdit.point = this.formEdit.editingRegistration.point / 2;
+      axios
+        .post(
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/update-point",
+          vm.formEdit
+        )
+        .then(function() {
+          vm.hideModalEdit();
+          vm.Search();
+        })
+        .catch(function() {});
+    },
     addStudent() {
       const vm = this;
       vm.form.studentEmail = this.form.studentEmail;
       vm.form.courseId = this.form.courseId;
-      console.log(vm.form);
       axios
         .post(
           "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/add-student-to-course",
