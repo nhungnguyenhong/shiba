@@ -5,7 +5,7 @@
       <div class="card mt-80">
         <div class="box-search">
           <div class="form-group has-search">
-            <!-- <span class="fa fa-search form-control-feedback"></span> -->
+            <span class="fa fa-search form-control-feedback" style="margin-top:0.8%!important;padding-left: 20%!important"></span>
             <input
               type="text"
               class="form-control"
