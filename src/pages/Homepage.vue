@@ -77,7 +77,6 @@ import "sweetalert2/dist/sweetalert2.min.css";
 import { mapGetters } from "vuex";
 import navbar from "./NavbarComponent.vue";
 import footerComponent from "./footer.vue";
-// import { constants } from 'http2';
 
 export default {
   name: "homepage",
