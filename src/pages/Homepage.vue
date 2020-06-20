@@ -91,6 +91,7 @@ export default {
       )
       .then(function(respone) {
         vm.getUser = respone.data.data;
+        console.log(vm.getUser)
         if (vm.getUser.roleId === "1") {
           vm.isTeacher = true;
         } else {

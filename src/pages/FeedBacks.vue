@@ -43,7 +43,7 @@
         <div>
           <form v-on:submit.prevent="submitAddComment" class="padding-30">
             <h2>Rating about this Course:</h2>
-            <star-rating v-bind:max-rating="10" v-model="formAdd.rate"></star-rating>
+            <star-rating v-bind:max-rating="5" v-model="formAdd.rate"></star-rating>
             <h2>Comment:</h2>
             <ckeditor class="editor" :editor="editor" v-model="formAdd.comment" :config="editorConfig"></ckeditor>
             <button class="btn btn-primary" style="margin-left:40%; margin-top:10px">Submit</button>

@@ -5,7 +5,7 @@
       <div class="card mt-80">
         <div class="box-search">
           <div class="form-group has-search">
-            <span class="fa fa-search form-control-feedback"></span>
+            <i class="fa fa-search form-control-feedback"></i>
             <input
               type="text"
               class="form-control"
@@ -275,6 +275,7 @@ export default {
   pointer-events: none;
   color: #aaa;
   padding-right: 20px;
+  
 }
 .box-search {
   width: 50%;

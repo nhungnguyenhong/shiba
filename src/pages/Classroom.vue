@@ -692,7 +692,7 @@ export default {
   margin-top: 1%;
   pointer-events: none;
   color: #aaa;
-  padding-right: 20px;
+  padding-right: 10px;
 }
 
 .box-search {
