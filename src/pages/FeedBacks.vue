@@ -84,7 +84,7 @@
       <div class="container" v-else>
         <section class="container">
           <div class="columns features">
-            <div class="card is-shady wid-100">
+            <div class="card is-shady wid-100" style="margin-left:5%">
               <div class="class-posts card" v-for="feedBack in feedBacks" :key="feedBack.id">
                 <div class="review mt-4">
                   <div class="d-flex flex-row comment-user">

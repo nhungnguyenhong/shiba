@@ -88,7 +88,7 @@
       <div class="container" v-else>
         <section class="container">
           <div class="columns features">
-            <div class="card is-shady wid-100">
+            <div class="card is-shady wid-100" style="margin-left:5%">
               <div class="class-posts card" v-for="post in posts" :key="post.id">
                 <div class="card-image container-post">
                   <figure class="image is-4by3">

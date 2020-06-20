@@ -4,7 +4,7 @@
     <div class="classroom" style="min-height: 500px">
       <div class="box-search">
         <div class="form-group has-search">
-          <!-- <span class="fa fa-search form-control-feedback"></span> -->
+          <span class="fa fa-search form-control-feedback" style="margin-top:0.8%!important;padding-right: 15%"></span>
           <input
             type="text"
             class="form-control"
@@ -16,9 +16,10 @@
         <button
           v-if="getRole() === 'teacher' || getRole() === 'admin'"
           type="button"
-          class="btn btn-success add-course"
+          class="btn btn-success"
           @click="showModalAdd()"
-        >Create course</button>
+          style="margin-left: 57%;margin-top: -12%;"
+        ><i class="fa fa-plus"></i></button>
       </div>
       <modal name="add-course" :height="550">
         <div>
@@ -93,7 +94,7 @@
       <div class="container" v-else>
         <section class="container">
           <div class="columns features">
-            <div class="card is-shady wid-100">
+            <div class="card is-shady wid-100" style="margin-left:5%">
               <div class="class-posts card" v-for="course in courses" :key="course.id">
                 <div class="card-image container-post">
                   <figure class="image is-4by3">
@@ -104,8 +105,8 @@
                   <div class="content">
                     <h4>{{course.name}}</h4>
                     <p></p>
-                    <div class="buttons margin-button">
-                      <button class="button is-success button-let-go">
+                    <div class="margin-button">
+                      <button class="buttons">
                         <router-link :to="{path: '/classroom',query: { id: course.id }}">View</router-link>
                       </button>
                       <button

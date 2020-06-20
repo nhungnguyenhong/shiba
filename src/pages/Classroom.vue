@@ -36,7 +36,7 @@
       </div>
       <div class="box-search">
         <div class="form-group has-search">
-          <span class="fa fa-search form-control-feedback"></span>
+          <span class="fa fa-search form-control-feedback" style="margin-right:-4% !important"></span>
           <input
             type="text"
             class="form-control"
@@ -50,7 +50,7 @@
           type="button"
           class="btn btn-success add-lesson"
           @click="showModalAdd()"
-        >Add lesson</button>
+        ><i class="fa fa-plus"></i></button>
         <button
           v-if="getRole() === 'student' && !isJoined"
           type="button"
@@ -149,7 +149,7 @@
       <div class="container" v-else>
         <section class="container">
           <div class="columns features">
-            <div class="card is-shady wid-100">
+            <div class="card is-shady wid-100" style="margin-left:5%">
               <div class="class-posts card" v-for="(post, index) in posts" :key="post.id">
                 <div class="card-image container-post">
                   <figure class="image is-4by3">
@@ -160,22 +160,24 @@
                   <div class="content">
                     <h4>{{post.title}}</h4>
                     <p>{{post.description}}</p>
-                    <div class="buttons margin-button">
-                      <button class="button is-success button-let-go">
-                        <router-link :to="{path: '/lesson',query: { id: post.id }}">Let's go</router-link>
+                    <div class="margin-button">
+                      <div class="action">
+                      <button type="button" class="btn btn-default">
+                        <router-link :to="{path: '/lesson',query: { id: post.id }}"><i class="fa fa-book"></i></router-link>
                       </button>
                       <button
                         v-if="getRole() === 'admin' || getRole() === 'teacher'"
                         type="button"
-                        class="btn btn-danger button-delete"
-                        @click="removeLesson(post.id)"
-                      >Remove</button>
+                        class="btn btn-info"
+                        @click="openEditLesson(index,post.id)"
+                      ><i class="fa fa-pencil" aria-hidden="true"></i></button>
                       <button
                         v-if="getRole() === 'admin' || getRole() === 'teacher'"
                         type="button"
-                        class="btn btn-info button-edit"
-                        @click="openEditLesson(index,post.id)"
-                      >Edit</button>
+                        class="btn btn-danger"
+                        @click="removeLesson(post.id)"
+                      ><i class="fa fa-trash"></i></button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -187,7 +189,7 @@
 
                 <button
                   type="button"
-                  class="button is-success button-test"
+                  class="buttons is-success button-test"
                   @click="showModalTest()"
                 >Quick Test Now!</button>
                 <modal name="test-student" :height="500">
@@ -650,6 +652,10 @@ export default {
 .text-align-center {
   text-align: center;
 }
+.action {
+    margin-left: 71%;
+    margin-top: -17%;
+}
 
 .class-titile {
   font-weight: bold;
@@ -713,7 +719,7 @@ export default {
 .add-lesson {
   position: absolute;
   top: 0;
-  right: -160px;
+  right: 230px;
 }
 .padding-30 {
   padding: 30px;

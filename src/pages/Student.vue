@@ -5,14 +5,17 @@
       <div class="card mt-80">
         <div class="box-search">
           <div class="form-group has-search">
-            <i class="fa fa-search form-control-feedback"></i>
+            <i
+              class="fa fa-search form-control-feedback"
+              style="margin-top:2%!important; margin-:-16%!important"
+            ></i>
             <input
               type="text"
               class="form-control"
               v-on:keyup="Search()"
               v-model="textSearch"
               placeholder="Search"
-            />
+            >
           </div>
         </div>
         <div class="text-right">
@@ -83,7 +86,7 @@
             class="form-control"
             v-model="form.studentEmail"
             placeholder="Email student"
-          />
+          >
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">
@@ -117,7 +120,7 @@
             type="text"
             class="form-control"
             v-model="formEdit.editingRegistration.student.userName"
-          />
+          >
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">
@@ -129,7 +132,7 @@
             type="text"
             class="form-control"
             v-model="formEdit.editingRegistration.course.name"
-          />
+          >
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">
@@ -141,7 +144,7 @@
             class="form-control"
             v-model="formEdit.editingRegistration.point"
             placeholder="point/10"
-          />
+          >
         </div>
         <div class="text-center mt-20">
           <button type="button" class="btn btn-success" @click="updatePoint()">Save</button>
@@ -200,7 +203,6 @@ export default {
         confirmButtonText: "Yes, Delete it!",
         closeOnConfirm: true
       }
-      
     };
   },
 
@@ -275,12 +277,11 @@ export default {
           for (let i = 0; i < register_to_get_course.length; i++) {
             arr_course.push(register_to_get_course[i].course);
           }
-         for ( var i=0, len=arr_course.length; i < len; i++ )
-              obj[arr_course[i]['id']] = arr_course[i];
-          for ( var key in obj )
-              arr.push(obj[key]);
-              console.log(arr);
-           vm.form.courses = arr;
+          for (var i = 0, len = arr_course.length; i < len; i++)
+            obj[arr_course[i]["id"]] = arr_course[i];
+          for (var key in obj) arr.push(obj[key]);
+          console.log(arr);
+          vm.form.courses = arr;
           vm.$modal.show("add-student");
         });
     },
@@ -326,9 +327,8 @@ export default {
         )
         .then(function() {
           vm.hideModalAdd();
-          
+
           vm.Search();
-          
         })
         .catch(function() {
           Swal.fire("Oops...", "Somethings come wrongs!", "error");
@@ -374,7 +374,6 @@ export default {
   pointer-events: none;
   color: #aaa;
   padding-right: 20px;
-  
 }
 .box-search {
   width: 50%;

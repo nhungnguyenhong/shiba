@@ -96,9 +96,9 @@
               </li>
             </ul>
           </li>
-          <li>
-            <router-link to="/courses">Courses List</router-link>
-          </li>
+           <li>
+               <router-link to="/courses">Courses List</router-link>
+              </li>
         </ul>
         <ul class="nav navbar-nav navbar-right" v-if="isLoggedIn">
           <li class="dropdown">
