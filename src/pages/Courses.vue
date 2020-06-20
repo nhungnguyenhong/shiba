@@ -87,6 +87,52 @@
           </form>
         </div>
       </modal>
+      <modal name="edit-course" :height="350">
+        <div>
+          <form v-on:submit.prevent="submitEdit" class="padding-30">
+            <div class="form-group">
+              <label for="exampleInputEmail1">
+                Course name(
+                <span class="red">*</span>)
+              </label>
+              <input type="text" class="form-control" id="name" v-model="formEdit.name" />
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">
+                Course description(
+                <span class="red">*</span>)
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="description"
+                v-model="formEdit.description"
+              />
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlFile1">Course image</label>
+              <input
+                type="file"
+                class="form-control-file"
+                ref="fileEditImage"
+                id="fileEditImage"
+                v-on:change="handleFileEditImageUpload()"
+              />
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlFile1">Course cover</label>
+              <input
+                type="file"
+                class="form-control-file"
+                ref="fileEditCover"
+                id="fileEditCover"
+                v-on:change="handleFileEditCoverUpload()"
+              />
+            </div>
+            <button class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </modal>
       <div class="container" v-if="!courses">
         <div class="no-post">No course found</div>
       </div>
@@ -105,15 +151,29 @@
                     <h4>{{course.name}}</h4>
                     <p></p>
                     <div class="buttons margin-button">
-                      <button class="button is-success button-let-go">
-                        <router-link :to="{path: '/classroom',query: { id: course.id }}">View</router-link>
+                      <button
+                        @click="$router.push({path: '/classroom',query: { id: course.id }})"
+                        class="btn btn-default"
+                        style="margin: 4px 15px;"
+                      >
+                        <i class="fa fa-search"></i>
                       </button>
                       <button
                         v-if="getRole() === 'admin' || deleteRole(course) === true"
-                        type="button"
-                        class="btn btn-danger button-delete"
+                        class="btn btn-default"
+                        style="margin: 4px 15px;"
+                        @click="showModalEdit(course)"
+                      >
+                        <i class="fa fa-pencil"></i>
+                      </button>
+                      <button
+                        v-if="getRole() === 'admin' || deleteRole(course) === true"
+                        class="btn btn-danger"
+                        style="margin: 4px 15px;"
                         @click="deleteCourse(course.id)"
-                      >Delete</button>
+                      >
+                        <i class="fa fa-trash"></i>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -180,6 +240,15 @@ export default {
         teachers: [],
         subjects: []
       },
+      formEdit: {
+        id: "",
+        name: "",
+        description: "",
+        teacherId: "",
+        subjectId: "",
+        teachers: [],
+        subjects: []
+      },
       swal_config: {
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -238,6 +307,15 @@ export default {
             });
         });
     },
+    showModalEdit(course) {
+      this.formEdit.id = course.id;
+      this.formEdit.name = course.name;
+      this.formEdit.description = course.description;
+      this.$modal.show("edit-course");
+    },
+    hideModalEdit() {
+      this.$modal.hide("edit-course");
+    },
     getRole() {
       this.currentUser = this.$session.get("currentUser");
       return this.currentUser.role.roleName;
@@ -254,6 +332,43 @@ export default {
     },
     handleFileCoverUpload() {
       this.fileCover = this.$refs.fileCover.files[0];
+    },
+    handleFileEditImageUpload() {
+      this.fileEditImage = this.$refs.fileEditImage.files[0];
+    },
+    handleFileEditCoverUpload() {
+      this.fileEditCover = this.$refs.fileEditCover.files[0];
+    },
+    submitEdit() {
+      let formData = new FormData();
+      let vm = this;
+      formData.append("id", this.formEdit.id);
+      formData.append("newName", this.formEdit.name);
+      formData.append("newDescription", this.formEdit.description);
+      if (typeof this.fileEditImage !== "undefined") {
+        formData.append("newImage", this.fileEditImage);
+      }
+      if (typeof this.fileEditCover !== "undefined") {
+        formData.append("newCover", this.fileEditCover);
+      }
+      axios
+        .post(
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/course/update",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          }
+        )
+        .then(function() {
+          console.log("SUCCESS!!");
+          vm.hideModalEdit();
+          vm.Search();
+        })
+        .catch(function() {
+          console.log("FAILURE!!");
+        });
     },
     submitFile() {
       let formData = new FormData();

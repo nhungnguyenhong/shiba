@@ -150,7 +150,7 @@
         <section class="container">
           <div class="columns features">
             <div class="card is-shady wid-100">
-              <div class="class-posts card" v-for="(post, index) in posts" :key="post.id">
+              <div class="class-posts card" v-for="(post,index) in posts" :key="post.id">
                 <div class="card-image container-post">
                   <figure class="image is-4by3">
                     <img v-bind:src="post.image" alt="Placeholder image" />
@@ -161,21 +161,44 @@
                     <h4>{{post.title}}</h4>
                     <p>{{post.description}}</p>
                     <div class="buttons margin-button">
-                      <button class="button is-success button-let-go">
+                      <!-- <button class="button is-success button-let-go">
                         <router-link :to="{path: '/lesson',query: { id: post.id }}">Let's go</router-link>
-                      </button>
+                      </button>-->
                       <button
+                        @click="$router.push({path: '/lesson',query: { id: post.id }})"
+                        class="btn btn-default"
+                        style="margin: 4px 15px;"
+                      >
+                        <i class="fa fa-search"></i>
+                      </button>
+                      <!-- <button
                         v-if="getRole() === 'admin' || getRole() === 'teacher'"
                         type="button"
                         class="btn btn-danger button-delete"
                         @click="removeLesson(post.id)"
-                      >Remove</button>
+                      >Remove</button>-->
                       <button
+                        v-if="getRole() === 'admin' || deleteRole(post.course)"
+                        class="btn btn-default"
+                        style="margin: 4px 15px;"
+                        @click="openEditLesson(index,post.id)"
+                      >
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                      </button>
+                      <button
+                        v-if="getRole() === 'admin' || deleteRole(post.course)"
+                        class="btn btn-danger"
+                        style="margin: 4px 15px;"
+                        @click="removeLesson(post.id)"
+                      >
+                        <i class="fa fa-trash"></i>
+                      </button>
+                      <!-- <button
                         v-if="getRole() === 'admin' || getRole() === 'teacher'"
                         type="button"
                         class="btn btn-info button-edit"
                         @click="openEditLesson(index,post.id)"
-                      >Edit</button>
+                      >Edit</button>-->
                     </div>
                   </div>
                 </div>
@@ -505,6 +528,10 @@ export default {
     checkUserPost(user_id) {
       //return this.getUserId == user_id;
       return 1 == 1;
+    },
+    deleteRole(course) {
+      const currentUser = this.$session.get("currentUser");
+      return currentUser.id === course.teacher.id ? true : false;
     },
     getRole() {
       this.currentUser = this.$session.get("currentUser");

@@ -200,7 +200,6 @@ export default {
         confirmButtonText: "Yes, Delete it!",
         closeOnConfirm: true
       }
-      
     };
   },
 
@@ -275,12 +274,11 @@ export default {
           for (let i = 0; i < register_to_get_course.length; i++) {
             arr_course.push(register_to_get_course[i].course);
           }
-         for ( var i=0, len=arr_course.length; i < len; i++ )
-              obj[arr_course[i]['id']] = arr_course[i];
-          for ( var key in obj )
-              arr.push(obj[key]);
-              console.log(arr);
-           vm.form.courses = arr;
+          for (var i = 0, len = arr_course.length; i < len; i++)
+            obj[arr_course[i]["id"]] = arr_course[i];
+          for (var key in obj) arr.push(obj[key]);
+          console.log(arr);
+          vm.form.courses = arr;
           vm.$modal.show("add-student");
         });
     },
@@ -326,9 +324,8 @@ export default {
         )
         .then(function() {
           vm.hideModalAdd();
-          
+
           vm.Search();
-          
         })
         .catch(function() {
           Swal.fire("Oops...", "Somethings come wrongs!", "error");
@@ -374,7 +371,6 @@ export default {
   pointer-events: none;
   color: #aaa;
   padding-right: 20px;
-  
 }
 .box-search {
   width: 50%;
