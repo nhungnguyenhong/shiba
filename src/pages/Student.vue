@@ -5,7 +5,7 @@
       <div class="card mt-80">
         <div class="box-search">
           <div class="form-group has-search">
-            <span class="fa fa-search form-control-feedback"></span>
+            <i class="fa fa-search form-control-feedback"></i>
             <input
               type="text"
               class="form-control"
@@ -41,13 +41,13 @@
             <td>{{ user.course.name }}</td>
             <td>{{ user.point }}</td>
             <td>
-              <router-link
+              <button
                 class="btn btn-default"
-                style="margin: 4px 15px"
-                :to="{path: '/editUser',query: { name: user.user.userName }}"
+                style="margin: 4px 15px;"
+                @click="showModalEdit(user)"
               >
                 <i class="fa fa-pencil" aria-hidden="true"></i>
-              </router-link>
+              </button>
               <button
                 class="btn btn-danger"
                 style="margin: 4px 15px;"
@@ -105,6 +105,49 @@
         </div>
       </div>
     </modal>
+    <modal name="edit-registration" :height="350">
+      <div class="box-add">
+        <div class="form-group">
+          <label for="exampleInputPassword1">
+            Student(
+            <span class="red">*</span>)
+          </label>
+          <input
+            disabled="true"
+            type="text"
+            class="form-control"
+            v-model="formEdit.editingRegistration.student.userName"
+          />
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">
+            Course (
+            <span class="red">*</span>)
+          </label>
+          <input
+            disabled="true"
+            type="text"
+            class="form-control"
+            v-model="formEdit.editingRegistration.course.name"
+          />
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">
+            Point (
+            <span class="red">*</span>)
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            v-model="formEdit.editingRegistration.point"
+            placeholder="point/10"
+          />
+        </div>
+        <div class="text-center mt-20">
+          <button type="button" class="btn btn-success" @click="updatePoint()">Save</button>
+        </div>
+      </div>
+    </modal>
     <footer-component></footer-component>
   </div>
 </template>
@@ -130,6 +173,16 @@ export default {
         courseId: "",
         courses: []
       },
+      formEdit: {
+        editingRegistration: {
+          course: {},
+          student: {},
+          point: ""
+        },
+        courseId: "",
+        studentId: "",
+        point: ""
+      },
       users: [],
       you: "",
       textSearch: "",
@@ -147,6 +200,7 @@ export default {
         confirmButtonText: "Yes, Delete it!",
         closeOnConfirm: true
       }
+      
     };
   },
 
@@ -202,19 +256,63 @@ export default {
       this.Search();
     },
     showModalAdd() {
+      var id = parseInt(this.$session.get("currentUser").id);
+      const vm = this;
+      vm.form.courses.splice(0);
+      var register_to_get_course = [];
+      var arr_course = [];
+      var obj = {};
+      var arr = [];
       axios
         .get(
-          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/course/get-all-by-teacher" +
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/course/get-all" +
             "?teacherId=" +
             this.$session.get("currentUser").id
         )
         .then(response => {
-          this.form.courses = response.data.data;
-          this.$modal.show("add-student");
+          register_to_get_course = response.data.data.content;
+          console.log(register_to_get_course);
+          for (let i = 0; i < register_to_get_course.length; i++) {
+            arr_course.push(register_to_get_course[i].course);
+          }
+         for ( var i=0, len=arr_course.length; i < len; i++ )
+              obj[arr_course[i]['id']] = arr_course[i];
+          for ( var key in obj )
+              arr.push(obj[key]);
+              console.log(arr);
+           vm.form.courses = arr;
+          vm.$modal.show("add-student");
         });
     },
     hideModalAdd() {
       this.$modal.hide("add-student");
+    },
+    hideModalEdit() {
+      this.$modal.hide("edit-registration");
+    },
+    showModalEdit(registration) {
+      this.formEdit.editingRegistration = {
+        course: registration.course,
+        student: registration.user,
+        point: registration.point
+      };
+      this.$modal.show("edit-registration");
+    },
+    updatePoint() {
+      const vm = this;
+      vm.formEdit.courseId = this.formEdit.editingRegistration.course.id;
+      vm.formEdit.studentId = this.formEdit.editingRegistration.student.id;
+      vm.formEdit.point = this.formEdit.editingRegistration.point / 2;
+      axios
+        .post(
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/update-point",
+          vm.formEdit
+        )
+        .then(function() {
+          vm.hideModalEdit();
+          vm.Search();
+        })
+        .catch(function() {});
     },
     addStudent() {
       const vm = this;
@@ -228,11 +326,12 @@ export default {
         )
         .then(function() {
           vm.hideModalAdd();
+          
           vm.Search();
-          // Swal.fire("Success", "Add to class success!", "success");
+          
         })
         .catch(function() {
-          // Swal.fire("Oops...", "Somethings come wrongs!", "error");
+          Swal.fire("Oops...", "Somethings come wrongs!", "error");
         });
     },
     removeStudentInClass(registration) {
@@ -275,6 +374,7 @@ export default {
   pointer-events: none;
   color: #aaa;
   padding-right: 20px;
+  
 }
 .box-search {
   width: 50%;

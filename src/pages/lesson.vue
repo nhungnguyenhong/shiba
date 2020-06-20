@@ -42,61 +42,6 @@
                 <p class="subheading">{{subject.name}}</p>
               </div>
             </div>
-            <div class="text-right test">
-              <button type="button" class="btn btn-success" @click="showModalTest()">
-                <i class="fa fa-angle-double-right"></i> Quick Test Now!
-                <i class="fa fa-angle-double-left"></i>
-              </button>
-            </div>
-            <modal name="test-student" style="height: 400px!important">
-              <h2 style="text-align: center;">Quick Test of {{ lesson.title }}</h2>
-              <div id="overflowTest">
-                <div
-                  class="container box"
-                  style="width: 80%!important;"
-                  v-for="exam in test"
-                  :key="exam.id"
-                >
-                  <p>{{ exam.id }}.{{ exam.test }}:</p>
-                  <form>
-                    <label class="radio-inline room1">
-                      <input type="radio" name="optradio" value="1" v-model="key[exam.id]" />
-                      {{ exam.a_1 }}
-                    </label>
-                    <label class="radio-inline room">
-                      <input type="radio" name="optradio" value="2" v-model="key[exam.id]" />
-                      {{ exam.a_2 }}
-                    </label>
-                    <label class="radio-inline room">
-                      <input type="radio" name="optradio" value="3" v-model="key[exam.id]" />
-                      {{ exam.a_3 }}
-                    </label>
-                    <label class="radio-inline">
-                      <input type="radio" name="optradio" value="4" v-model="key[exam.id]" />
-                      {{ exam.a_4 }}
-                    </label>
-                    <div class="radio-inline" v-if="key[exam.id]">
-                      <p class="text-danger" v-if="key[exam.id] != exam.key">
-                        <i class="fa fa-times-circle"></i>
-                      </p>
-                      <p class="text-success" v-else>
-                        <i class="fa fa-check-circle"></i>
-                      </p>
-                    </div>
-                  </form>
-                </div>
-                <button
-                  type="button"
-                  @click="check()"
-                  style="margin-left:40%; margin-bottom: 10px"
-                  class="btn btn-success"
-                >Get Result</button>
-                <span
-                  style="margin-left:20px;color: red;font-size: 30px;"
-                  v-if="count !== 0"
-                >{{ count }}/5</span>
-              </div>
-            </modal>
           </div>
           <div class="column is-8 right-image" data-aos="fade-left">
             <iframe
@@ -119,7 +64,6 @@
 import Vue from "vue";
 import moment from "moment";
 import swal from "sweetalert2";
-import { Test } from "../const/test";
 import "sweetalert2/dist/sweetalert2.min.css";
 import navbar from "./NavbarComponent.vue";
 import footerComponent from "./footer.vue";
@@ -132,14 +76,10 @@ export default {
       lesson: "",
       teacher: {},
       subject: {},
-      test: {},
-      count: 0,
-      key: []
     };
   },
   created() {
     var lesson_id = this.$route.query.id;
-    this.test = Test;
     const vm = this;
     axios
       .get(
@@ -152,7 +92,7 @@ export default {
         vm.subject = vm.lesson.course.subject;
       })
       .catch(function() {
-        Swal.fire("Oops...", "Somethings come wrongs!", "error");
+        swal.fire("Oops...", "Somethings come wrongs!", "error");
       });
   },
   components: {
@@ -160,16 +100,6 @@ export default {
     footerComponent
   },
   methods: {
-    showModalTest() {
-      this.$modal.show("test-student");
-    },
-    check() {
-      for (let i = 0; i < 5; i++) {
-        if (this.test[i].key === this.key[i + 1]) {
-          this.count++;
-        }
-      }
-    }
   }
 };
 </script>
@@ -187,12 +117,13 @@ export default {
 }
 .right-image {
   height: 470px;
+  float: right;
 }
 .right-image > iframe {
   height: 100%;
 }
 .wid-033 {
-  width: 33.3333333333%;
+  width: 37%;
 }
 .box-test {
   width: 90%;

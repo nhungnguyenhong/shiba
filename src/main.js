@@ -7,6 +7,9 @@ import axios from 'axios'
 import './../node_modules/bulma/css/bulma.css';
 import './../node_modules/vue-toast-notification/dist/index.css';
 import './../node_modules/vue-multiselect/dist/vue-multiselect.min.css';
+import CKEditor from '@ckeditor/ckeditor5-vue';
+
+Vue.use( CKEditor );
 
 Vue.config.productionTip = false;
 

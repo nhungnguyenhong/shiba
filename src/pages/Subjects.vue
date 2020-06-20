@@ -4,7 +4,7 @@
     <div class="classroom" style="min-height: 500px">
       <div class="box-search">
         <div class="form-group has-search">
-          <span class="fa fa-search form-control-feedback"></span>
+          <!-- <span class="fa fa-search form-control-feedback"></span> -->
           <input
             type="text"
             class="form-control"
@@ -63,6 +63,55 @@
           </form>
         </div>
       </modal>
+      <modal name="edit-subject" :height="400">
+        <div>
+          <form v-on:submit.prevent="submitEdit" class="padding-30">
+            <div class="form-group">
+              <label for="exampleInputEmail1">
+                Subject name(
+                <span class="red">*</span>)
+              </label>
+              <input type="text" class="form-control" id="name" v-model="formEdit.name" />
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">
+                Subject description(
+                <span class="red">*</span>)
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="description"
+                v-model="formEdit.description"
+              />
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">
+                Grade (
+                <span class="red">*</span>)
+              </label>
+              <select class="form-control" id="grade" v-model="formEdit.gradeId">
+                <option
+                  v-for="grade in formEdit.grades"
+                  :key="grade.id"
+                  v-bind:value="grade.id"
+                >{{ grade.name }}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlFile1">Subject image</label>
+              <input
+                type="file"
+                class="form-control-file"
+                ref="fileEdit"
+                id="fileEditImage"
+                v-on:change="handleEditImageUpload()"
+              />
+            </div>
+            <button class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </modal>
       <div class="container" v-if="!subjects">
         <div class="no-post">No subject found</div>
       </div>
@@ -81,6 +130,11 @@
                     <h4>{{subject.name}}</h4>
                     <p></p>
                     <div class="buttons margin-button">
+                      <button
+                        type="button"
+                        class="btn btn-warning button-update"
+                        @click="showModalEdit(subject)"
+                      >Update</button>
                       <button class="button is-success button-let-go">
                         <router-link :to="{path: '/course',query: { id: subject.id }}">View courses</router-link>
                       </button>
@@ -152,6 +206,9 @@ export default {
         grade: "",
         grades: []
       },
+      formEdit: {
+        grades: []
+      },
       swal_config: {
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -186,6 +243,35 @@ export default {
           vm.totalPages = response.data.data.totalPages;
           vm.pageNumber = response.data.data.number;
           // console.log("respone.data.data: "+respone.data.data.totalElements);
+        });
+    },
+    submitEdit() {
+      let formData = new FormData();
+      let vm = this;
+      formData.append("id", this.formEdit.id);
+      formData.append("newName", this.formEdit.name);
+      formData.append("newDescription", this.formEdit.description);
+      formData.append("newGrade", this.formEdit.gradeId);
+      if (typeof this.fileEditImage !== "undefined") {
+        formData.append("newImage", this.fileEditImage);
+      }
+      axios
+        .post(
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/subject/update",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          }
+        )
+        .then(function() {
+          console.log("SUCCESS!!");
+          vm.hideModalEdit();
+          vm.Search();
+        })
+        .catch(function() {
+          console.log("FAILURE!!");
         });
     },
     submitCreate() {
@@ -230,15 +316,39 @@ export default {
         )
         .then(response => {
           this.form.grades = response.data.data.content;
-          console.log;
           this.$modal.show("create-subject");
         });
     },
     hideModalAdd() {
       this.$modal.hide("create-subject");
     },
+    hideModalEdit() {
+      this.$modal.hide("edit-subject");
+    },
+    showModalEdit(subject) {
+      // const vm = this;
+      this.formEdit = {
+        id: subject.id,
+        name: subject.name,
+        description: subject.description,
+        gradeId: subject.grade.id,
+        grades: []
+      };
+      axios
+        .get(
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/grade/search?page=0&size=100"
+        )
+        .then(response => {
+          this.formEdit.grades = response.data.data.content;
+          this.$modal.show("edit-subject");
+        });
+      // this.$modal.show("edit-subject");
+    },
     handleFileImageUpload() {
       this.fileImage = this.$refs.file.files[0];
+    },
+    handleEditImageUpload() {
+      this.fileEditImage = this.$refs.fileEdit.files[0];
     },
     deleteSubject(subjectId) {
       const vm = this;

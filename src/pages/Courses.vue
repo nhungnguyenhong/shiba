@@ -4,7 +4,7 @@
     <div class="classroom" style="min-height: 500px">
       <div class="box-search">
         <div class="form-group has-search">
-          <span class="fa fa-search form-control-feedback"></span>
+          <!-- <span class="fa fa-search form-control-feedback"></span> -->
           <input
             type="text"
             class="form-control"

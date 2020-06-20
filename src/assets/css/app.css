@@ -8376,18 +8376,26 @@ button.close {
 .button-success-1 {
   position: absolute;
   top: 25px;
-  left: 556px;
-  width: 80px;
-  height: 38px;
+  left: 90%;
+  width: 35px;
+  height: 35px;
   font-size: 16px;
+}
+.button-update {
+  position: absolute;
+  top: 0;
+  left: 255px;
+  width: 102px;
+  height: 50px;
+  font-size: 18px;
 }
 
 .button-delete-1 {
   position: absolute;
   top: 25px;
-  left: 650px;
-  width: 80px;
-  height: 38px;
+  left: 94%;
+  width: 35px;
+  height: 35px;
   font-size: 16px;
 }
 
