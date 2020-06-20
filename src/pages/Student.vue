@@ -256,31 +256,18 @@ export default {
       this.Search();
     },
     showModalAdd() {
-      var id = parseInt(this.$session.get("currentUser").id);
+     
       const vm = this;
-      vm.form.courses.splice(0);
-      var register_to_get_course = [];
-      var arr_course = [];
-      var obj = {};
-      var arr = [];
+      
       axios
         .get(
-          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/search-by-teacherId?page=0&size=10&teacherId=" +
-            id
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/course/get-all" +
+            "?teacherId=" +
+            this.$session.get("currentUser").id
         )
         .then(response => {
-          register_to_get_course = response.data.data.content;
-          console.log(register_to_get_course);
-          for (let i = 0; i < register_to_get_course.length; i++) {
-            arr_course.push(register_to_get_course[i].course);
-          }
-         for ( var i=0, len=arr_course.length; i < len; i++ )
-              obj[arr_course[i]['id']] = arr_course[i];
-          for ( var key in obj )
-              arr.push(obj[key]);
-              console.log(arr);
-           vm.form.courses = arr;
-          vm.$modal.show("add-student");
+           this.form.courses = response.data.data;
+          this.$modal.show("add-student");
         });
     },
     hideModalAdd() {
