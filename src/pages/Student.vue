@@ -7,7 +7,7 @@
           <div class="form-group has-search">
             <i
               class="fa fa-search form-control-feedback"
-              style="margin-top:2%!important; margin-:-16%!important"
+              style="margin-top:2%!important; margin-right:-10%!important"
             ></i>
             <input
               type="text"
@@ -272,6 +272,7 @@ export default {
             this.$session.get("currentUser").id
         )
         .then(response => {
+          console.log(response.data.data)
           register_to_get_course = response.data.data.content;
           console.log(register_to_get_course);
           for (let i = 0; i < register_to_get_course.length; i++) {
