@@ -265,9 +265,8 @@ export default {
       var arr = [];
       axios
         .get(
-          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/course/get-all" +
-            "?teacherId=" +
-            this.$session.get("currentUser").id
+          "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/search-by-teacherId?page=0&size=10&teacherId=" +
+            id
         )
         .then(response => {
           register_to_get_course = response.data.data.content;
