@@ -14,6 +14,7 @@ import Subject from '../pages/Subject';
 import Course from '../pages/course';
 import Student from '../pages/Student';
 import Registrations from '../pages/Registrations';
+import MyGrade from '../pages/MyGrade';
 import Courses from '../pages/Courses';
 import Users from '../pages/Users';
 import Subjects from '../pages/Subjects';
@@ -149,6 +150,12 @@ export default new Router({
       path: '/feedbacks',
       name: FeedBacks,
       component: FeedBacks,
+      exact: true,
+    },
+    {
+      path: '/myGrade',
+      name: MyGrade,
+      component: MyGrade,
       exact: true,
     }
   ],
