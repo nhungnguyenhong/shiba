@@ -127,22 +127,23 @@
                 </div>
                 <div class="card-content container-post-content">
                   <div class="content">
-                    <h4>{{subject.name}}</h4>
+                    <router-link :to="{path: '/course',query: { id: subject.id }}">{{subject.name}}</router-link>
                     <p></p>
                     <div class="buttons margin-button">
                       <button
-                        type="button"
-                        class="btn btn-warning button-update"
+                        class="btn btn-default"
+                        style="margin: 4px 15px;"
                         @click="showModalEdit(subject)"
-                      >Update</button>
-                      <button class="button is-success button-let-go">
-                        <router-link :to="{path: '/course',query: { id: subject.id }}">View courses</router-link>
+                      >
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
                       </button>
                       <button
-                        type="button"
-                        class="btn btn-danger button-delete"
+                        class="btn btn-danger"
+                        style="margin: 4px 15px;"
                         @click="deleteSubject(subject.id)"
-                      >Delete</button>
+                      >
+                        <i class="fa fa-trash"></i>
+                      </button>
                     </div>
                   </div>
                 </div>
