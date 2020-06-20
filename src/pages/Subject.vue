@@ -51,7 +51,6 @@ export default {
       )
       .then(function(respone) {
         vm.subjects = respone.data.data.content;
-        console.log(vm.subjects)
       })
       .catch(function() {
         Swal.fire("Oops...", "Somethings come wrongs!", "error");

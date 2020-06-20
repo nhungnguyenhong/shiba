@@ -4,7 +4,7 @@
     <div class="classroom" style="min-height: 500px">
       <div class="box-search">
         <div class="form-group has-search">
-          <!-- <span class="fa fa-search form-control-feedback"></span> -->
+          <span class="fa fa-search form-control-feedback" style="margin-top:0.8%!important;padding-right: 15%"></span>
           <input
             type="text"
             class="form-control"
@@ -17,7 +17,8 @@
           type="button"
           class="btn btn-success add-course"
           @click="showModalAdd()"
-        >Create subject</button>
+          style="margin-left: 57%;margin-top: -12%;"
+        ><i class="fa fa-plus"></i></button>
       </div>
       <modal name="create-subject" :height="400">
         <div>
@@ -129,10 +130,10 @@
                   <div class="content">
                     <router-link :to="{path: '/course',query: { id: subject.id }}">{{subject.name}}</router-link>
                     <p></p>
-                    <div class="buttons margin-button">
+                    <div class="margin-button">
                       <button
                         class="btn btn-default"
-                        style="margin: 4px 15px;"
+                        style="margin: 4px;"
                         @click="showModalEdit(subject)"
                       >
                         <i class="fa fa-pencil" aria-hidden="true"></i>

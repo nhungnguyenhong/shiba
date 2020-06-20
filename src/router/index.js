@@ -14,7 +14,7 @@ import Subject from '../pages/Subject';
 import Course from '../pages/course';
 import Student from '../pages/Student';
 import Registrations from '../pages/Registrations';
-import MyGrade from '../pages/MyGrade';
+import myScore from '../pages/myScore';
 import Courses from '../pages/Courses';
 import Users from '../pages/Users';
 import Subjects from '../pages/Subjects';
@@ -153,9 +153,9 @@ export default new Router({
       exact: true,
     },
     {
-      path: '/myGrade',
-      name: MyGrade,
-      component: MyGrade,
+      path: '/myScore',
+      name: myScore,
+      component: myScore,
       exact: true,
     }
   ],

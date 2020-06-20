@@ -25,7 +25,7 @@
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" id="navbar-dropdown-menu-small">
+      <div class="collapse navbar-collapse" id="navbar-dropdown-menu-small" style="width: 1200px;">
         <ul class="nav navbar-nav">
           <li class="dropdown" v-if="isTeacher">
             <a
@@ -92,7 +92,7 @@
                 <router-link to="/grade">All Grade</router-link>
               </li>
               <li>
-                <router-link to="/myGrade">My grade</router-link>
+                <router-link to="/myScore" v-if="userRole === 'student'">My course</router-link>
               </li>
             </ul>
           </li>
@@ -192,6 +192,9 @@ export default {
   position: relative;
   display: inline-block;
 }
+.logout {
+  margin-left: 10%;
+}
 
 .dropdown-content {
   display: none;
@@ -205,8 +208,5 @@ export default {
 
 .dropdown:hover .dropdown-content {
   display: block;
-}
-.navbar-right {
-  margin-right: -150%;
 }
 </style>

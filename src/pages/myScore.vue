@@ -74,7 +74,7 @@ import { mapGetters } from "vuex";
 import navbar from "./NavbarComponent.vue";
 import footerComponent from "./footer.vue";
 export default {
-  name: "mygrade",
+  name: "myScore",
   created() {
     this.getId = this.$session.get("id");
     const vm = this;

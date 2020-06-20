@@ -5,7 +5,7 @@
       <div class="card mt-80">
         <div class="box-search">
           <div class="form-group has-search">
-            <!-- <span class="fa fa-search form-control-feedback"></span> -->
+            <span class="fa fa-search form-control-feedback" style="margin-top:0.8%!important;padding-right: 15%" ></span>
             <input
               type="text"
               class="form-control"
@@ -18,11 +18,12 @@
             type="button"
             class="btn btn-success create-user"
             @click="showModalAdd()"
-          >Create user</button>
+            style="margin-left: 57%;margin-top: -12%;"
+          ><i class="fa fa-plus"></i></button>
         </div>
-        <modal name="create-user" :height="550">
-          <div>
-            <form v-on:submit.prevent="submitCreate" class="padding-30">
+        <modal name="create-user" :height="550" class="padding-30" >
+          <div style="padding: 30px!important">
+            <form v-on:submit.prevent="submitCreate">
               <div class="form-group">
                 <label for="exampleInputEmail1">
                   User name(
@@ -128,13 +129,14 @@
           </div>
         </modal>
 
-        <table class="table member-list">
+        <table class="table member-list" style="margin-left:15%; width: 70%">
           <thead>
             <tr>
               <th>#</th>
               <th>Name</th>
               <th>Email</th>
               <th>Role</th>
+              <th style="text-align:center">Action</th>
             </tr>
           </thead>
           <tr v-for="(user, key) in users" :key="key">
@@ -142,7 +144,7 @@
             <td>{{ user.userName }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.role.roleName }}</td>
-            <td>
+            <td style="text-align:center">
               <button class="btn btn-default" style="margin: 4px 15px" @click="showModalEdit(user)">
                 <i class="fa fa-pencil" aria-hidden="true"></i>
               </button>
