@@ -15,7 +15,7 @@
               v-on:keyup="Search()"
               v-model="textSearch"
               placeholder="Search"
-            >
+            />
           </div>
         </div>
         <div class="text-right">
@@ -86,7 +86,7 @@
             class="form-control"
             v-model="form.studentEmail"
             placeholder="Email student"
-          >
+          />
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">
@@ -120,7 +120,7 @@
             type="text"
             class="form-control"
             v-model="formEdit.editingRegistration.student.userName"
-          >
+          />
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">
@@ -132,7 +132,7 @@
             type="text"
             class="form-control"
             v-model="formEdit.editingRegistration.course.name"
-          >
+          />
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">
@@ -144,7 +144,7 @@
             class="form-control"
             v-model="formEdit.editingRegistration.point"
             placeholder="point/10"
-          >
+          />
         </div>
         <div class="text-center mt-20">
           <button type="button" class="btn btn-success" @click="updatePoint()">Save</button>
@@ -287,7 +287,7 @@ export default {
       const vm = this;
       vm.formEdit.courseId = this.formEdit.editingRegistration.course.id;
       vm.formEdit.studentId = this.formEdit.editingRegistration.student.id;
-      vm.formEdit.point = this.formEdit.editingRegistration.point / 2;
+      vm.formEdit.point = this.formEdit.editingRegistration.point;
       axios
         .post(
           "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/update-point",
