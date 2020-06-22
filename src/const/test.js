@@ -2,7 +2,6 @@
 export const Test = [
   {
     id: '1',
-    title: 'Review the calculations',
     grade: '1',
     test: 'Choose the smallest number',
     a_1: '87',
@@ -13,7 +12,6 @@ export const Test = [
   },
   {
     id: '2',
-    title: 'Review the calculations',
     grade: '1',
     test: 'Choose the largest number',
     a_1: '87',
@@ -24,7 +22,6 @@ export const Test = [
   },
   {
     id: '3',
-    title: 'Review the calculations',
     grade: '1',
     test: 'The next number for 23 is',
     a_1: '87',
@@ -35,7 +32,6 @@ export const Test = [
   },
   {
     id: '4',
-    title: 'Review the calculations',
     grade: '1',
     test: 'The next number for 24 is',
     a_1: '87',
@@ -45,7 +41,6 @@ export const Test = [
     key: '3',
   },{
     id: '5',
-    title: 'Review the calculations',
     grade: '1',
     test: 'The next number for 67 is',
     a_1: '87',
@@ -54,6 +49,55 @@ export const Test = [
     a_4: '68',
     key: '4',
   },
-
+  {
+    id: '6',
+    grade: '1',
+    test: 'Result of this Calculation: 9 – 3 + 1=?',
+    a_1: '5',
+    a_2: '7',
+    a_3: '2',
+    a_4: '9',
+    key: '2',
+  },
+  {
+    id: '7',
+    grade: '1',
+    test: 'Result of this Calculation: 5 – 3 + 1=?',
+    a_1: '3',
+    a_2: '2',
+    a_3: '9',
+    a_4: '6',
+    key: '1',
+  },
+  {
+    id: '8',
+    grade: '1',
+    test: 'Result of this Calculation: 6 – 2 + 4=?',
+    a_1: '8',
+    a_2: '3',
+    a_3: '4',
+    a_4: '2',
+    key: '1',
+  },
+  {
+    id: '9',
+    grade: '1',
+    test: 'Result of this Calculation: 5 – 2 + 4=?',
+    a_1: '8',
+    a_2: '6',
+    a_3: '7',
+    a_4: '2',
+    key: '3',
+  },
+  {
+    id: '10',
+    grade: '1',
+    test: 'Result of this Calculation: 6 – 2 + 1=?',
+    a_1: '8',
+    a_2: '3',
+    a_3: '4',
+    a_4: '7',
+    key: '4',
+  },
 ];
 
