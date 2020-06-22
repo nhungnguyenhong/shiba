@@ -641,9 +641,15 @@ export default {
 }
 .button-comment {
   width: 100px;
-  height: 50px;
-  margin-left: 5%;
-  font-size: 16px;
+    height: 50px;
+    margin-right: 2%;
+    margin-left: 2%;
+    border-radius: 10px;
+    font-size: 16px;
+}
+.button-comment>a{
+  text-decoration: none;
+    color: white;
 }
 .button-test {
   width: 150px;

@@ -105,14 +105,14 @@
                   <div class="content">
                     <h4>{{course.name}}</h4>
                     <p></p>
-                    <div class="margin-button">
-                      <button class="buttons">
+                    <div class="margin-view-button">
+                      <button class="buttons button-view">
                         <router-link :to="{path: '/classroom',query: { id: course.id }}">View</router-link>
                       </button>
                       <button
                         v-if="getRole() === 'admin' || deleteRole(course) === true"
                         type="button"
-                        class="btn btn-danger"
+                        class="btn btn-danger button-view button-delete-course "
                         @click="deleteCourse(course.id)"
                       ><i class="fa fa-trash"></i></button>
                     </div>
@@ -309,4 +309,20 @@ export default {
 };
 </script>
 <style>
+.button-view{
+  width: 80px;
+  height: 50px;
+}
+.button-view>a{
+  text-decoration: none;
+  color: white;
+  font-size: 20px;
+}
+.margin-view-button{
+  margin: 40px 20px 10px 20px;
+}
+.button-delete-course{
+  margin-left: 20px;
+    border-radius: 10px;
+}
 </style>
