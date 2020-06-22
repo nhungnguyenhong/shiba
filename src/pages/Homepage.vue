@@ -180,4 +180,7 @@ export default {
   height: 70px;
   border-radius: 50%;
 }
+.swal2-popup{
+  padding-left: 1%!important;
+}
 </style>
