@@ -169,7 +169,7 @@
                   <div class="content">
                     <h4>{{post.title}}</h4>
                     <p>{{post.description}}</p>
-                    <div class="margin-button">
+                    <div class="margin-button" v-if="isJoined">
                       <div class="action">
                         <button type="button" class="btn btn-default">
                           <router-link :to="{path: '/lesson',query: { id: post.id }}">
