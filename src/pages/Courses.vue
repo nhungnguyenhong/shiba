@@ -245,7 +245,7 @@ export default {
     },
     deleteRole(course) {
       const currentUser = this.$session.get("currentUser");
-      return currentUser.id === course.teacher.id ? true : false;
+      return currentUser.role.id === course.teacher.id ? true : false;
     },
     hideModalAdd() {
       this.$modal.hide("add-course");

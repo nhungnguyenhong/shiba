@@ -239,7 +239,7 @@
                     <span
                       style="margin-left:20px;color: red;font-size: 30px;"
                       v-if="count !== 0"
-                    >{{ count }}/5</span>
+                    >{{ count }}/10</span>
                   </div>
                 </modal>
               </div>
@@ -373,7 +373,7 @@ export default {
       this.$modal.show("test-student");
     },
     check() {
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 10; i++) {
         if (this.test[i].key === this.key[i + 1]) {
           this.count++;
         }
@@ -719,7 +719,7 @@ export default {
 .add-lesson {
   position: absolute;
   top: 0;
-  right: 230px;
+  right: 200px;
 }
 .padding-30 {
   padding: 30px;

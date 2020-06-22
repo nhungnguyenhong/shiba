@@ -157,6 +157,10 @@ import axios from "axios";
 import navbar from "./NavbarComponent.vue";
 import footerComponent from "./footer.vue";
 import store from "../store.js";
+import Vue from 'vue'
+import VueClip from 'vue-clip'
+ 
+Vue.use(VueClip)
 
 export default {
   data() {
@@ -168,6 +172,10 @@ export default {
         new_password: "",
         new_password_confirmation: ""
       },
+      options: {
+          url: '/upload',
+          paramName: 'file'
+        },
       showUpload: false,
       security_errors: {},
       profile_errors: {},

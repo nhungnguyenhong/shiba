@@ -27,7 +27,8 @@
           </div>
           <div class="text-center">
             <button type="submit" class="btn btn-default">Login</button>
-            <router-link :to="'/register'">Register</router-link>
+            <router-link :to="'/register'" style="margin-right:20%">Register</router-link>
+            <router-link :to="'/register'" style="margin-left:20%">forgot password?</router-link>
           </div>
         </form>
       </div>
