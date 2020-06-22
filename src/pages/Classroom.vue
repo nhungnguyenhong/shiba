@@ -50,13 +50,22 @@
           type="button"
           class="btn btn-success add-lesson"
           @click="showModalAdd()"
-        ><i class="fa fa-plus"></i></button>
+        >
+          <i class="fa fa-plus"></i>
+        </button>
         <button
           v-if="getRole() === 'student' && !isJoined"
           type="button"
           class="btn btn-success add-lesson"
           @click="joinCourse()"
         >Join</button>
+        <button
+          disabled="true"
+          v-if="getRole() === 'student' && isJoined"
+          type="button"
+          class="btn btn-success add-lesson"
+          @click="joinCourse()"
+        >Joined</button>
       </div>
       <modal name="add-lesson" :height="450">
         <div>
@@ -162,21 +171,27 @@
                     <p>{{post.description}}</p>
                     <div class="margin-button">
                       <div class="action">
-                      <button type="button" class="btn btn-default">
-                        <router-link :to="{path: '/lesson',query: { id: post.id }}"><i class="fa fa-book"></i></router-link>
-                      </button>
-                      <button
-                        v-if="getRole() === 'admin' || getRole() === 'teacher'"
-                        type="button"
-                        class="btn btn-info"
-                        @click="openEditLesson(index,post.id)"
-                      ><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                      <button
-                        v-if="getRole() === 'admin' || getRole() === 'teacher'"
-                        type="button"
-                        class="btn btn-danger"
-                        @click="removeLesson(post.id)"
-                      ><i class="fa fa-trash"></i></button>
+                        <button type="button" class="btn btn-default">
+                          <router-link :to="{path: '/lesson',query: { id: post.id }}">
+                            <i class="fa fa-book"></i>
+                          </router-link>
+                        </button>
+                        <button
+                          v-if="getRole() === 'admin' || getRole() === 'teacher'"
+                          type="button"
+                          class="btn btn-info"
+                          @click="openEditLesson(index,post.id)"
+                        >
+                          <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </button>
+                        <button
+                          v-if="getRole() === 'admin' || getRole() === 'teacher'"
+                          type="button"
+                          class="btn btn-danger"
+                          @click="removeLesson(post.id)"
+                        >
+                          <i class="fa fa-trash"></i>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -653,8 +668,8 @@ export default {
   text-align: center;
 }
 .action {
-    margin-left: 71%;
-    margin-top: -17%;
+  margin-left: 71%;
+  margin-top: -17%;
 }
 
 .class-titile {

@@ -5,7 +5,10 @@
       <div class="card mt-80">
         <div class="box-search">
           <div class="form-group has-search">
-            <span class="fa fa-search form-control-feedback" style="margin-top:0.8%!important;padding-left: 20%!important"></span>
+            <span
+              class="fa fa-search form-control-feedback"
+              style="margin-top:0.8%!important;padding-left: 20%!important"
+            ></span>
             <input
               type="text"
               class="form-control"
@@ -267,7 +270,7 @@ export default {
       const vm = this;
       vm.formEdit.courseId = this.formEdit.editingRegistration.course.id;
       vm.formEdit.studentId = this.formEdit.editingRegistration.student.id;
-      vm.formEdit.point = this.formEdit.editingRegistration.point / 2;
+      vm.formEdit.point = this.formEdit.editingRegistration.point;
       axios
         .post(
           "http://shibalearningapp-env.eba-kj5ue4pd.us-east-1.elasticbeanstalk.com/registration/update-point",
