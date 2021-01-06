@@ -18,7 +18,7 @@
     "@ckeditor/ckeditor5-build-classic": "^19.0.2",
     "@ckeditor/ckeditor5-vue": "^1.0.1",
     "add": "^2.0.6",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.0",
     "bulma": "^0.7.5",
     "dotenv": "^8.1.0",
